@@ -17,6 +17,7 @@
 
 ### 前端
 
-目前Demo阶段使用vue-cli初始化工程，基于vue3，组件库采用element。
+目前Demo阶段使用vue-cli初始化工程，基于vue3，组件库采用[element](https://element-plus.gitee.io/#/zh-CN)。
 
-[element](https://element-plus.gitee.io/#/zh-CN)
+代码编辑器预计使用[Monaco Editor](https://microsoft.github.io/monaco-editor/index.html)
+
