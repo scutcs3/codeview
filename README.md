@@ -21,3 +21,8 @@
 
 代码编辑器预计使用[Monaco Editor](https://microsoft.github.io/monaco-editor/index.html)
 
+网络请求暂时使用原生接口[fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch)
+
+### 后端
+
+暂时用老牌框架[expressjs](https://expressjs.com/zh-cn/starter/installing.html)搭建后台。

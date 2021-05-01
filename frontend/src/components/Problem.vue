@@ -1,15 +1,30 @@
 <template>
     <h1>题目部分</h1>
-    <h2>
-        滑动窗口的最大值
-    </h2>
-    <p>
-        
-给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。
-例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，
-他们的最大值分别为{4,4,6,6,6,5}； 针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个：
- {[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}，
-  {2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}，
-  {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。
-    </p>
+    <h2>{{ title }}</h2>
+    <p>{{ content }}</p>
 </template>
+<script>
+export default {
+    name: 'Problem',
+    data: function() {
+        return {
+            title: '',
+            content: ''
+        }
+    },
+    created: function() {
+        const self = this
+        fetch('http://localhost:3000/', {
+            method: 'GET',
+            mode: 'cors'
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            self.title = json['data']['title']
+            self.content = json['data']['content']
+        });
+    }
+}
+</script>
