@@ -26,3 +26,8 @@
 ### 后端
 
 暂时用老牌框架[expressjs](https://expressjs.com/zh-cn/starter/installing.html)搭建后台。
+
+
+## 开发
+
+参考[环境搭建](doc/环境搭建.md)。
