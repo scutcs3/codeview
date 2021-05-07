@@ -1,10 +1,7 @@
 # codeview
 
-[华工计算机学院大三软件工程实践课课题](https://bytedance.feishu.cn/docs/doccnkr5HhtT4PEYFMLDAAUanDc)
-[华工大软工实践前端 3 组课题](https://bytedance.feishu.cn/docs/doccnDPUD9P0RoqYKNkUu4ibr2b)
-
 ## 介绍
-在线编程笔试平台，软件工程课程设计demo。
+在线编程笔试平台。
 
 
 ## 软件架构
