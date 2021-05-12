@@ -1,3 +1,4 @@
+name: Build Static Page
 on:
   push:
     branches:
@@ -10,11 +11,13 @@ jobs:
     name: Build Page
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
+      - name: Checkout Repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
           ref: develop
+      - name: Checkout Frontend
+        run: cd frontend
       - name: Cache node modules
         uses: actions/cache@v2.1.3
         id: cache
