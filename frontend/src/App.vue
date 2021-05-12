@@ -6,19 +6,19 @@
         <Problem></Problem>
       </el-aside>
       <el-main>
-        <HelloWorld msg="编程部分"></HelloWorld>
+        <Editor msg="编程部分"></Editor>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Editor from './components/Editor.vue'
 import Problem from './components/Problem.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    Editor,
     Problem
   }
 }

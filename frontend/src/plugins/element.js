@@ -3,7 +3,10 @@ import {
   ElContainer, 
   ElHeader, 
   ElAside, 
-  ElMain 
+  ElMain,
+  ElSelect,
+  ElOption,
+  ElButton,
 } from 'element-plus'
 
 import lang from 'element-plus/lib/locale/lang/zh-cn'
@@ -15,4 +18,7 @@ export default (app) => {
   app.use(ElHeader)
   app.use(ElAside)
   app.use(ElMain)
+  app.use(ElSelect)
+  app.use(ElOption)
+  app.use(ElButton)
 }
