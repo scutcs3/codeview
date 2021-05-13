@@ -1,0 +1,132 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/tootal/codeview/1.0.0
+info:
+  version: "1.0.0"
+  title: 在线编程笔试平台
+  contact:
+    email: tootal@yeah.net
+    name: tootal
+  description: |-
+    在线编程笔试平台  
+    [Github](https://github.com/scutcs3/codeview)  
+    [Gitee](https://gitee.com/scutcs3/codeview)     
+tags:
+  - name: 用户
+    description: 已登陆用户可访问的接口
+  - name: 游客
+    description: 普通游客可以访问的接口
+paths:
+  /problems:
+    get:
+      summary: 获取题目列表
+      operationId: getProblems
+      description: 传递分页参数获取所有题目
+      parameters:
+        - in: query
+          name: page
+          description: 页数，从1开始。
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - in: query
+          name: per_page
+          description: 每页数量，最大100，默认30。
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: 返回题目列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProblemSummary'
+        '400':
+          description: 参数错误
+      tags:
+        - 游客
+  /problems/{id}:
+    get:
+      summary: 获取题目列表
+      operationId: getProblem
+      description: 传递分页参数获取所有题目
+      parameters:
+        - in: path
+          name: id
+          description: 题目ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: 返回题目数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '400':
+          description: 参数错误
+      tags:
+        - 游客
+components:
+  schemas:
+    UserSummary:
+      type: object 
+      properties:
+        url:
+          type: string
+          format: url
+          example: 'https://api.example.com/users/tootal'
+        id:
+          type: string
+          example: 'tootal'
+    ProblemSummary:
+      type: object
+      required:
+        - url
+        - id
+        - created_at
+        - updated_at
+        - owner
+      properties:
+        url:
+          type: string
+          format: url
+          example: 'https://api.example.com/problems/1'
+        id:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: '2021-05-13T09:30:41Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2021-05-13T09:31:07Z'
+        title:
+          type: string
+          example: '题目标题'
+        owner:
+          $ref: '#/components/schemas/UserSummary'
+    Problem:
+      allOf:
+        - $ref: '#/components/schemas/ProblemSummary'
+        - properties:
+            content:
+              type: string
+              example: '题目内容'
+externalDocs:
+  url: https://github.com/scutcs3/codeview/wiki
+  description: Github Wiki
