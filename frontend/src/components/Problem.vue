@@ -7,26 +7,26 @@
 </template>
 <script>
 export default {
-    name: 'Problem',
+    name: "Problem",
     data: function() {
         return {
-            title: '',
-            content: ''
-        }
+            title: "",
+            content: "",
+        };
     },
     created: function() {
-        const self = this
-        fetch('http://localhost:3000/', {
-            method: 'GET',
-            mode: 'cors'
+        const self = this;
+        fetch("http://localhost:3000/problems/1", {
+            method: "GET",
+            mode: "cors",
         })
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(json) {
-            self.title = json['data']['title']
-            self.content = json['data']['content']
-        });
-    }
-}
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(json) {
+                self.title = json["data"]["title"];
+                self.content = json["data"]["content"];
+            });
+    },
+};
 </script>

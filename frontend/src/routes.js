@@ -5,8 +5,6 @@ import Login from './pages/Login.vue'
 import Viewee from './pages/Viewee.vue'
 import Viewer from './pages/Viewer.vue'
 
-
-
 let routes = [
     {
         path: '/index',
