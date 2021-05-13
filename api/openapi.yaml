@@ -1,0 +1,276 @@
+openapi: 3.0.0
+servers:
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/tootal/codeview/1.0.0
+info:
+  version: "1.0.0"
+  title: 在线编程笔试平台
+  contact:
+    email: tootal@yeah.net
+    name: tootal
+  description: |-
+    在线编程笔试平台  
+    [Github](https://github.com/scutcs3/codeview)  
+    [Gitee](https://gitee.com/scutcs3/codeview)     
+tags:
+- name: 用户模块
+  description: 用户登陆、注册，获取用户信息。
+- name: 题目模块
+  description: 获取题目列表、题目信息、添加/修改/删除题目。
+- name: 面试模块
+  description: 创建面试、开始/结束面试
+- name: 答案模块
+  description: 面试过程中提交的代码
+- name: 留言模块
+  description: 面试过程中的留言
+paths:
+  /users:
+    get:
+      summary: 获取用户列表
+      tags: 
+      - 用户模块
+      description: 传递分页参数获取所有用户
+      parameters:
+      - in: query
+        name: page
+        description: 页数，从1开始。
+        required: false
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      - in: query
+        name: per_page
+        description: 每页数量，最大100，默认30。
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+      responses:
+        '200': 
+          description: '成功获取用户列表'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserSummary'
+        '400':
+          description: '参数错误'
+    post:
+      summary: 注册用户
+      tags:
+      - 用户模块
+      responses:
+        '201':
+          description: '注册成功'
+        '400':
+          description: '参数错误'
+        '409':
+          description: '用户已存在'
+  /users/{id}:
+    get:
+      summary: 获取指定id用户信息
+      tags:
+      - 用户模块
+      operationId: getUser
+      description: 传递用户id获取信息
+      parameters:
+      - in: path
+        name: id
+        description: 用户id
+        required: true
+        schema:
+          type: number
+          format: int32
+          minimum: 1
+          example: 10
+      responses:
+        '200':
+          description: 成功获取用户数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSummary'
+        '400':
+          description: 参数错误
+  /problems:
+    get:
+      summary: 获取题目列表
+      operationId: getProblems
+      description: 传递分页参数获取所有题目
+      parameters:
+      - in: query
+        name: page
+        description: 页数，从1开始。
+        required: false
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      - in: query
+        name: per_page
+        description: 每页数量，最大100，默认30。
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: 返回题目列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProblemSummary'
+        '400':
+          description: 参数错误
+      tags:
+      - 题目模块
+  /problems/{id}:
+    get:
+      summary: 获取题目列表
+      operationId: getProblem
+      description: 传递分页参数获取所有题目
+      parameters:
+      - in: path
+        name: id
+        description: 题目ID
+        required: true
+        schema:
+          type: number
+          example: 1
+      responses:
+        '200':
+          description: 返回题目数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '400':
+          description: 参数错误
+      tags:
+      - 题目模块
+  /answers:
+    get:
+      summary: 获取答案列表
+      description: 即提交的代码
+      tags:
+      - 答案模块
+      responses:
+        '200':
+          description: '获取答案列表成功'
+        '400':
+          description: '参数错误'
+    post:
+      summary: 提交答案
+      tags:
+      - 答案模块
+      responses:
+        '200':
+          description: '提交代码成功'
+  /answers/{id}:
+    get:
+      summary: 获取指定id答案
+      tags:
+      - 答案模块
+      parameters:
+      - in: path
+        name: id
+        description: 答案id
+        required: true
+        schema:
+          type: number
+      responses:
+        '202':
+          description: '成功获取指定id答案'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Answer'
+        '400':
+          description: '参数错误'
+components:
+  schemas:
+    UserSummary:
+      description: '用户数据摘要'
+      type: object 
+      properties:
+        url:
+          type: string
+          format: url
+          example: 'https://api.example.com/users/tootal'
+        id:
+          type: string
+          example: 'tootal'
+    ProblemSummary:
+      description: '题目数据摘要'
+      type: object
+      properties:
+        url:
+          type: string
+          format: url
+          example: 'https://api.example.com/problems/1'
+        id:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: '2021-05-13T09:30:41Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2021-05-13T09:31:07Z'
+        title:
+          type: string
+          example: '题目标题'
+        owner:
+          $ref: '#/components/schemas/UserSummary'
+    Problem:
+      description: '题目数据'
+      allOf:
+      - $ref: '#/components/schemas/ProblemSummary'
+      - properties:
+          content:
+            type: string
+            example: '题目内容'
+    Answer:
+      description: '面试过程中提交的代码'
+      type: object
+      properties:
+        url:
+          type: string
+          format: url
+          description: '答案API网址'
+          example: 'https://api.example.com/answers/1'
+        id:
+          type: number
+          example: 1
+          description: '答案id'
+        created_at:
+          type: string
+          format: date-time
+          example: '2021-05-13T09:30:41Z'
+        owner:
+          $ref: '#/components/schemas/UserSummary'
+        problem:
+          $ref: '#/components/schemas/ProblemSummary'
+        content:
+          type: string
+          description: '答案内容，保存代码'
+        language:
+          type: string
+          enum:
+          - c
+          - cpp
+          - java
+          - python
+          - javascript
+externalDocs:
+  url: https://github.com/scutcs3/codeview/wiki
+  description: Github Wiki
