@@ -4,7 +4,7 @@ import Index from './pages/Index.vue'
 import Login from './pages/Login.vue'
 import Viewee from './pages/Viewee.vue'
 import Viewer from './pages/Viewer.vue'
-
+import Register from './pages/Register.vue'
 
 
 let routes = [
@@ -28,6 +28,11 @@ let routes = [
         path: '/viewee',
         component: Viewee,
         name: 'viewee',
+    },
+    {
+        path: '/register',
+        component: Register,
+        name: 'register',
     }
 ]
 
