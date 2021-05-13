@@ -7,8 +7,12 @@ import {
   ElSelect,
   ElOption,
   ElButton,
+  ElForm,
+  ElInput,
+  ElLink,
+  ElFormItem
 } from 'element-plus'
-
+import 'element-plus/lib/theme-chalk/index.css'
 import lang from 'element-plus/lib/locale/lang/zh-cn'
 import locale from 'element-plus/lib/locale'
 
@@ -21,4 +25,8 @@ export default (app) => {
   app.use(ElSelect)
   app.use(ElOption)
   app.use(ElButton)
+  app.use(ElForm)
+  app.use(ElInput)
+  app.use(ElLink)
+  app.use(ElFormItem)
 }
