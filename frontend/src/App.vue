@@ -9,8 +9,8 @@
         <router-view />
     </div>
 </template>
-<style>
+<style scoped>
 .link {
-    margin: 10px
+    margin: 10px;
 }
 </style>
