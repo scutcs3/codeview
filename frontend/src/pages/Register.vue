@@ -5,7 +5,7 @@
         
         <el-header>登录</el-header>
 
-        <el-form :model="loginParam" ref="registerForm" :rules="rules" label-width="0px" class="ms-content">
+        <el-form :model="loginParam" ref="registerForm" :rules="rules" label-width="0px" class="content">
             <el-form-item prop="username">
                     <el-input v-model="registerParam.username" placeholder="用户名" prefix-icon="el-icon-user">
                     </el-input>
@@ -99,7 +99,7 @@ export default {
     background: rgba(255, 255, 255, 0.897);
     overflow: hidden;
 }
-.ms-content {
+.content {
     padding: 30px 30px;
 }
 .register-btn {
