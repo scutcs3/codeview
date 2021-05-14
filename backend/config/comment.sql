@@ -1,7 +1,7 @@
 create table if not EXISTS comment 
 (
     id int PRIMARY KEY AUTO_INCREMENT,
-    content text not null,
+    content text,
     interview_id int not null,
     user_id int not null,
     created_at datatime not null
