@@ -10,7 +10,7 @@ info:
     email: tootal@yeah.net
     name: tootal
   description: |-
-    在线编程笔试平台  
+    在线编程笔试平台 交互接口。
     [Github](https://github.com/scutcs3/codeview)  
     [Gitee](https://gitee.com/scutcs3/codeview)     
 tags:
@@ -25,59 +25,94 @@ tags:
 - name: 留言模块
   description: 面试过程中的留言
 paths:
+  /tokens:
+    post:
+      summary: 获取验证令牌
+      description: 用于用户登陆
+      tags:
+      - 用户模块
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/TokenResp'
+        '400':
+          description: 验证失败。
   /users:
     get:
-      summary: 获取用户列表
-      description: 传递分页参数获取所有用户
-      tags: 
+      summary: 获取用户信息
+      description: 通过ID/邮箱/名称搜索用户。
+      tags:
       - 用户模块
       parameters:
+      - in: query
+        name: id
+        description: 用户ID。
+        schema:
+          type: integer
+      - in: query
+        name: name
+        description: 用户名。
+        schema:
+          type: string
+      - in: query
+        name: email
+        description: 用户邮箱。
+        schema:
+          type: string
+          format: email
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
-        '200': 
-          description: 成功获取用户列表
+        '200':
+          description: 返回符合条件的用户列表。
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserSummary'
-        '400':
-          description: '参数错误'
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: 需要登陆。
     post:
       summary: 注册用户
       tags:
       - 用户模块
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserBody'
       responses:
         '201':
-          description: '注册成功'
+          $ref: '#/components/responses/TokenResp'
         '400':
           description: '参数错误'
         '409':
           description: '用户已存在'
-  /users/{uid}:
-    get:
-      summary: 获取指定id用户信息
-      tags:
-      - 用户模块
-      description: 传递用户id获取信息
-      parameters:
-      - $ref: '#/components/parameters/UidParam'
-      responses:
-        '200':
-          description: 成功获取用户数据
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserSummary'
-        '400':
-          description: 参数错误
   /problems:
     get:
-      summary: 获取题目列表
-      description: 传递分页参数获取所有题目
+      summary: 获取题目数据。
+      description: 通过ID/关键字搜索题目。
       parameters:
+      - in: query
+        name: iid
+        description: 面试ID。如果给出了面试ID，则返回面试题目列表。
+        schema:
+          type: integer
+      - in: query
+        name: pid
+        description: 题目ID。
+        schema:
+          type: integer
+      - in: query
+        name: word
+        description: 搜索关键字。返回标题/内容包含关键字到题目列表。
+        schema:
+          type: string
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
@@ -88,21 +123,31 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ProblemSummary'
+                  $ref: '#/components/schemas/Problem'
         '400':
           description: 参数错误
       tags:
       - 题目模块
     post:
       summary: 添加题目
-      description: 添加题目，包含标题和内容。
+      description: 添加题目，包含标题和内容。如果不给出面试ID，则仅添加到题库中。如果同时给出面试ID和题目ID，则将已有题目加入到面试中。
       tags:
       - 题目模块
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProblemBody'
+              allOf:
+              - $ref: '#/components/schemas/ProblemBody'
+              - properties:
+                  iid:
+                    type: integer
+                    format: int32
+                    description: 面试ID。
+                  pid:
+                    type: integer
+                    format: int32
+                    description: 题目ID。
       responses:
         '201':
           description: 添加题目成功。
@@ -110,48 +155,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        '403':
-          description: 创建题目失败，没有权限。
-  /problems/{pid}:
-    get:
-      summary: 获取指定id题目
-      tags:
-      - 题目模块
-      parameters:
-      - $ref: '#/components/parameters/PidParam'
-      responses:
-        '200':
-          description: 返回题目数据
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '400':
-          description: 参数错误
+        '401':
+          description: 需要登陆。
     delete:
-      summary: 删除指定id题目
+      summary: 删除题目。
+      description: 只能删除自己创建的题目。
       tags:
       - 题目模块
       parameters:
-      - $ref: '#/components/parameters/PidParam'
+      - in: query
+        name: pid
+        required: true
+        description: 题目ID。
+        schema:
+          type: integer
+      - in: query
+        name: iid
+        description: 面试ID。如果指定了面试ID，则仅从面试中删去该题，不影响题库中的题目。
+        schema:
+          type: integer
       responses:
         '204':
           description: 删除题目成功
+        '401':
+          description: 需要登陆。
         '403':
           description: 没有权限删除题目。
         '404':
           description: 找不到指定id的题目。
     patch:
-      summary: 修改指定id题目
+      summary: 修改题目。
       tags:
       - 题目模块
-      parameters:
-      - $ref: '#/components/parameters/PidParam'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProblemBody'
+              allOf:
+              - required:
+                - id
+              - properties:
+                  id:
+                    type: integer
+                    format: int32
+                    description: 题目ID。
+              - $ref: '#/components/schemas/ProblemBody'
       responses:
         '200':
           description: 修改题目成功。
@@ -159,162 +207,247 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problem'
+        '401':
+          description: 需要登陆。
+        '403':
+          description: 没有权限修改题目。
         '404':
           description: 找不到指定id的题目。
-        '422':
-          description: 没有权限修改题目。
   /answers:
     get:
-      summary: 获取答案列表
-      description: 即提交的代码
+      summary: 获取答案列表。
+      description: 获取在面试`iid`过程中针对题目`pid`提交的答案列表
       tags:
       - 答案模块
       parameters:
+      - in: query
+        name: iid
+        description: 面试ID。
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: pid
+        description: 题目ID。
+        required: true
+        schema:
+          type: integer
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
         '200':
           description: 获取答案列表成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Answer'
         '400':
           description: 参数错误
     post:
       summary: 提交答案
       tags:
       - 答案模块
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerBody'
       responses:
         '200':
-          description: '提交代码成功'
-  /answers/{aid}:
-    get:
-      summary: 获取指定id答案
-      tags:
-      - 答案模块
-      parameters:
-      - $ref: '#/components/parameters/AidParam'
-      responses:
-        '202':
-          description: '成功获取指定id答案'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Answer'
+          description: 提交代码成功。
         '400':
-          description: '参数错误'
+          description: 提交代码失败。
+        '401':
+          description: 需要登陆。
   /interviews:
     get:
-      summary: '获取面试列表'
+      summary: 获取面试列表。
+      description: 包括当前用户创建的和参与的面试列表。
       tags:
       - 面试模块
       parameters:
+      - in: query
+        name: id
+        description: 面试ID。
+        schema:
+          type: integer
+      - in: query
+        name: role
+        description: 面试角色，用于过滤面试列表。
+        schema:
+          type: string
+          enum: 
+          - viewee
+          - viewer
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
         '202':
-          description: '成功获取面试列表'
+          description: 成功获取面试列表。
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/InterviewSummary'
+                  $ref: '#/components/schemas/Interview'
+        '401':
+          description: 需要登陆。
+        '403':
+          description: 没有权限获取面试信息。
     post:
-      summary: '创建面试'
+      summary: 创建面试
       tags:
       - 面试模块
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterviewBody'
       responses:
         '202':
-          description: '创建面试成功'
-  /interviews/{iid}:
-    get:
-      summary: '获取指定id面试信息'
+          description: 创建面试成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interview'
+        '400':
+          description: 创建面试失败。
+        '401':
+          description: 需要登陆。
+    patch:
+      summary: 修改面试信息。
       tags:
       - 面试模块
-      parameters:
-      - $ref: '#/components/parameters/IidParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/InterviewBody'
+              - properties:
+                  iid:
+                    type: integer
+                    format: int32
+                    description: 面试ID。
+              - required:
+                - iid
       responses:
         '202':
-          description: '成功获取指定id面试信息'
-  /interviews/{iid}/comments:
+          description: 成功修改面试信息。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interview'
+        '401':
+          description: 需要登陆。
+        '403':
+          description: 参数错误。
+        '404':
+          description: 面试ID不存在。
+  /comments:
     get:
-      summary: '获取留言列表'
+      summary: 获取留言列表。
+      description: 获取面试`iid`过程中的留言列表。
       tags:
       - 留言模块
       parameters:
-      - $ref: '#/components/parameters/IidParam'
+      - in: query
+        name: iid
+        required: true
+        description: 面试ID。
+        schema:
+          type: integer
+      - in: query 
+        name: cid
+        description: 留言ID。
+        schema:
+          type: integer
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
         '202':
           description: '成功获取留言列表'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
     post:
       summary: '创建留言'
       tags:
       - 留言模块
-      parameters:
-      - $ref: '#/components/parameters/IidParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+              - $ref: '#/components/schemas/CommentBody'
+              - required:
+                - iid
+                - content
+              - properties:
+                  iid:
+                    type: integer
+                    description: 面试ID。
       responses:
         '202':
-          description: '成功创建留言'
-  /interviews/{iid}/comments/{cid}:
-    get:
-      summary: '获取指定id的留言'
-      tags:
-      - 留言模块
-      parameters:
-      - $ref: '#/components/parameters/IidParam'
-      - $ref: '#/components/parameters/CidParam'
-      responses:
-        '202':
-          description: '成功获取指定id的留言'
+          description: 留言成功。
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Comment'
+        '400':
+          description: 留言失败。
+        '401':
+          description: 需要登陆。
 components:
   schemas:
-    NumberId:
-      description: 数字ID，从1开始递增。
-      type: integer
-      format: int32
-      default: 1
-      minimum: 1
-    CreateTime:
-      description: 创建时间。
+    Token:
+      type: string
+      description: 验证令牌.
+      example: "16C7e42F292c6912E7710c838347Ae178B4a"
+    UserBody:
+      description: 用户关键数据（含密码），用于登陆、注册。
       type: object
       properties:
-          created_at:
-            type: string
-            format: date-time
-            example: '2021-05-13T09:30:41Z'
-    UpdateTime:
-      description: 更新时间。
-      type: object
-      properties:
-          updated_at:
-            type: string
-            format: date-time
-            example: '2021-05-13T09:31:07Z'
-    UserSummary:
-      description: 用户数据摘要。
+        email:
+          type: string
+          format: email
+          description: 用户邮箱。
+          example: example@mail.com
+        password:
+          type: string
+          format: password
+          description: 用户密码。
+          example: eX@mP1ePa$$w02d
+    User:
+      description: 用户数据。
       type: object 
       properties:
-        url:
+        name:
           type: string
-          format: url
-          example: 'https://api.example.com/users/alice'
+          description: 用户名。
+        email:
+          type: string
+          format: email
+          description: 用户邮箱。
+          example: example@mail.com
         id:
-          type: string
-          example: 'alice'
-    ProblemTitle:
-      type: object
+          type: integer
+          format: int32
+          description: 用户ID。
+          example: 5
+    ProblemBody:
+      description: 题目关键数据。
       properties:
         title:
           type: string
           description: 题目标题
           example: 统计单词个数
-    ProblemContent:
-      type: object
-      properties:
         content:
           type: string
           description: 题目内容，支持Markdown格式。
@@ -322,57 +455,76 @@ components:
             给出一个长度不超过200的由小写英文字母组成的字母串（约定：该字串以每行20个字母的方式输入，且保证每行一定为20个）。要求将此字母串分成k份（1<k<=40），且每份中包含的单词个数加起来总数最大（每份中包含的单词可以部分重叠。当选用一个单词之后，其第一个字母不能再用。例如字符串this中可包含this和is，选用this之后就不能包含th）。  
             单词在给出的一个不超过6个单词的字典中。  
             要求输出最大的个数。
-    ProblemBody:
-      description: 题目关键数据，用于创建题目。
-      allOf:
-      - $ref: '#/components/schemas/ProblemTitle'
-      - $ref: '#/components/schemas/ProblemContent'
-    ProblemSummary:
-      description: 题目数据摘要，用于显示题目列表。
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ProblemTitle'
-      - $ref: '#/components/schemas/CreateTime'
-      - $ref: '#/components/schemas/UpdateTime'
-      - properties:
-          url:
-            type: string
-            format: url
-            example: 'https://api.example.com/problems/1'
-          id:
-            type: number
-            example: 1
-          owner:
-            $ref: '#/components/schemas/UserSummary'
     Problem:
-      description: '题目数据'
-      allOf:
-      - $ref: '#/components/schemas/ProblemSummary'
-      - $ref: '#/components/schemas/ProblemContent'
-    Answer:
-      description: '面试过程中提交的代码'
+      description: 题目数据。
       type: object
+      allOf:
+      - $ref: '#/components/schemas/ProblemBody'
+      - properties:
+          id:
+            type: integer
+            format: int32
+            description: 题目ID。
+          owner_id:
+            type: integer
+            format: int32
+            description: 题目创建者ID。
+          created_time:
+            type: string
+            format: date-time
+            description: 题目创建时间。
+          updated_time:
+            type: string
+            format: date-time
+            description: 题目更新时间。
+    InterviewBody:
+      description: 面试关键数据，用于创建面试。
+      type: object
+      required:
+      - viewee_id
+      - start_time
+      - finish_time
       properties:
-        url:
-          type: string
-          format: url
-          description: '答案API网址'
-          example: 'https://api.example.com/answers/1'
-        id:
-          type: number
-          example: 1
-          description: '答案id'
-        created_at:
+        viewee_id:
+          type: integer
+          description: 面试者ID。
+        start_time:
           type: string
           format: date-time
-          example: '2021-05-13T09:30:41Z'
-        owner:
-          $ref: '#/components/schemas/UserSummary'
-        problem:
-          $ref: '#/components/schemas/ProblemSummary'
-        content:
+          description: 面试开始时间。
+        finish_time:
           type: string
-          description: 答案内容，目前用来保存代码。
+          format: date-time
+          description: 面试结束时间。
+    Interview:
+      description: 面试信息。
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/InterviewBody'
+      - properties:
+          viewer_id:
+            type: integer
+            description: 面试官ID。
+          created_time:
+            type: string
+            format: date-time
+            description: 面试创建时间。
+          updated_time:
+            type: string
+            format: date-time
+            description: 面试更新时间。
+          status:
+            description: 面试状态。面试创建完成（created），面试者同意面试（ready），面试者拒绝面试（rejected），面试官取消面试（cancelled）。
+            type: string
+            enum:
+            - created
+            - ready
+            - cancelled
+            - rejected
+    AnswerBody:
+      description: 答案关键数据。
+      type: object
+      properties:
         language:
           type: string
           description: 答案所用代码语言。
@@ -382,10 +534,60 @@ components:
           - java
           - python
           - javascript
-    InterviewSummary:
-      description: 面试数据摘要
+          example: c
+        content:
+          type: string
+          description: 答案内容，即提交的源代码。
+          example: |-
+            #include <stdio.h>
+            int main() {
+              printf("hello world!\n");
+              return 0;
+            }
+        owner_id:
+          type: integer
+          description: 创建用户ID。
+        problem_id:
+          type: integer
+          description: 所属题目ID。
+        interview_id:
+          type: integer
+          description: 所属面试ID。
+    Answer:
+      description: '面试过程中提交的代码'
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AnswerBody'
+      - properties:
+          id:
+            type: integer
+            description: 答案ID。
+          created_at:
+            type: string
+            format: date-time
+            description: 答案提交时间。
+    CommentBody:
+      description: 留言关键数据。
+      type: object
+      properties:
+        content:
+          type: string
+          description: 评论内容。
+          example: 题目太难了。。
     Comment:
       description: 留言数据
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/CommentBody'
+      - properties:
+          owner_id:
+            type: integer
+            format: int32
+            description: 留言用户ID。
+          created_time:
+            type: string
+            format: date-time
+            description: 留言时间。
   parameters:
     PageParam:
       name: page
@@ -406,41 +608,16 @@ components:
         format: int32
         minimum: 1
         maximum: 100
-    UidParam:
-      name: uid
-      in: path
-      description: 用户id。
-      required: true
-      schema:
-        $ref: '#/components/schemas/NumberId'
-    PidParam:
-      name: pid
-      in: path
-      description: 题目id。
-      required: true
-      schema:
-        $ref: '#/components/schemas/NumberId'
-    IidParam:
-      name: iid
-      in: path
-      description: 面试id。
-      required: true
-      schema:
-        $ref: '#/components/schemas/NumberId'
-    CidParam:
-      name: cid
-      in: path
-      description: 留言id。
-      required: true
-      schema:
-        $ref: '#/components/schemas/NumberId'
-    AidParam:
-      name: aid
-      in: path
-      description: 答案id。
-      required: true
-      schema:
-        $ref: '#/components/schemas/NumberId'
+  responses:
+    TokenResp:
+      description: 成功获取用户令牌。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token: 
+                $ref: '#/components/schemas/Token'
 externalDocs:
   url: https://github.com/scutcs3/codeview/wiki
   description: Github Wiki
