@@ -28,29 +28,15 @@ paths:
   /users:
     get:
       summary: 获取用户列表
+      description: 传递分页参数获取所有用户
       tags: 
       - 用户模块
-      description: 传递分页参数获取所有用户
       parameters:
-      - in: query
-        name: page
-        description: 页数，从1开始。
-        required: false
-        schema:
-          type: integer
-          format: int32
-          minimum: 1
-      - in: query
-        name: per_page
-        description: 每页数量，最大100，默认30。
-        schema:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 100
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
       responses:
         '200': 
-          description: '成功获取用户列表'
+          description: 成功获取用户列表
           content:
             application/json:
               schema:
@@ -70,23 +56,14 @@ paths:
           description: '参数错误'
         '409':
           description: '用户已存在'
-  /users/{id}:
+  /users/{uid}:
     get:
       summary: 获取指定id用户信息
       tags:
       - 用户模块
-      operationId: getUser
       description: 传递用户id获取信息
       parameters:
-      - in: path
-        name: id
-        description: 用户id
-        required: true
-        schema:
-          type: number
-          format: int32
-          minimum: 1
-          example: 10
+      - $ref: '#/components/parameters/UidParam'
       responses:
         '200':
           description: 成功获取用户数据
@@ -99,25 +76,10 @@ paths:
   /problems:
     get:
       summary: 获取题目列表
-      operationId: getProblems
       description: 传递分页参数获取所有题目
       parameters:
-      - in: query
-        name: page
-        description: 页数，从1开始。
-        required: false
-        schema:
-          type: integer
-          format: int32
-          minimum: 1
-      - in: query
-        name: per_page
-        description: 每页数量，最大100，默认30。
-        schema:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 100
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
       responses:
         '200':
           description: 返回题目列表
@@ -131,19 +93,32 @@ paths:
           description: 参数错误
       tags:
       - 题目模块
-  /problems/{id}:
+    post:
+      summary: 添加题目
+      description: 添加题目，包含标题和内容。
+      tags:
+      - 题目模块
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProblemBody'
+      responses:
+        '201':
+          description: 添加题目成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: 创建题目失败，没有权限。
+  /problems/{pid}:
     get:
-      summary: 获取题目列表
-      operationId: getProblem
-      description: 传递分页参数获取所有题目
+      summary: 获取指定id题目
+      tags:
+      - 题目模块
       parameters:
-      - in: path
-        name: id
-        description: 题目ID
-        required: true
-        schema:
-          type: number
-          example: 1
+      - $ref: '#/components/parameters/PidParam'
       responses:
         '200':
           description: 返回题目数据
@@ -153,19 +128,55 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '400':
           description: 参数错误
+    delete:
+      summary: 删除指定id题目
       tags:
       - 题目模块
+      parameters:
+      - $ref: '#/components/parameters/PidParam'
+      responses:
+        '204':
+          description: 删除题目成功
+        '403':
+          description: 没有权限删除题目。
+        '404':
+          description: 找不到指定id的题目。
+    patch:
+      summary: 修改指定id题目
+      tags:
+      - 题目模块
+      parameters:
+      - $ref: '#/components/parameters/PidParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProblemBody'
+      responses:
+        '200':
+          description: 修改题目成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: 找不到指定id的题目。
+        '422':
+          description: 没有权限修改题目。
   /answers:
     get:
       summary: 获取答案列表
       description: 即提交的代码
       tags:
       - 答案模块
+      parameters:
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
       responses:
         '200':
-          description: '获取答案列表成功'
+          description: 获取答案列表成功
         '400':
-          description: '参数错误'
+          description: 参数错误
     post:
       summary: 提交答案
       tags:
@@ -173,18 +184,13 @@ paths:
       responses:
         '200':
           description: '提交代码成功'
-  /answers/{id}:
+  /answers/{aid}:
     get:
       summary: 获取指定id答案
       tags:
       - 答案模块
       parameters:
-      - in: path
-        name: id
-        description: 答案id
-        required: true
-        schema:
-          type: number
+      - $ref: '#/components/parameters/AidParam'
       responses:
         '202':
           description: '成功获取指定id答案'
@@ -194,51 +200,155 @@ paths:
                 $ref: '#/components/schemas/Answer'
         '400':
           description: '参数错误'
+  /interviews:
+    get:
+      summary: '获取面试列表'
+      tags:
+      - 面试模块
+      parameters:
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '202':
+          description: '成功获取面试列表'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InterviewSummary'
+    post:
+      summary: '创建面试'
+      tags:
+      - 面试模块
+      responses:
+        '202':
+          description: '创建面试成功'
+  /interviews/{iid}:
+    get:
+      summary: '获取指定id面试信息'
+      tags:
+      - 面试模块
+      parameters:
+      - $ref: '#/components/parameters/IidParam'
+      responses:
+        '202':
+          description: '成功获取指定id面试信息'
+  /interviews/{iid}/comments:
+    get:
+      summary: '获取留言列表'
+      tags:
+      - 留言模块
+      parameters:
+      - $ref: '#/components/parameters/IidParam'
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '202':
+          description: '成功获取留言列表'
+    post:
+      summary: '创建留言'
+      tags:
+      - 留言模块
+      parameters:
+      - $ref: '#/components/parameters/IidParam'
+      responses:
+        '202':
+          description: '成功创建留言'
+  /interviews/{iid}/comments/{cid}:
+    get:
+      summary: '获取指定id的留言'
+      tags:
+      - 留言模块
+      parameters:
+      - $ref: '#/components/parameters/IidParam'
+      - $ref: '#/components/parameters/CidParam'
+      responses:
+        '202':
+          description: '成功获取指定id的留言'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
 components:
   schemas:
+    NumberId:
+      description: 数字ID，从1开始递增。
+      type: integer
+      format: int32
+      default: 1
+      minimum: 1
+    CreateTime:
+      description: 创建时间。
+      type: object
+      properties:
+          created_at:
+            type: string
+            format: date-time
+            example: '2021-05-13T09:30:41Z'
+    UpdateTime:
+      description: 更新时间。
+      type: object
+      properties:
+          updated_at:
+            type: string
+            format: date-time
+            example: '2021-05-13T09:31:07Z'
     UserSummary:
-      description: '用户数据摘要'
+      description: 用户数据摘要。
       type: object 
       properties:
         url:
           type: string
           format: url
-          example: 'https://api.example.com/users/tootal'
+          example: 'https://api.example.com/users/alice'
         id:
           type: string
-          example: 'tootal'
-    ProblemSummary:
-      description: '题目数据摘要'
+          example: 'alice'
+    ProblemTitle:
       type: object
       properties:
-        url:
-          type: string
-          format: url
-          example: 'https://api.example.com/problems/1'
-        id:
-          type: number
-          example: 1
-        created_at:
-          type: string
-          format: date-time
-          example: '2021-05-13T09:30:41Z'
-        updated_at:
-          type: string
-          format: date-time
-          example: '2021-05-13T09:31:07Z'
         title:
           type: string
-          example: '题目标题'
-        owner:
-          $ref: '#/components/schemas/UserSummary'
+          description: 题目标题
+          example: 统计单词个数
+    ProblemContent:
+      type: object
+      properties:
+        content:
+          type: string
+          description: 题目内容，支持Markdown格式。
+          example: |-
+            给出一个长度不超过200的由小写英文字母组成的字母串（约定：该字串以每行20个字母的方式输入，且保证每行一定为20个）。要求将此字母串分成k份（1<k<=40），且每份中包含的单词个数加起来总数最大（每份中包含的单词可以部分重叠。当选用一个单词之后，其第一个字母不能再用。例如字符串this中可包含this和is，选用this之后就不能包含th）。  
+            单词在给出的一个不超过6个单词的字典中。  
+            要求输出最大的个数。
+    ProblemBody:
+      description: 题目关键数据，用于创建题目。
+      allOf:
+      - $ref: '#/components/schemas/ProblemTitle'
+      - $ref: '#/components/schemas/ProblemContent'
+    ProblemSummary:
+      description: 题目数据摘要，用于显示题目列表。
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProblemTitle'
+      - $ref: '#/components/schemas/CreateTime'
+      - $ref: '#/components/schemas/UpdateTime'
+      - properties:
+          url:
+            type: string
+            format: url
+            example: 'https://api.example.com/problems/1'
+          id:
+            type: number
+            example: 1
+          owner:
+            $ref: '#/components/schemas/UserSummary'
     Problem:
       description: '题目数据'
       allOf:
       - $ref: '#/components/schemas/ProblemSummary'
-      - properties:
-          content:
-            type: string
-            example: '题目内容'
+      - $ref: '#/components/schemas/ProblemContent'
     Answer:
       description: '面试过程中提交的代码'
       type: object
@@ -262,15 +372,75 @@ components:
           $ref: '#/components/schemas/ProblemSummary'
         content:
           type: string
-          description: '答案内容，保存代码'
+          description: 答案内容，目前用来保存代码。
         language:
           type: string
+          description: 答案所用代码语言。
           enum:
           - c
           - cpp
           - java
           - python
           - javascript
+    InterviewSummary:
+      description: 面试数据摘要
+    Comment:
+      description: 留言数据
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: 页数，用于列表分页，从1开始。
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      description: 每页数量，最大100，默认30。
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+    UidParam:
+      name: uid
+      in: path
+      description: 用户id。
+      required: true
+      schema:
+        $ref: '#/components/schemas/NumberId'
+    PidParam:
+      name: pid
+      in: path
+      description: 题目id。
+      required: true
+      schema:
+        $ref: '#/components/schemas/NumberId'
+    IidParam:
+      name: iid
+      in: path
+      description: 面试id。
+      required: true
+      schema:
+        $ref: '#/components/schemas/NumberId'
+    CidParam:
+      name: cid
+      in: path
+      description: 留言id。
+      required: true
+      schema:
+        $ref: '#/components/schemas/NumberId'
+    AidParam:
+      name: aid
+      in: path
+      description: 答案id。
+      required: true
+      schema:
+        $ref: '#/components/schemas/NumberId'
 externalDocs:
   url: https://github.com/scutcs3/codeview/wiki
   description: Github Wiki
