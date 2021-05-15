@@ -107,6 +107,7 @@ export default {
     height: 100%;
     border: 1px solid rgb(91, 93, 93);
     text-align: left;
+    
 }
 .submit-button {
     position: relative;

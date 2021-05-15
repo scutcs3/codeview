@@ -1,3 +1,49 @@
 <template>
-    <h1>面试官界面</h1>
+  <el-container>
+    <el-header>在线编程笔试平台</el-header>
+    <el-container>
+      <el-aside width="300px">
+        <add></add>
+      </el-aside>
+      <el-main>
+        <Editor msg="编程部分"></Editor>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
+<script>
+import Editor from '../components/Editor.vue'
+import add from '../components/add.vue'
+export default {
+  name: 'App',
+  components: {
+    add,
+    Editor
+  }
+}
+</script>
+<style>
+body {
+  margin: 0
+}
+.el-header, .el-footer {
+  background-color: #B3C0D1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
+
+.el-aside {
+  background-color: #D3DCE6;
+  color: #333;
+  text-align: center;
+}
+
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  text-align: center;
+  margin-right: 20%;
+}
+
+</style>
