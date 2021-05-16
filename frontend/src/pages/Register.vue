@@ -72,7 +72,7 @@ export default {
 
 </script>
 <style scoped>
-.el-container{
+el-container{
     position: relative;
     width: 100%;
     height: 100%;
@@ -84,7 +84,7 @@ export default {
     background-color: #080606;
 }
 
-.el-header{
+el-header{
     font-weight: bold;
     background:#E9EEF3;
 }
