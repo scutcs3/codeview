@@ -3,7 +3,7 @@
     <el-header>在线编程笔试平台</el-header>
     <div class="registerdoor">
         
-        <el-header>登录</el-header>
+        <el-header>注册</el-header>
 
         <el-form :model="loginParam" ref="registerForm" :rules="rules" label-width="0px" class="content">
             <el-form-item prop="username">

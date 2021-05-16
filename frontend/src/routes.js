@@ -32,7 +32,8 @@ let routes = [
         path: '/register',
         component: Register,
         name: 'register',
-    }
+    },
+ 
 ]
 
 const router = createRouter({
