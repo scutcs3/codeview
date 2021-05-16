@@ -16,7 +16,6 @@
                     <el-button type="primary" style="background: rgb(31, 128, 173);">登录</el-button>
                 </div>
                 <el-link type="primary" style="float: left">注册 ></el-link>
-                <el-link type="primary" style="float: right">找回密码</el-link>
             </el-form>
         </div>
     </el-container>
