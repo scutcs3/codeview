@@ -6,7 +6,6 @@ import Viewee from './pages/Viewee.vue'
 import Viewer from './pages/Viewer.vue'
 import Register from './pages/Register.vue'
 
-
 let routes = [
     {
         path: '/index',
