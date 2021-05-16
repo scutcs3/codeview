@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - feature/static-page
+      - develop
   pull_request:
     branches:
       - develop
@@ -33,13 +34,10 @@ jobs:
           cd frontend
           npm run build
       - name: GitHub Pages
-        if: success()
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
         uses: crazy-max/ghaction-github-pages@v2.3.0
         with:
           target_branch: gh-pages
           build_dir: frontend/dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-          
