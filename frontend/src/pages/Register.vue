@@ -1,11 +1,11 @@
 <template>
-<div class="register-wrap">
+<el-container>
     <el-header>在线编程笔试平台</el-header>
     <div class="registerdoor">
         
-        <el-header>登录</el-header>
+            <el-header>注册</el-header>
 
-        <el-form :model="loginParam" ref="registerForm" :rules="rules" label-width="0px" class="content">
+            <el-form :model="loginParam" ref="registerForm" :rules="rules" label-width="0px" class="content">
             <el-form-item prop="username">
                     <el-input v-model="registerParam.username" placeholder="用户名" prefix-icon="el-icon-user">
                     </el-input>
@@ -34,12 +34,8 @@
         </el-form>
     
     </div>
-    
 
-
-
-
-</div>
+</el-container>
 </template>
 <script>
 export default {
@@ -76,15 +72,19 @@ export default {
 
 </script>
 <style scoped>
-.register-wrap {
+el-container{
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: aquamarine;
     background-size: 100%;
+    text-align: center;
+    color: #221014;
+    line-height: 50px;
+    font-size: 20px;
+    background-color: #080606;
 }
 
-.el-header{
+el-header{
     font-weight: bold;
     background:#E9EEF3;
 }
