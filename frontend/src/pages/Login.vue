@@ -3,26 +3,44 @@
         <el-header>在线编程笔试平台</el-header>
         <div class="loginDoor">
             <el-header>登录</el-header>
-            <el-form :model="loginParam" :rules="rules" ref="loginForm" label-width="0px" class="ms-content">
+            <el-form
+                :model="loginParam"
+                :rules="rules"
+                ref="loginForm"
+                label-width="0px"
+                class="ms-content"
+            >
                 <el-form-item prop="username">
-                    <el-input v-model="loginParam.username" placeholder="邮箱 如123456@qq.com" prefix-icon="el-icon-user">
-                    </el-input>
+                    <el-input
+                        v-model="loginParam.username"
+                        placeholder="邮箱 如123456@qq.com"
+                        prefix-icon="el-icon-user"
+                    ></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" placeholder="密码" v-model="loginParam.password" prefix-icon="el-icon-lock">
-                    </el-input>
+                    <el-input
+                        type="password"
+                        placeholder="密码"
+                        v-model="loginParam.password"
+                        prefix-icon="el-icon-lock"
+                    ></el-input>
                 </el-form-item>
                 <div class="login-button">
                     <el-button type="primary" style="background: rgb(31, 128, 173);">登录</el-button>
                 </div>
-                <el-link type="primary" style="float: left">注册 ></el-link>
-                <el-link type="primary" style="float: right">找回密码</el-link>
+                <el-link
+                    type="primary"
+                    style="float: left"
+                    href="javascript:void(0);"
+                    @click="toRegister()"
+                >注册 ></el-link>
             </el-form>
         </div>
     </el-container>
 </template>
 
 <script>
+import router from '../routes.js'
 export default {
     name: "Login",
     data: function() {
@@ -30,21 +48,23 @@ export default {
             loginParam: {},
             rules: {
                 username: [{ required: true, message: '请输入邮箱', trigger: 'blur' },
-                           { type: "email", message: '请输入正确电子邮件地址', trigger: 'blur' }],
+                { type: "email", message: '请输入正确电子邮件地址', trigger: 'blur' }],
                 password: [{ required: true, message: '请输入密码', trigger: 'blur' },
-                            { min: 6, max: 20, message: '请输入6-20位字符', trigger: 'blur'}],
+                { min: 6, max: 20, message: '请输入6-20位字符', trigger: 'blur' }],
 
             },
         };
     },
-
+    methods: {
+        toRegister() {
+            router.push('/register');
+        }
+    }
 };
 </script>
 
 <style scoped>
-
-
-.el-container{
+.el-container {
     position: relative;
     width: 100%;
     height: 100%;
@@ -56,9 +76,9 @@ export default {
     background-color: #080606;
 }
 
-.el-header{
+.el-header {
     font-weight: bold;
-    background:#E9EEF3;
+    background: #e9eef3;
 }
 
 .loginDoor {
