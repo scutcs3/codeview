@@ -48,12 +48,13 @@
                 <div class="register-btn">
                     <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
                 </div>
-                <el-link type="primary" @click="two = true" style="text-align: center;">去登陆 ></el-link>
+                <el-link href="javascript:void(0)" type="primary" @click="toLogin()" style="text-align: center;">去登陆 ></el-link>
             </el-form>
         </div>
     </el-container>
 </template>
 <script>
+import router from '../routes.js'
 export default {
     name: "Register",
     data: function() {
@@ -82,7 +83,11 @@ export default {
             },
         };
     },
-
+    methods: {
+        toLogin() {
+            router.push('/login');
+        }
+    },
     mounted() {
         console.log('Register mounted!');
     }
