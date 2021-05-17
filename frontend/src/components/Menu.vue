@@ -17,7 +17,7 @@ export default {
 </script>
 <style scoped>
 .menu {
-    float: right;
+    margin-left: auto;
 }
 el-menu-item {
     margin: 0px 20px;
