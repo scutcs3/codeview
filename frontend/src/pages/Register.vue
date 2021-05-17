@@ -1,136 +1,130 @@
 <template>
-    <el-container>
-        <el-header>在线编程笔试平台</el-header>
-        <div class="registerdoor">
-            <el-header>注册</el-header>
+  <div class="d-flex justify-content-center">
+    <div class="registerdoor">
+        <h2 class="text-center">注册</h2>
+      <el-form
+        :model="loginParam"
+        ref="registerForm"
+        :rules="rules"
+        label-width="0px"
+        class="content"
+      >
+        <el-form-item prop="username">
+          <el-input
+            v-model="registerParam.username"
+            placeholder="用户名"
+            prefix-icon="el-icon-user"
+          ></el-input>
+        </el-form-item>
 
-            <el-form
-                :model="loginParam"
-                ref="registerForm"
-                :rules="rules"
-                label-width="0px"
-                class="content"
-            >
-                <el-form-item prop="username">
-                    <el-input
-                        v-model="registerParam.username"
-                        placeholder="用户名"
-                        prefix-icon="el-icon-user"
-                    ></el-input>
-                </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            type="password"
+            placeholder="密码"
+            v-model="registerParam.password"
+            prefix-icon="el-icon-lock"
+          ></el-input>
+        </el-form-item>
 
-                <el-form-item prop="password">
-                    <el-input
-                        type="password"
-                        placeholder="密码"
-                        v-model="registerParam.password"
-                        prefix-icon="el-icon-lock"
-                    ></el-input>
-                </el-form-item>
+        <el-form-item prop="r_password">
+          <el-input
+            type="password"
+            placeholder="确认密码"
+            v-model="registerParam.r_password"
+            prefix-icon="el-icon-lock"
+          ></el-input>
+        </el-form-item>
 
-                <el-form-item prop="r_password">
-                    <el-input
-                        type="password"
-                        placeholder="确认密码"
-                        v-model="registerParam.r_password"
-                        prefix-icon="el-icon-lock"
-                    ></el-input>
-                </el-form-item>
+        <el-form-item prop="email">
+          <el-input
+            v-model="registerParam.email"
+            placeholder="邮箱"
+            prefix-icon="el-icon-message"
+          ></el-input>
+        </el-form-item>
 
-                <el-form-item prop="email">
-                    <el-input
-                        v-model="registerParam.email"
-                        placeholder="邮箱"
-                        prefix-icon="el-icon-message"
-                    ></el-input>
-                </el-form-item>
-
-                <div class="register-btn">
-                    <el-button type="primary" @click="submitRegisterForm('registerForm')">注册</el-button>
-                </div>
-                <el-link href="javascript:void(0)" type="primary" @click="toLogin()" style="text-align: center;">去登陆 ></el-link>
-            </el-form>
+        <div class="register-btn">
+          <el-button type="primary" @click="submitRegisterForm('registerForm')"
+            >注册</el-button
+          >
         </div>
-    </el-container>
+        <el-link
+          href="javascript:void(0)"
+          type="primary"
+          @click="toLogin()"
+          style="text-align: center"
+          >去登陆 ></el-link
+        >
+      </el-form>
+    </div>
+  </div>
 </template>
 <script>
-import router from '../routes.js'
+import router from "../routes.js";
 export default {
-    name: "Register",
-    data: function() {
-        var validatePass = (rule, value, callback) => {
-            if (value === '') {
-                callback(new Error('请再次输入密码'));
-            } else if (value !== this.registerParam.password) {
-                callback(new Error('两次输入密码不一致!'));
-            } else {
-                callback();
-            }
-        };
-        return {
-            two: true,
-            loginParam: {},
-            registerParam: {},
-            rules: {
-                username: [{ required: true, message: '请输入用户名', trigger: 'blur' },
-                { min: 2, max: 32, message: '请输入2-20位字符', trigger: 'blur' }],
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' },
-                { min: 6, max: 32, message: '请输入6-32位字符', trigger: 'blur' }],
-                r_password: [{ required: true, message: '请输入确认密码', trigger: 'blur' },
-                { validator: validatePass, trigger: 'blur' }],
-                email: [{ required: true, message: '请输入邮箱', trigger: 'blur' },
-                { type: "email", message: '请输入正确电子邮件地址', trigger: 'blur' }]
-            },
-        };
+  name: "Register",
+  data: function () {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.registerParam.password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      two: true,
+      loginParam: {},
+      registerParam: {},
+      rules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 2, max: 32, message: "请输入2-20位字符", trigger: "blur" },
+        ],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 32, message: "请输入6-32位字符", trigger: "blur" },
+        ],
+        r_password: [
+          { required: true, message: "请输入确认密码", trigger: "blur" },
+          { validator: validatePass, trigger: "blur" },
+        ],
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          { type: "email", message: "请输入正确电子邮件地址", trigger: "blur" },
+        ],
+      },
+    };
+  },
+  methods: {
+    toLogin() {
+      router.push("/login");
     },
-    methods: {
-        toLogin() {
-            router.push('/login');
-        }
-    },
-    mounted() {
-        console.log('Register mounted!');
-    }
-}
-
+  },
+  mounted() {
+    console.log("Register mounted!");
+  },
+};
 </script>
 <style scoped>
-el-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-size: 100%;
-    text-align: center;
-    color: #221014;
-    line-height: 50px;
-    font-size: 20px;
-    background-color: #080606;
-}
-
-el-header {
-    font-weight: bold;
-    background: #e9eef3;
-}
-
 .registerdoor {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 350px;
-    margin: 100px 500px 150px -175px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.897);
-    overflow: hidden;
+  width: 350px;
+  margin-top: 60px;
+  margin-bottom: 80px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.897);
+  overflow: hidden;
 }
 .content {
-    padding: 30px 30px;
+  padding: 30px 30px;
 }
 .register-btn {
-    text-align: center;
+  text-align: center;
 }
 .register-btn button {
-    width: 100%;
-    height: 36px;
-    margin-bottom: 10px;
+  width: 100%;
+  height: 36px;
+  margin-bottom: 10px;
 }
 </style>

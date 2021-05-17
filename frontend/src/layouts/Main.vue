@@ -9,7 +9,4 @@ export default {
 }
 </script>
 <style scoped>
-.main {
-    margin-top: 50px;
-}
 </style>
