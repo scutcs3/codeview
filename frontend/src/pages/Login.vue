@@ -26,7 +26,7 @@
                     ></el-input>
                 </el-form-item>
                 <div class="login-button">
-                    <el-button type="primary" style="background: rgb(31, 128, 173);">登录</el-button>
+                    <el-button type="primary" style="background: rgb(31, 128, 173);" @click="onSubmit()">登录</el-button>
                 </div>
                 <el-link
                     type="primary"
@@ -41,6 +41,8 @@
 
 <script>
 import router from '../routes.js'
+import { ElMessage } from 'element-plus'
+
 export default {
     name: "Login",
     data: function() {
@@ -58,6 +60,32 @@ export default {
     methods: {
         toRegister() {
             router.push('/register');
+        },
+        onSubmit() {
+            var url = 'https://virtserver.swaggerhub.com/tootal/codeview/1.0.0/tokens';
+            var data = {
+                username: this.loginParam.username, 
+                password: this.loginParam.password
+            };
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                })
+            }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+                console.log('Success:', response);
+                localStorage.setItem('token', response['token']);
+                ElMessage.success({
+                    message: '登陆成功',
+                    type: 'success'
+                });
+                router.push({
+                    name: 'viewee',
+                });
+            });
         }
     }
 };
