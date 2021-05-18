@@ -1,19 +1,8 @@
 <template>
   <div class="menu">
-    <el-menu mode="horizontal">
-      <el-menu-item v-if="!isLogin">
-        <router-link to="/login" class="link">登录</router-link>
-      </el-menu-item>
-      <el-menu-item v-if="!isLogin">
-        <router-link to="/register" class="link">注册</router-link>
-      </el-menu-item>
-      <el-menu-item v-if="isLogin">
-        <router-link to="/console" class="link">控制台</router-link>
-      </el-menu-item>
-      <el-menu-item v-if="isLogin">
-        <el-link href="javascript:void(0)" @click="handleLogout()"
-          >退出登录</el-link
-        >
+    <el-menu mode="horizontal" @select="handleSelect">
+      <el-menu-item v-for="menu in menus" :key="menu.index" :index="menu.index">
+        {{ menu.title }}
       </el-menu-item>
     </el-menu>
   </div>
@@ -21,15 +10,43 @@
 <script>
 export default {
   name: "Menu",
+  data() {
+    return {
+      all_menus: [{
+        index: 'login',
+        title: '登录',
+        login: false,
+      },{
+        index: 'register',
+        title: '注册',
+        login: false,
+      },{
+        index: 'console',
+        title: '控制台',
+        login: true,
+      },{
+        index: 'logout',
+        title: '退出登录',
+        login: true,
+      }]
+    }
+  },
   computed: {
     isLogin() {
       return this.$store.state.isLogin;
+    },
+    menus() {
+      return this.all_menus.filter(menu => menu.login == this.isLogin);
     }
   },
   methods: {
+    handleSelect(index) {
+      if (index === "logout") return this.handleLogout();
+      this.$router.push('/' + index);
+    },
     handleLogout() {
-      this.$store.commit('logout');
-      this.$router.push('/');
+      this.$store.commit("logout");
+      this.$router.push("/");
     },
   },
 };
