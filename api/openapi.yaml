@@ -563,14 +563,6 @@ components:
           viewer_id:
             type: integer
             description: 面试官ID。
-          created_at:
-            type: string
-            format: date-time
-            description: 面试创建时间。
-          updated_at:
-            type: string
-            format: date-time
-            description: 面试更新时间。
           status:
             description: 面试状态。面试创建完成（created），面试者同意面试（ready），面试者拒绝面试（rejected），面试官取消面试（cancelled）。
             type: string
