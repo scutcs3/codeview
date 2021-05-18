@@ -94,9 +94,7 @@ export default {
             message: "登陆成功",
             type: "success",
           });
-          router.push({
-            name: "console",
-          });
+          router.push('/console');
         });
     },
   },
