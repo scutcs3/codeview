@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import router from "../routes.js";
+import router from "../router.js";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -88,11 +88,13 @@ export default {
         .then((res) => res.json())
         .catch((error) => console.error("Error:", error))
         .then((response) => {
-          console.log("Success:", response);
-          localStorage.setItem("token", response["token"]);
           ElMessage.success({
             message: "登陆成功",
             type: "success",
+          });
+          this.$store.commit({
+            type: 'login',
+            token: response.token
           });
           if (this.$route.query && this.$route.query.redirect) {
               router.push(this.$route.query.redirect);
