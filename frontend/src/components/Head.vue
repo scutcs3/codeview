@@ -17,9 +17,7 @@ export default {
   },
   methods: {
     goIndex() {
-      router.push({
-        name: 'index'
-      })
+      router.push('/')
     }
   }
 };

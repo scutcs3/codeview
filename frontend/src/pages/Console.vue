@@ -3,7 +3,7 @@
     <h2>控制台</h2>
     <el-row>
       <el-col :span="6">
-        <el-menu default-active="overview" @select="handleSelect" >
+        <el-menu :default-active="$route.name" @select="handleSelect" >
           <el-menu-item
             v-for="menu in menus"
             :key="menu.name"
@@ -58,7 +58,7 @@ export default {
               name: key
           })
       }
-  }
+  },
 };
 </script>
 <style scoped>
