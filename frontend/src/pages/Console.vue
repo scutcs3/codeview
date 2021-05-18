@@ -3,7 +3,7 @@
     <h2>控制台</h2>
     <el-row>
       <el-col :span="6">
-        <el-menu :default-active="$route.name" @select="handleSelect" >
+        <el-menu :default-active="defaultActive" @select="handleSelect" >
           <el-menu-item
             v-for="menu in menus"
             :key="menu.name"
@@ -51,6 +51,18 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    defaultActive() {
+      let name = '';
+      for (let menu of this.menus) {
+        if (this.$route.path.includes(menu.name)) {
+          name = menu.name;
+          break;
+        }
+      }
+      return name;
+    }
   },
   methods: {
       handleSelect(key) {
