@@ -23,12 +23,7 @@
         </el-menu>
       </el-col>
       <el-col :span="18">
-        <router-link to="/viewer"> 前往面试官页面 </router-link>
-
-        <router-link to="/viewee"> 前往面试者页面 </router-link>
-        <p class="console-view text-center" v-for="i in 10" :key="i">
-          第{{ i }}场面试情况。
-        </p>
+        <router-view></router-view>
       </el-col>
     </el-row>
   </div>

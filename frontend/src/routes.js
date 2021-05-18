@@ -6,6 +6,10 @@ import Viewee from './pages/Viewee.vue'
 import Viewer from './pages/Viewer.vue'
 import Register from './pages/Register.vue'
 import Console from './pages/Console.vue'
+import Overview from './pages/Overview.vue'
+import Problems from './pages/Problems.vue'
+import Settings from './pages/Settings.vue'
+import Profile from './pages/Profile.vue'
 
 let routes = [{
         path: '/index',
@@ -36,7 +40,29 @@ let routes = [{
     {
         path: '/console',
         component: Console,
-        name: 'console'
+        name: 'console',
+        children: [{
+                path: 'overview',
+                component: Overview,
+                name: 'overview',
+                alias: ''
+            },
+            {
+                path: 'problems',
+                component: Problems,
+                name: 'problems'
+            },
+            {
+                path: 'settings',
+                component: Settings,
+                name: 'settings'
+            },
+            {
+                path: 'profile',
+                component: Profile,
+                name: 'profile'
+            }
+        ]
     }
 ]
 
