@@ -94,9 +94,11 @@ export default {
             message: "登陆成功",
             type: "success",
           });
-          router.push({
-            name: "viewee",
-          });
+          if (this.$route.query && this.$route.query.redirect) {
+              router.push(this.$route.query.redirect);
+          } else {
+              router.push('/console');
+          }
         });
     },
   },
@@ -105,8 +107,8 @@ export default {
 
 <style scoped>
 .login-body {
-    margin-top: 60px;
-    margin-bottom: 120px;
+  margin-top: 60px;
+  margin-bottom: 120px;
 }
 .loginDoor {
   width: 350px;

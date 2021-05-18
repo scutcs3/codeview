@@ -1,28 +1,68 @@
 <template>
-    <el-container>
-        <el-header>在线编程笔试平台</el-header>
-        <el-container>
-            <el-aside width="300px">
-                <Problem></Problem>
-            </el-aside>
-            <el-main>
-                <Editor msg="编程部分"></Editor>
-            </el-main>
-        </el-container>
-    </el-container>
+  <div class="console">
+    <h2>控制台</h2>
+    <el-row>
+      <el-col :span="6">
+        <el-menu :default-active="$route.name" @select="handleSelect" >
+          <el-menu-item
+            v-for="menu in menus"
+            :key="menu.name"
+            :index="menu.name"
+          >
+            <i :class="'el-icon-' + menu.icon"></i>
+            <template #title>{{ menu.title }}</template>
+          </el-menu-item>
+        </el-menu>
+      </el-col>
+      <el-col :span="18">
+        <router-view></router-view>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
-import Editor from "../components/Editor.vue";
-import Problem from "../components/Problem.vue";
+import router from '../routes.js'
+
 export default {
-    name: "App",
-    components: {
-        Editor,
-        Problem,
-    },
+  name: "Console",
+  data() {
+    return {
+      menus: [
+        {
+          name: "overview",
+          icon: "view",
+          title: "总览",
+        },
+        {
+          name: "problems",
+          icon: "document",
+          title: "题库",
+        },
+        {
+          name: "settings",
+          icon: "setting",
+          title: "设置",
+        },
+        {
+          name: "profile",
+          icon: "user",
+          title: "个人中心",
+        },
+      ],
+    };
+  },
+  methods: {
+      handleSelect(key) {
+          router.push({
+              name: key
+          })
+      }
+  },
 };
 </script>
 <style scoped>
-
+.console-view {
+  margin-bottom: 100px;
+}
 </style>
