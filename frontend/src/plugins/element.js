@@ -15,7 +15,9 @@ import {
     ElRow,
     ElCol,
     ElMenu,
-    ElMenuItem
+    ElMenuItem,
+    ElTable,
+    ElTableColumn
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 import lang from 'element-plus/lib/locale/lang/zh-cn'
@@ -39,4 +41,6 @@ export default (app) => {
     app.use(ElCol)
     app.use(ElMenu)
     app.use(ElMenuItem)
+    app.use(ElTable)
+    app.use(ElTableColumn)
 }
