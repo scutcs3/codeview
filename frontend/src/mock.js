@@ -3,8 +3,13 @@ const Random = Mock.Random;
 
 const baseUrl = 'https://virtserver.swaggerhub.com/tootal/codeview/1.0.0';
 
-Mock.mock(baseUrl + '/problems', (req) => {
-    console.log('mock enabled!');
+var originMock = Mock.mock;
+
+Mock.mock = function(url, callback) {
+    return originMock(baseUrl + url, callback);
+}
+
+Mock.mock('/problems', (req) => {
     let list = [];
     console.log(req);
     for (let i = 0; i < 30; i++) {
@@ -13,8 +18,9 @@ Mock.mock(baseUrl + '/problems', (req) => {
             content: Random.cparagraph(),
             id: i + 1,
             owner_id: 0,
-            created_at: Random.datetime('yyyy-MM-dd HH:mm:ss')
+            created_at: Random.datetime('yyyy-MM-dd HH:mm:ss'),
+            updated_at: Random.datetime('yyyy-MM-dd HH:mm:ss'),
         })
     }
-    return list;
-})
+    return JSON.stringify(list);
+});
