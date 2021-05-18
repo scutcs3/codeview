@@ -29,7 +29,7 @@ export default {
   methods: {
     handleLogout() {
       this.$store.commit('logout');
-      location.reload();
+      this.$router.push('/');
     },
   },
 };
