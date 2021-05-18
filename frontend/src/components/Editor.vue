@@ -17,7 +17,7 @@
                 >
                 </el-option>
             </el-select>
-            <!-- 样式风格：
+            样式风格：
             <el-select
                 v-model="opts.theme"
                 clearable
@@ -32,7 +32,7 @@
                     :value="item"
                 >
                 </el-option>
-            </el-select> -->
+            </el-select>
         </div>
         <!--调用子组件-->
         <div class="monaco-editor">

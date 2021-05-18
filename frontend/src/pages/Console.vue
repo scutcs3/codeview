@@ -3,22 +3,14 @@
     <h2>控制台</h2>
     <el-row>
       <el-col :span="6">
-        <el-menu default-active="1" class="el-menu-vertical-demo">
-          <el-menu-item index="overview">
-            <i class="el-icon-view"></i>
-            <template #title>总览</template>
-          </el-menu-item>
-          <el-menu-item index="problems">
-            <i class="el-icon-document"></i>
-            <template #title>题库</template>
-          </el-menu-item>
-          <el-menu-item index="setting">
-            <i class="el-icon-setting"></i>
-            <template #title>设置</template>
-          </el-menu-item>
-          <el-menu-item index="user">
-            <i class="el-icon-user"></i>
-            <template #title>个人中心</template>
+        <el-menu default-active="overview" @select="handleSelect" >
+          <el-menu-item
+            v-for="menu in menus"
+            :key="menu.name"
+            :index="menu.name"
+          >
+            <i :class="'el-icon-' + menu.icon"></i>
+            <template #title>{{ menu.title }}</template>
           </el-menu-item>
         </el-menu>
       </el-col>
@@ -30,8 +22,43 @@
 </template>
 
 <script>
+import router from '../routes.js'
+
 export default {
   name: "Console",
+  data() {
+    return {
+      menus: [
+        {
+          name: "overview",
+          icon: "view",
+          title: "总览",
+        },
+        {
+          name: "problems",
+          icon: "document",
+          title: "题库",
+        },
+        {
+          name: "settings",
+          icon: "setting",
+          title: "设置",
+        },
+        {
+          name: "profile",
+          icon: "user",
+          title: "个人中心",
+        },
+      ],
+    };
+  },
+  methods: {
+      handleSelect(key) {
+          router.push({
+              name: key
+          })
+      }
+  }
 };
 </script>
 <style scoped>
