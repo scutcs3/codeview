@@ -321,7 +321,7 @@ paths:
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
-        '202':
+        '200':
           description: 成功获取面试列表。
           content:
             application/json:
@@ -333,6 +333,8 @@ paths:
           description: 需要登陆。
         '403':
           description: 没有权限获取面试信息。
+        '404':
+          description: 面试ID不存在。
     post:
       summary: 创建面试
       tags:
@@ -343,7 +345,7 @@ paths:
             schema:
               $ref: '#/components/schemas/InterviewBody'
       responses:
-        '202':
+        '200':
           description: 创建面试成功。
           content:
             application/json:
@@ -371,7 +373,7 @@ paths:
               - required:
                 - iid
       responses:
-        '202':
+        '200':
           description: 成功修改面试信息。
           content:
             application/json:
@@ -415,7 +417,7 @@ paths:
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
-        '202':
+        '200':
           description: '成功获取留言列表'
           content:
             application/json:
@@ -443,7 +445,7 @@ paths:
                     example: 5
                     description: 面试ID。
       responses:
-        '202':
+        '200':
           description: 留言成功。
           content:
             application/json:
