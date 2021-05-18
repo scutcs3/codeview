@@ -1,49 +1,47 @@
 <template>
-    <el-container>
-        <el-header>在线编程笔试平台</el-header>
-        <el-container>
-            <el-aside width="300px">
-                <Problem></Problem>
-            </el-aside>
-            <el-main>
-                <Editor msg="编程部分"></Editor>
-            </el-main>
-        </el-container>
-    </el-container>
+  <el-row>
+    <el-col :span="6">
+      <Problem></Problem>
+    </el-col>
+    <el-col :span="12">
+      <Editor msg="编程部分"></Editor>
+    </el-col>
+    <el-col :span="6"> <p>留言部分</p> </el-col>
+  </el-row>
 </template>
 
 <script>
 import Editor from "../components/Editor.vue";
 import Problem from "../components/Problem.vue";
 export default {
-    name: "App",
-    components: {
-        Editor,
-        Problem,
-    },
+  name: "App",
+  components: {
+    Editor,
+    Problem,
+  },
 };
 </script>
 <style scoped>
 body {
-    margin: 0;
+  margin: 0;
 }
 .el-header,
 .el-footer {
-    background-color: #b3c0d1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
+  background-color: #b3c0d1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
 }
 
 .el-aside {
-    background-color: #d3dce6;
-    color: #333;
-    text-align: center;
+  background-color: #d3dce6;
+  color: #333;
+  text-align: center;
 }
 
 .el-main {
-    background-color: #e9eef3;
-    color: #333;
-    text-align: center;
+  background-color: #e9eef3;
+  color: #333;
+  text-align: center;
 }
 </style>
