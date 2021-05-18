@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import { getProblems } from "../api/problem.js";
 
 export default {
   name: "Problems",
@@ -25,8 +25,7 @@ export default {
   },
   mounted() {
     const self = this;
-    axios
-      .get("https://virtserver.swaggerhub.com/tootal/codeview/1.0.0/problems")
+    getProblems()
       .then(function (response) {
         return JSON.parse(response.data);
       })

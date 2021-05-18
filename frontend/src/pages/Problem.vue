@@ -1,30 +1,28 @@
 <template>
-<h3>{{ title }}</h3>
-<p>{{ content }}</p>
+  <div class="problem">
+    <h3>{{ title }}</h3>
+    <p>{{ content }}</p>
+  </div>
 </template>
 <script>
+import { getProblem } from "../api/problem.js";
+
 export default {
   name: "Problem",
   data() {
     return {
-      title: '',
-      content: '',
-    }
+      title: "",
+      content: "",
+    };
   },
   mounted() {
     const self = this;
-    var url =
-      "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0/problems?id=" + self.$route.params.id;
-    fetch(url, {
-      method: "GET",
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
+    getProblem()
+      .then((response) => JSON.parse(response.data))
+      .then(function (json) {
         self.title = json[0].title;
         self.content = json[0].content;
       });
-  }
+  },
 };
 </script>
