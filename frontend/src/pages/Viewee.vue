@@ -6,18 +6,22 @@
     <el-col :span="12">
       <Editor msg="编程部分"></Editor>
     </el-col>
-    <el-col :span="6"> <p>留言部分</p> </el-col>
+    <el-col :span="6"> 
+        <Comment></Comment>
+    </el-col>
   </el-row>
 </template>
 
 <script>
 import Editor from "../components/Editor.vue";
 import Problem from "../components/Problem.vue";
+import Comment from "../components/Comment.vue";
 export default {
   name: "App",
   components: {
     Editor,
     Problem,
+    Comment,
   },
 };
 </script>
