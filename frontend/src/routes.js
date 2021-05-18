@@ -26,11 +26,13 @@ let routes = [{
         path: '/viewer',
         component: Viewer,
         name: 'viewer',
+        meta: { requiresAuth: true }
     },
     {
         path: '/viewee',
         component: Viewee,
         name: 'viewee',
+        meta: { requiresAuth: true }
     },
     {
         path: '/register',
@@ -41,6 +43,7 @@ let routes = [{
         path: '/console',
         component: Console,
         name: 'console',
+        meta: { requiresAuth: true },
         children: [{
                 path: 'overview',
                 component: Overview,
@@ -71,4 +74,16 @@ const router = createRouter({
     routes,
 })
 
+router.beforeEach((to) => {
+    var isLogin = localStorage.getItem('token');
+    if (!isLogin && to.meta.requiresAuth) {
+        return {
+            name: 'login',
+            query: {
+                redirect: to.fullPath
+            }
+        }
+    }
+    return true;
+})
 export default router;
