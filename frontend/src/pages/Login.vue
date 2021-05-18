@@ -95,7 +95,7 @@ export default {
             type: "success",
           });
           router.push({
-            name: "viewee",
+            name: "console",
           });
         });
     },

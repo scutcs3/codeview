@@ -26,10 +26,13 @@ export default {
 </script>
 <style scoped>
 .head {
-  height: 50px;
+  height: 60px;
   width: 100%;
   background-color: white;
   z-index: 9;
+}
+.title {
+  margin-left: 20px;
 }
 .title:hover {
   cursor: pointer;

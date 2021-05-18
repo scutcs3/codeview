@@ -5,9 +5,9 @@ import Login from './pages/Login.vue'
 import Viewee from './pages/Viewee.vue'
 import Viewer from './pages/Viewer.vue'
 import Register from './pages/Register.vue'
+import Console from './pages/Console.vue'
 
-let routes = [
-    {
+let routes = [{
         path: '/index',
         component: Index,
         name: 'index',
@@ -33,7 +33,11 @@ let routes = [
         component: Register,
         name: 'register',
     },
- 
+    {
+        path: '/console',
+        component: Console,
+        name: 'console'
+    }
 ]
 
 const router = createRouter({
