@@ -7,7 +7,7 @@
 </template>
 <script>
 export default {
-  name: "Problem",
+  name: "Document",
   data: function () {
     return {
       title: "",
