@@ -1,10 +1,8 @@
-create table if not EXISTS comment 
+create table if not EXISTS interview_problem
 (
     id int PRIMARY KEY AUTO_INCREMENT,
-    content text,
     interview_id int not null,
-    owner_id int not null,
-    created_at datetime not null,
+    problem_id int not null,
     FOREIGN KEY (interview_id) REFERENCES interview(id),
-    FOREIGN KEY (owner_id) REFERENCES user(id)
+    FOREIGN KEY (problem_id) REFERENCES problem(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
