@@ -7,6 +7,8 @@ export class Handler {
     handle = (callback) => {
         this.res.then(function({ status, headers, data }) {
             callback[status](data, headers);
+        }).catch(function(error) {
+            callback[404](error);
         })
     }
 }

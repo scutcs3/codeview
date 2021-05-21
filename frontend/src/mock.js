@@ -9,9 +9,9 @@ Mock.mock = function(url, callback) {
     return originMock(baseUrl + url, callback);
 }
 
-Mock.mock('/problems', (req) => {
+
+Mock.mock('/problems', () => {
     let list = [];
-    console.log(req);
     for (let i = 0; i < 30; i++) {
         list.push({
             title: Random.ctitle(),

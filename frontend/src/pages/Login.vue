@@ -74,6 +74,10 @@ export default {
       this.$router.push("/register");
     },
     onSubmit() {
+      var errorHandle = (msg) => {
+        ElMessage.error(msg);
+        this.loading = false;
+      };
       this.loading = true;
       login({
         username: this.loginParam.username,
@@ -92,12 +96,9 @@ export default {
             this.$router.push("/console");
           }
         },
-        400: () => {
-          ElMessage.error("登录失败");
-        },
-        410: () => {
-          ElMessage.error("数据库错误");
-        }
+        400: () => errorHandle("登录失败"),
+        404: () => errorHandle("登录失败"),
+        410: () => errorHandle("数据库错误"),
       });
     },
   },
