@@ -3,7 +3,7 @@
     <div class="registerdoor">
         <h2 class="text-center">注册</h2>
       <el-form
-        :model="loginParam"
+        :model="registerParam"
         ref="registerForm"
         :rules="rules"
         label-width="0px"
@@ -74,8 +74,7 @@ export default {
       }
     };
     return {
-      two: true,
-      loginParam: {},
+      
       registerParam: {},
       rules: {
         username: [
