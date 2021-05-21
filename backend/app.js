@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var problemsRouter = require('./routes/problems');
 var interviewsRouter = require('./routes/interviews');
@@ -46,7 +45,6 @@ app.all('*', function (req, res, next) {
     else next();
 });
 
-// app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/problems', problemsRouter);
 app.use('/interviews', interviewsRouter);

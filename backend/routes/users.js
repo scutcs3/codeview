@@ -22,7 +22,7 @@ function getUserDetail(field, param, page, per_page, res, req) {
 
     var page = page ? page : 1;
     var per_page = per_page ? per_page : 30;
-    var totalPageNum =  Math.ceil((totalRecord + per_page - 1) / per_page);
+    var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
     var preSize = (page - 1) * per_page;
 
     if (param) {
@@ -42,10 +42,10 @@ function getUserDetail(field, param, page, per_page, res, req) {
                 results.push(result[i]);
             }
 
-            if(page>1){
+            if (page > 1) {
                 res.setHeader('prevLink', `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`);
             }
-            if(page<totalPageNum){
+            if (page < totalPageNum) {
                 res.setHeader('nextLink', `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`);
             }
             res.setHeader('firstLink', `${req.baseUrl}?page=${1}&per_page=${per_page}`);
@@ -110,7 +110,7 @@ router.post('/', function (req, res, next) {
                     data: '[SELECT ERROR]:' + err.message,
                 });
             } else {
-                if (result.length>0) {
+                if (result.length > 0) {
                     res.status(409).json({
                         data: '用户已存在'
                     });
@@ -168,5 +168,55 @@ router.post('/tokens', function (req, res, next) {
     });
 });
 
+/**
+ * @api {patch} /users
+ * 获取验证令牌
+ */
+router.patch('/users', function (req, res, next) {
+    var sql;
+    sql = `SELECT * FROM user WHERE id = ${req.body.id}`;
+    connection.query(sql, function (err, result) {
+        if (err) {
+            console.log('[SELECT ERROR]:', err.message);
+            res.status(410).json({
+                data: '[SELECT ERROR]:' + err.message,
+            });
+        } else {
+            if (result.length > 0) {
+                if (result[0].id != tk.obj.id) {
+                    res.status(403).json({
+                        data: '没有权限修改用户信息'
+                    });
+                } else {
+                    sql = `UPDATE user SET `;
+                    if (req.body.name) {
+                        sql += `name = '${req.body.name}',`;
+                    }
+                    if (req.body.password) {
+                        sql += `password = '${req.body.password}',`;
+                    }
+                    sql = sql.substring(0, sql.length - 1);
+                    sql += ` WHERE id = ${tk.obj.id}`;
+                    connection.query(sql, function (err, result) {
+                        if (err) {
+                            console.log('[UPDATE ERROR]:', err.message);
+                            res.status(410).json({
+                                data: '[UPDATE ERROR]:' + err.message,
+                            });
+                        } else {
+                            res.json({
+                                data: '更新成功'
+                            });
+                        }
+                    });
+                }
+            } else {
+                res.status(404).json({
+                    data: '找不到指定id的用户'
+                });
+            }
+        }
+    });
+});
 
 module.exports = router;
