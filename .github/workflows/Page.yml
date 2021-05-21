@@ -32,6 +32,9 @@ jobs:
         run: |
           cd frontend
           npm run build
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          BUILD_ID: ${{ github.run_id }}
       - name: GitHub Pages
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
         uses: crazy-max/ghaction-github-pages@v2.3.0
