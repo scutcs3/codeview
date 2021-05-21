@@ -3,7 +3,7 @@
     <h2>控制台</h2>
     <el-row>
       <el-col :span="6">
-        <el-menu :default-active="$route.name" @select="handleSelect" >
+        <el-menu :default-active="defaultActive" @select="handleSelect">
           <el-menu-item
             v-for="menu in menus"
             :key="menu.name"
@@ -15,14 +15,18 @@
         </el-menu>
       </el-col>
       <el-col :span="18">
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import router from '../routes.js'
+import router from "../router.js";
 
 export default {
   name: "Console",
@@ -52,12 +56,24 @@ export default {
       ],
     };
   },
-  methods: {
-      handleSelect(key) {
-          router.push({
-              name: key
-          })
+  computed: {
+    defaultActive() {
+      let name = "";
+      for (let menu of this.menus) {
+        if (this.$route.path.includes(menu.name)) {
+          name = menu.name;
+          break;
+        }
       }
+      return name;
+    },
+  },
+  methods: {
+    handleSelect(key) {
+      router.push({
+        name: key,
+      });
+    },
   },
 };
 </script>

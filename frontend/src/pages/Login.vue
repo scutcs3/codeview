@@ -4,6 +4,7 @@
       <h2 class="text-center">登录</h2>
       <div class="loginDoor">
         <el-form
+          v-loading="loading"
           :model="loginParam"
           :rules="rules"
           ref="loginForm"
@@ -47,13 +48,14 @@
 </template>
 
 <script>
-import router from "../routes.js";
+import router from "../router.js";
 import { ElMessage } from "element-plus";
 
 export default {
   name: "Login",
   data: function () {
     return {
+      loading: false,
       loginParam: {},
       rules: {
         username: [
@@ -72,6 +74,7 @@ export default {
       router.push("/register");
     },
     onSubmit() {
+      this.loading = true;
       var url =
         "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0/tokens";
       var data = {
@@ -86,18 +89,24 @@ export default {
         }),
       })
         .then((res) => res.json())
-        .catch((error) => console.error("Error:", error))
+        .catch((error) => {
+          console.error("Error:", error);
+          this.loading = false;
+        })
         .then((response) => {
-          console.log("Success:", response);
-          localStorage.setItem("token", response["token"]);
           ElMessage.success({
             message: "登陆成功",
             type: "success",
           });
+          this.$store.commit({
+            type: "login",
+            token: response.token,
+          });
+          this.loading = false;
           if (this.$route.query && this.$route.query.redirect) {
-              router.push(this.$route.query.redirect);
+            router.push(this.$route.query.redirect);
           } else {
-              router.push('/console');
+            router.push("/console");
           }
         });
     },

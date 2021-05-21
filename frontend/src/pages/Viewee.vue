@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="6">
-      <Problem></Problem>
+      <Document></Document>
     </el-col>
     <el-col :span="12">
       <Editor msg="编程部分"></Editor>
@@ -14,13 +14,13 @@
 
 <script>
 import Editor from "../components/Editor.vue";
-import Problem from "../components/Problem.vue";
+import Document from "../components/Document.vue";
 import Comment from "../components/Comment.vue";
 export default {
   name: "App",
   components: {
     Editor,
-    Problem,
+    Document,
     Comment,
   },
 };

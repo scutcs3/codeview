@@ -1,0 +1,1 @@
+export const baseUrl = 'https://virtserver.swaggerhub.com/tootal/codeview/1.0.0';

@@ -30,7 +30,7 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
         button{
             width: 200px;/*设置按钮宽度*/
             height: 30px;/*设置按钮高度*/

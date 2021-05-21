@@ -8,7 +8,7 @@
 </template>
 <script>
 import Menu from "./Menu.vue";
-import router from "../routes.js";
+import router from "../router.js";
 
 export default {
   name: "Head",

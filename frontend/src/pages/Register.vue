@@ -60,7 +60,7 @@
   </div>
 </template>
 <script>
-import router from "../routes.js";
+import router from "../router.js";
 export default {
   name: "Register",
   data: function () {

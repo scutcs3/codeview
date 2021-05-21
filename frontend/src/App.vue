@@ -11,8 +11,16 @@
 import Layout from "./layouts/Layout.vue";
 export default {
   name: "App",
+  data() {
+    return {
+      isLogin: false,
+    }
+  },
   components: {
     Layout,
+  },
+  mounted() {
+    this.isLogin = localStorage.getItem['token'] !== null;
   },
 };
 </script>

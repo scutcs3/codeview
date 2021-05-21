@@ -10,6 +10,7 @@ import Overview from './pages/Overview.vue'
 import Problems from './pages/Problems.vue'
 import Settings from './pages/Settings.vue'
 import Profile from './pages/Profile.vue'
+import Problem from './pages/Problem.vue'
 
 let routes = [{
         path: '/index',
@@ -53,7 +54,12 @@ let routes = [{
             {
                 path: 'problems',
                 component: Problems,
-                name: 'problems'
+                name: 'problems',
+            },
+            {
+                path: 'problems/:id',
+                component: Problem,
+                name: 'problem',
             },
             {
                 path: 'settings',

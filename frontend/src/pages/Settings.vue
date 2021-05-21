@@ -1,21 +1,18 @@
 <template>
   <div class="settings">
     <h2>设置页面</h2>
-    <el-button @click="clearToken" type="danger" plain>清除Token</el-button>
+    <router-link to="/viewer"> 前往面试官页面 </router-link>
+
+    <router-link to="/viewee"> 前往面试者页面 </router-link>
   </div>
 </template>
 <script>
 export default {
   name: "Settings",
-  methods: {
-    clearToken() {
-      localStorage.removeItem("token");
-    },
-  },
 };
 </script>
 <style scoped>
 .settings {
-    margin-left: 30px;
+  margin-left: 30px;
 }
 </style>
