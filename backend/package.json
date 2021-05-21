@@ -1,22 +1,23 @@
 {
-  "name": "codeview-backend",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "serve": "node ./bin/www"
-  },
-  "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "^4.16.4",
-    "express-jwt": "^6.0.0",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "jsonwebtoken": "^8.5.1",
-    "mocha": "^8.4.0",
-    "morgan": "~1.9.1",
-    "mysql": "^2.18.1",
-    "should": "^13.2.3",
-    "supertest": "^6.1.3"
-  }
+    "name": "codeview-backend",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "serve": "node ./bin/www",
+        "test": "mocha"
+    },
+    "dependencies": {
+        "cookie-parser": "~1.4.4",
+        "debug": "~2.6.9",
+        "express": "^4.16.4",
+        "express-jwt": "^6.0.0",
+        "http-errors": "~1.6.3",
+        "jade": "~1.11.0",
+        "jsonwebtoken": "^8.5.1",
+        "mocha": "^8.4.0",
+        "morgan": "~1.9.1",
+        "mysql": "^2.18.1",
+        "should": "^13.2.3",
+        "supertest": "^6.1.3"
+    }
 }
