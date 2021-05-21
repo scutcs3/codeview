@@ -11,6 +11,7 @@ import Problems from './pages/Problems.vue'
 import Settings from './pages/Settings.vue'
 import Profile from './pages/Profile.vue'
 import Problem from './pages/Problem.vue'
+import test from './components/quillEditor'
 
 let routes = [{
         path: '/index',
@@ -72,6 +73,10 @@ let routes = [{
                 name: 'profile'
             }
         ]
+    },
+    {path:'/test',
+    component:test,
+    name: 'test',
     }
 ]
 

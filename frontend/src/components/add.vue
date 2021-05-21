@@ -7,8 +7,12 @@
     </div>
 </template>
 <script>
+import QuillEditor from './quillEditor.vue'
 export default {
     name:'timu',
+    components: {
+        QuillEditor
+    },
     data:function(){
         return {
             count:0,
