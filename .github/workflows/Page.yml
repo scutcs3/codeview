@@ -21,7 +21,7 @@ jobs:
         id: cache
         with:
           path: frontend/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
