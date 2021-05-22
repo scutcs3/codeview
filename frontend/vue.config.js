@@ -6,6 +6,12 @@ process.env.VUE_APP_BUILD_NUMBER = process.env.BUILD_NUMBER || 'local_test';
 process.env.VUE_APP_BUILD_ID = process.env.BUILD_ID || '';
 // 构建时间
 process.env.VUE_APP_BUILD_TIME = new Date().toLocaleString();
+// 后端API接口
+if (process.env.DEBUG) {
+    process.env.VUE_APP_API = "http://localhost:3000"
+} else {
+    process.env.VUE_APP_API = "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0"
+}
 
 module.exports = {
     publicPath: './',
