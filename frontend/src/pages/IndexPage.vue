@@ -8,21 +8,21 @@
       ></el-image>
       <h1 class="banner-title">在线编程笔试平台</h1>
     </div>
-    <TheInfo></TheInfo>
+    <IndexInfo></IndexInfo>
   </div>
 </template>
 <script>
-import TheInfo from "../components/TheInfo.vue";
+import IndexInfo from "../components/IndexInfo.vue";
 
 export default {
-  name: "Index",
+  name: "IndexPage",
   data() {
     return {
       mainImg: "maranda-vandergriff-7aakZdIl4vg-unsplash.webp",
     };
   },
   components: {
-    TheInfo,
+    IndexInfo,
   },
 };
 </script>

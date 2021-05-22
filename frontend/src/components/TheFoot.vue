@@ -7,7 +7,7 @@
 </template>
 <script>
 export default {
-  name: "Foot",
+  name: "TheFoot",
   data() {
     return {
       build_number: process.env.VUE_APP_BUILD_NUMBER,

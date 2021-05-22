@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: "Menu",
+  name: "HeadMenu",
   data() {
     return {
       all_menus: [{

@@ -2,18 +2,18 @@
   <div>
     <div class="head shadow-bottom d-flex align-items-center">
       <h1 class="title" @click="goIndex()">Code View</h1>
-      <Menu></Menu>
+      <HeadMenu></HeadMenu>
     </div>
   </div>
 </template>
 <script>
-import Menu from "./Menu.vue";
+import HeadMenu from "./HeadMenu.vue";
 import router from "../router.js";
 
 export default {
-  name: "Head",
+  name: "TheHead",
   components: {
-    Menu,
+    HeadMenu,
   },
   methods: {
     goIndex() {

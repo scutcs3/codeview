@@ -1,25 +1,25 @@
 <template>
   <el-container>
     <el-header>
-      <Head></Head>
+      <TheHead></TheHead>
     </el-header>
     <el-main>
         <slot></slot>
     </el-main>
     <el-footer>
-      <Foot></Foot>
+      <TheFoot></TheFoot>
     </el-footer>
   </el-container>
 </template>
 <script>
-import Head from "../components/Head.vue";
-import Foot from "../components/Foot.vue";
+import TheHead from "../components/TheHead.vue";
+import TheFoot from "../components/TheFoot.vue";
 
 export default {
   name: "Layout",
   components: {
-    Head,
-    Foot,
+    TheHead,
+    TheFoot,
   },
 };
 </script>

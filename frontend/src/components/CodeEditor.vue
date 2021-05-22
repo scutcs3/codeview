@@ -36,15 +36,16 @@
         </div>
         <!--调用子组件-->
         <div class="monaco-editor">
-            <monaco ref="monaco" :opts="opts" @change="changeValue"></monaco>
+            <MonacoEditor ref="monaco" :opts="opts" @change="changeValue"></MonacoEditor>
         </div>
     </div>
 </template>
 <script>
-import monaco from "./monacoEditor";
+import MonacoEditor from './MonacoEditor.vue';
+
 export default {
-    name: "Editor",
-    components: { monaco },
+    name: "CodeEditor",
+    components: { MonacoEditor },
     data() {
         return {
             sets: {

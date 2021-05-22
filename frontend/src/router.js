@@ -1,74 +1,74 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
-import Index from './pages/Index.vue'
-import Login from './pages/Login.vue'
-import Viewee from './pages/Viewee.vue'
-import Viewer from './pages/Viewer.vue'
-import Register from './pages/Register.vue'
-import Console from './pages/Console.vue'
-import Overview from './pages/Overview.vue'
-import Problems from './pages/Problems.vue'
-import Settings from './pages/Settings.vue'
-import Profile from './pages/Profile.vue'
-import Problem from './pages/Problem.vue'
+import IndexPage from './pages/IndexPage.vue'
+import LoginPage from './pages/LoginPage.vue'
+import VieweePage from './pages/VieweePage.vue'
+import ViewerPage from './pages/ViewerPage.vue'
+import RegisterPage from './pages/RegisterPage.vue'
+import ConsolePage from './pages/ConsolePage.vue'
+import OverviewPage from './pages/OverviewPage.vue'
+import ProblemsPage from './pages/ProblemsPage.vue'
+import SettingsPage from './pages/SettingsPage.vue'
+import ProfilePage from './pages/ProfilePage.vue'
+import ProblemPage from './pages/ProblemPage.vue'
 
 let routes = [{
         path: '/index',
-        component: Index,
+        component: IndexPage,
         name: 'index',
         alias: '/'
     },
     {
         path: '/login',
-        component: Login,
+        component: LoginPage,
         name: 'login',
     },
     {
         path: '/viewer',
-        component: Viewer,
+        component: ViewerPage,
         name: 'viewer',
         meta: { requiresAuth: true }
     },
     {
         path: '/viewee',
-        component: Viewee,
+        component: VieweePage,
         name: 'viewee',
         meta: { requiresAuth: true }
     },
     {
         path: '/register',
-        component: Register,
+        component: RegisterPage,
         name: 'register',
     },
     {
         path: '/console',
-        component: Console,
+        component: ConsolePage,
         name: 'console',
         meta: { requiresAuth: true },
         children: [{
                 path: 'overview',
-                component: Overview,
+                component: OverviewPage,
                 name: 'overview',
                 alias: ''
             },
             {
                 path: 'problems',
-                component: Problems,
+                component: ProblemsPage,
                 name: 'problems',
             },
             {
                 path: 'problems/:id',
-                component: Problem,
+                component: ProblemPage,
                 name: 'problem',
             },
             {
                 path: 'settings',
-                component: Settings,
+                component: SettingsPage,
                 name: 'settings'
             },
             {
                 path: 'profile',
-                component: Profile,
+                component: ProfilePage,
                 name: 'profile'
             }
         ]

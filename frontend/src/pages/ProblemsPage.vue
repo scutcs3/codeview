@@ -1,6 +1,16 @@
 <template>
   <div class="problems">
-    <el-table :data="tableData.slice((dictCurrentPage-1)*dictPageSize,dictCurrentPage*dictPageSize)" highlight-current-row border style="width: 100%">
+    <el-table
+      :data="
+        tableData.slice(
+          (dictCurrentPage - 1) * dictPageSize,
+          dictCurrentPage * dictPageSize
+        )
+      "
+      highlight-current-row
+      border
+      style="width: 100%"
+    >
       <el-table-column prop="id" label="序号" width="60"> </el-table-column>
       <el-table-column prop="title" label="题目" v-slot="{ row }">
         <router-link :to="{ name: 'problem', params: { id: row.id } }">
@@ -10,32 +20,31 @@
       <el-table-column prop="updated_at" label="更新时间" width="200">
       </el-table-column>
     </el-table>
-  </div>
-  <div class="pages">
-    <el-pagination class="fy"
-                  layout="sizes, prev, pager, next, total"
-                  @current-change="handleCurrentChange"
-                  v-model:current-page="dictCurrentPage"
-                  background
-                  :total="dictTotal"      
-                  :page-sizes="[5, 10, 15, 20]"
-                  v-model:page-size="dictPageSize"       
-    >
-          </el-pagination>
+    <div class="pages">
+      <el-pagination
+        class="fy"
+        layout="sizes, prev, pager, next, total"
+        v-model="dictCurrentPage"
+        background
+        :total="dictTotal"
+        :page-sizes="[5, 10, 15, 20]"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 <script>
 import { getProblems } from "../api/problem.js";
 
 export default {
-  name: "Problems",
+  name: "ProblemsPage",
   data() {
     return {
       tableData: [],
       currentPage: 1,
-      dictTotal:0,
-      dictCurrentPage:1,
-      dictPageSize:5,
+      dictTotal: 0,
+      dictCurrentPage: 1,
+      dictPageSize: 5,
     };
   },
   mounted() {
@@ -59,9 +68,9 @@ export default {
 </script>
 
 <style scoped>
-  .pages{
-    margin: 0px;
-    padding: 0px;
-    text-align: right;
-  }
+.pages {
+  margin: 0px;
+  padding: 0px;
+  text-align: right;
+}
 </style>

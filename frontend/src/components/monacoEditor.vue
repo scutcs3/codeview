@@ -9,7 +9,7 @@
 <script>
 import * as monaco from "monaco-editor";
 export default {
-    name: "monacoEditor",
+    name: "MonacoEditor",
     props: {
         opts: {
             type: Object,

@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-  name: "TheInfo",
+  name: "IndexInfo",
   data() {
     return {
       introData: [
