@@ -8,6 +8,7 @@ connection.connect(function(err) {
       console.error('[connect error]: ' + err.stack);
       return;
     }
+    console.log('Server running at: http://localhost:3000');
     console.log('[connect success]: id ' + connection.threadId);
 });
 

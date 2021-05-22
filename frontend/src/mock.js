@@ -1,7 +1,6 @@
 const Mock = require('mockjs');
 const Random = Mock.Random;
-
-const baseUrl = 'https://virtserver.swaggerhub.com/tootal/codeview/1.0.0';
+const { baseUrl } = require('./api/global.js');
 
 var originMock = Mock.mock;
 

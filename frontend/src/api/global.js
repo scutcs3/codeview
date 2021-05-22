@@ -1,14 +1,18 @@
-export const baseUrl = 'https://virtserver.swaggerhub.com/tootal/codeview/1.0.0';
+export const baseUrl = process.env.VUE_APP_API;
 
 export class Handler {
     constructor(res) {
         this.res = res;
     }
     handle = (callback) => {
-        this.res.then(function({ status, headers, data }) {
-            callback[status](data, headers);
-        }).catch(function(error) {
-            callback[404](error);
-        })
+        try {
+            this.res.then(function ({ status, headers, data }) {
+                callback[status](data, headers);
+            }).catch(function (error) {
+                callback[404](error);
+            })
+        } catch (e) {
+            callback[404](e);
+        }
     }
 }
