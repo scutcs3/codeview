@@ -30,4 +30,7 @@ export default {
 .foot {
   padding: 10px 0;
 }
+p {
+  font-size: 1rem;
+}
 </style>

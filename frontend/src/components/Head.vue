@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="head shadow-bottom d-flex align-items-center">
-      <h1 class="title" @click="goIndex()">在线编程笔试平台</h1>
+      <h1 class="title" @click="goIndex()">Code View</h1>
       <Menu></Menu>
     </div>
   </div>
@@ -30,6 +30,7 @@ export default {
   z-index: 9;
 }
 .title {
+  font-size: 1.7rem;
   margin-left: 20px;
 }
 .title:hover {

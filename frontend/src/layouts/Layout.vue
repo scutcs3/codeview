@@ -4,9 +4,7 @@
       <Head></Head>
     </el-header>
     <el-main>
-      <Main>
         <slot></slot>
-      </Main>
     </el-main>
     <el-footer>
       <Foot></Foot>
@@ -15,20 +13,18 @@
 </template>
 <script>
 import Head from "../components/Head.vue";
-import Main from "./Main.vue";
 import Foot from "../components/Foot.vue";
 
 export default {
   name: "Layout",
   components: {
     Head,
-    Main,
     Foot,
   },
 };
 </script>
 <style scoped>
-.el-header, .el-footer {
+.el-header, .el-main, .el-footer {
     padding: 0;
 }
 </style>
