@@ -3,12 +3,13 @@
     <template #header>
       <div class="header">
         <span>{{ title }}</span>
-        <el-button class="button" type="text">操作按钮</el-button>
+        <el-button class="button" type="danger" plain>取消面试</el-button>
       </div>
     </template>
     <div class="content">
       <div class="view-info">
           <p>面试时间：<span :title="viewTimeInfo">{{ viewTimeShow }}</span></p>
+          <p>候选人：XXX</p>
       </div>
       <div class="view-act">
         <el-timeline>
@@ -77,5 +78,8 @@ export default {
 .content {
   display: flex;
   justify-content: space-between;
+}
+.view-info p {
+    margin: .5rem;
 }
 </style>

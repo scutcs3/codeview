@@ -1,7 +1,7 @@
 <template>
   <div class="intro-container">
-    <div class="intro" v-for="(intro, index) in introData" :key="intro.title">
-      <div class="intro-item" :class="{ reverse: index % 2 === 1 }">
+    <div class="intro" v-for="(intro, index) in introData" :key="intro.title" :class="{ reverse: index % 2 === 1 }">
+      <div class="intro-item">
         <el-image
           :src="require('../assets/' + intro.icon)"
           class="intro-icon"
@@ -52,30 +52,39 @@ export default {
 };
 </script>
 <style scoped>
-.intro-item {
+.intro {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 4rem 0;
+  padding: 4rem 2rem;
 }
-.intro-item.reverse {
-  flex-direction: row-reverse;
+.reverse.intro {
   background-color: #f5f5f5;
+}
+.intro-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 35rem;
+}
+.reverse .intro-item {
+  flex-direction: row-reverse;
 }
 .intro-icon {
   width: 8rem;
   height: 8rem;
-  margin: 0 4rem;
 }
 .intro-body {
   display: flex;
   flex-direction: column;
-  margin: 0 4rem;
   max-width: 20rem;
 }
 .intro-title {
   font-size: 1.6rem;
+  text-align: right;
   margin-bottom: 1rem;
+}
+.reverse .intro-title {
+  text-align: left;
 }
 .intro-content {
   font-size: 1rem;
