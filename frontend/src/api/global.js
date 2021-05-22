@@ -9,10 +9,14 @@ export class Handler {
             this.res.then(function ({ status, headers, data }) {
                 callback[status](data, headers);
             }).catch(function (error) {
-                callback[404](error);
+                if (error.response) {
+                    callback[error.response.status]();
+                } else {
+                    callback[404]();
+                }
             })
         } catch (e) {
-            callback[404](e);
+            callback[404]();
         }
     }
 }
