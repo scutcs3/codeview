@@ -25,9 +25,11 @@
         class="fy"
         layout="sizes, prev, pager, next, total"
         v-model="dictCurrentPage"
+        :pager-count="9"
         background
         :total="dictTotal"
-        :page-sizes="[5, 10, 15, 20]"
+        :page-size="30"
+        :page-sizes="[30, 50, 100]"
       >
       </el-pagination>
     </div>
@@ -42,9 +44,9 @@ export default {
     return {
       tableData: [],
       currentPage: 1,
-      dictTotal: 0,
+      dictTotal: 1000,
       dictCurrentPage: 1,
-      dictPageSize: 5,
+      dictPageSize: 30,
     };
   },
   mounted() {
@@ -60,7 +62,6 @@ export default {
             title: problem.title,
             updated_at: problem.updated_at,
           });
-          self.dictTotal++;
         }
       });
   },
@@ -69,8 +70,7 @@ export default {
 
 <style scoped>
 .pages {
-  margin: 0px;
-  padding: 0px;
-  text-align: right;
+  margin: 2rem auto;
+  text-align: center;
 }
 </style>
