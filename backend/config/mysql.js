@@ -10,12 +10,26 @@ try {
     if (local.database) database = local.database;
 } catch (e) {}
 
-var connection = mysql.createConnection({      //创建mysql实例
-    host:'127.0.0.1',
-    port:'3306',
-    user,
-    password,
-    database,
-});
+var connection;
+var isConnect = false;
+
+if(!isConnect){
+    var connection = mysql.createConnection({      //创建mysql实例
+        host:'127.0.0.1',
+        port:'3306',
+        user,
+        password,
+        database,
+    });
+    // connect test
+    connection.connect(function (err) {
+        if (err) {
+            console.error('[connect error]: ' + err.stack);
+            return;
+        }
+        console.log('[connect success]: id ' + connection.threadId);
+    });
+}
+isConnect=true;
 
 module.exports = connection;
