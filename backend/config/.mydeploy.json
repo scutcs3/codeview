@@ -1,7 +1,0 @@
-{
-    "mode": "webhook",
-    "url": "https://github.com/scutcs3/codeview",
-    "localdir": "/root/codeview",
-    "port": 3001,
-    "branch": "feature/deploy"
-}
