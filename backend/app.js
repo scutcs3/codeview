@@ -45,7 +45,7 @@ app.all('*', function (req, res, next) {
     else next();
 });
 
-app.use('/users', usersRouter);
+app.use(['/users','/tokens'], usersRouter);
 app.use('/problems', problemsRouter);
 app.use('/interviews', interviewsRouter);
 app.use('/answers', answersRouter);

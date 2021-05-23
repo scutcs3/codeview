@@ -6,13 +6,12 @@ var tk;
 router.use(function (req, res, next) {
     var authHeader = req.headers.authorization;//获取认证情况的集合
     if (authHeader) {
-        var tk = token.verifyToken(authHeader.substring(7));
+        tk = token.verifyToken(authHeader.substring(7));
         if (tk.code == '606') {
             res.status(401).json({
                 data: '需要登录'
             });
         } else {
-            req.decoded = decoded;
             next(); //继续下一步路由
         }
     } else {
@@ -35,7 +34,7 @@ router.get('/', function (req, res, next) {
     connection.query(sql, function (err, result) {
         if (err) {
             console.log('[SELECT ERROR]:', err.message);
-            res.status(410).json({
+            res.status(500).json({
                 data: '[SELECT ERROR]:' + err.message,
             });
         } else {
@@ -50,14 +49,14 @@ router.get('/', function (req, res, next) {
     } else {
         var page = req.query.page ? req.query.page : 1;
         var per_page = req.query.per_page ? req.query.per_page : 30;
-        var totalPageNum =  Math.ceil((totalRecord + per_page - 1) / per_page);
+        var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
         var preSize = (page - 1) * per_page;
-    
+
         var sql = `SELECT * FROM answer WHERE interview_id = ${req.query.iid} AND problem_id = ${req.query.pid} limit ${preSize},${per_page}`;
         connection.query(sql, function (err, result) {
             if (err) {
                 console.log('[SELECT ERROR]:', err.message);
-                res.status(410).json({
+                res.status(500).json({
                     data: '[SELECT ERROR]:' + err.message,
                 });
             } else {
@@ -66,10 +65,10 @@ router.get('/', function (req, res, next) {
                     results.push(result[i]);
                 }
 
-                if(page>1){
+                if (page > 1) {
                     res.setHeader('prevLink', `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`);
                 }
-                if(page<totalPageNum){
+                if (page < totalPageNum) {
                     res.setHeader('nextLink', `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`);
                 }
                 res.setHeader('firstLink', `${req.baseUrl}?page=${1}&per_page=${per_page}`);
@@ -77,7 +76,7 @@ router.get('/', function (req, res, next) {
 
                 res.json({
                     data: results,
-                });     
+                });
             }
         });
     }
@@ -88,23 +87,23 @@ router.get('/', function (req, res, next) {
  * 提交答案
  */
 router.post('/', function (req, res, next) {
-    if(!req.body.language||!req.body.content||!req.body.problem_id||!req.body,interview_id){
+    if (!req.body.language || !req.body.content || !req.body.problem_id || !req.body.interview_id) {
         res.status(400).json({
             data: '参数错误'
         });
-    }else{
+    } else {
         var dt = require('moment')().format('YYYY-MM-DD HH:mm:ss');
-        var sql = `INSERT INTO answer (language,content,problem_id,interview_id,created_at) VALUES (${req.body.language},${req.body.content},${req.body.problem_id},${req.body.interview_id},${dt})`;
+        var sql = `INSERT INTO answer (language,content,problem_id,interview_id,created_at) VALUES ('${req.body.language}','${req.body.content}',${req.body.problem_id},${req.body.interview_id},'${dt}')`;
         connection.query(sql, function (err, result) {
             if (err) {
                 console.log('[INSERT ERROR]:', err.message);
-                res.status(410).json({
+                res.status(500).json({
                     data: '[INSERT ERROR]:' + err.message,
                 });
             } else {
                 res.json({
                     data: '提交成功',
-                });     
+                });
             }
         });
     }

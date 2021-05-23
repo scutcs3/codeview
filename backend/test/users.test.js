@@ -1,21 +1,37 @@
 var supertest = require('supertest');
-var express = require('express');
-var app = express();
+var app = require('../app');
 var request = supertest(app);
-var should = require('should');
+const should = require('should');
+
+var token = "";
+describe('GET token', function () {
+    it('获取 token', function (done) {
+        request
+            .post('/tokens')
+            .send({
+                email: 'a',
+                password: 'a'
+            })
+            .expect(200)
+            .end(function (err, res) {
+                token = res.body.token;
+                done();
+            });
+    });
+});
 
 describe('GET /users', function () {
     it('测试 所有数据', function (done) {
         request
             .get('/users')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
             .set('Accept', 'application/json')
+            .set('Authorization', 'Bearer '+ token)
             .expect(200)
             .end(function (err, res) {
                 should.not.exist(err);
-                res.should.have.header('firstLink');
-                res.should.have.header('lastLink');
-                res.length.should.be.exactly(4);
+                res.headers.should.have.property('firstlink');
+                res.headers.should.have.property('lastlink');
+                res.body.data.length.should.be.exactly(5);
                 done();
             });
     });
@@ -25,6 +41,7 @@ describe('GET /users', function () {
             .set('Accept', 'application/json')
             .expect(401)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
@@ -32,11 +49,11 @@ describe('GET /users', function () {
         request
             .get('/users?id=1')
             .set('Accept', 'application/json')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
+            .set('Authorization', 'Bearer '+ token)
             .expect(200)
             .end(function (err, res) {
                 should.not.exist(err);
-                res.length.should.be.exactly(1);
+                res.body.data.length.should.be.exactly(1);
                 done();
             });
     });
@@ -44,11 +61,11 @@ describe('GET /users', function () {
         request
             .get('/users?email=a')
             .set('Accept', 'application/json')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
+            .set('Authorization', 'Bearer '+ token)
             .expect(200)
             .end(function (err, res) {
                 should.not.exist(err);
-                res.length.should.be.exactly(1);
+                res.body.data.length.should.be.exactly(1);
                 done();
             });
     });
@@ -56,11 +73,11 @@ describe('GET /users', function () {
         request
             .get('/users?name=a')
             .set('Accept', 'application/json')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
+            .set('Authorization', 'Bearer '+ token)
             .expect(200)
             .end(function (err, res) {
                 should.not.exist(err);
-                res.length.should.be.exactly(1);
+                res.body.data.length.should.be.exactly(1);
                 done();
             });
     });
@@ -68,11 +85,11 @@ describe('GET /users', function () {
         request
             .get('/users?page=1&per_page=30')
             .set('Accept', 'application/json')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
+            .set('Authorization', 'Bearer '+ token)
             .expect(200)
             .end(function (err, res) {
                 should.not.exist(err);
-                res.length.should.be.exactly(4);
+                res.body.data.length.should.be.exactly(5);
                 done();
             });
     });
@@ -88,6 +105,7 @@ describe('POST /users', function () {
             })
             .expect(200)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
@@ -100,6 +118,7 @@ describe('POST /users', function () {
             })
             .expect(400)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
@@ -107,13 +126,19 @@ describe('POST /users', function () {
         request
             .post('/users')
             .send({
-                email: 'a',
-                password: 'test'
+                email: '111@a.com',
+                password: 'e'
             })
             .expect(409)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
+    });
+    after(function () {
+        var connection = require('../config/mysql');
+        var sql = `DELETE FROM user WHERE email = 'test@test.com'`;
+        connection.query(sql, function (err, result) { });
     });
 });
 
@@ -127,6 +152,7 @@ describe('POST /tokens', function () {
             })
             .expect(200)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
@@ -139,6 +165,7 @@ describe('POST /tokens', function () {
             })
             .expect(400)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
@@ -148,7 +175,7 @@ describe('PATCH /users', function () {
     it('测试 修改成功', function (done) {
         request
             .patch('/users')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
+            .set('Authorization', 'Bearer '+ token)
             .send({
                 id: 1,
                 name: 'a',
@@ -156,13 +183,14 @@ describe('PATCH /users', function () {
             })
             .expect(200)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
     it('测试 没有权限', function (done) {
         request
             .patch('/users')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
+            .set('Authorization', 'Bearer '+ token)
             .send({
                 id: 2,
                 name: 'a',
@@ -170,6 +198,7 @@ describe('PATCH /users', function () {
             })
             .expect(403)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
@@ -183,13 +212,14 @@ describe('PATCH /users', function () {
             })
             .expect(401)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
     });
     it('测试 找不到', function (done) {
         request
             .patch('/users')
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhIiwiaWF0IjoxNjIxNDM1MzEzLCJleHAiOjE2MjE1MjE3MTN9.cG9_Tdf4Mu-SeNroupptGxkDguGRwW8HVcXSRDZ93Dg')
+            .set('Authorization', 'Bearer '+ token)
             .send({
                 id: 100,
                 name: 'a',
@@ -197,7 +227,16 @@ describe('PATCH /users', function () {
             })
             .expect(404)
             .end(function (err, res) {
+                should.not.exist(err);
                 done();
             });
+    });
+    after(function () {
+        var connection = require('../config/mysql');
+        var sql = `UPDATE user SET password = 'a' WHERE id = 1`;
+        connection.query(sql, function (err, result) { 
+            if(err)
+            console.log(err.message);
+        });
     });
 });
