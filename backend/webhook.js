@@ -10,6 +10,7 @@ http.createServer(function (req, res) {
         let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
 
         if (req.headers['x-hub-signature'] == sig) {
+            console.log('自动更新代码于 ', new Date().toISOString())
             exec('cd ' + repo + ' && git pull');
         }
     });
