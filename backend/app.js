@@ -12,9 +12,8 @@ var commentsRouter = require('./routes/comments');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// json setup
+app.set('json spaces', 2);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -45,6 +44,21 @@ app.all('*', function (req, res, next) {
     else next();
 });
 
+app.get('/', function(req, res, next) {
+    var port = app.get('port') === 80 ? '' : app.get('port');
+    var url =`${req.protocol}://${req.hostname}:${port}`;
+    var ans = {
+        login_url: '/tokens',
+        users_url: '/users?{id, name, email, page, per_page}',
+        problems_url: '/problems?{iid, pid, word, page, per_page}',
+        interviews_url: '/interviews?{id, role, page, per_page}',
+        answers_url: '/answers?{iid, role, page, per_page}',
+        comments_url: '/comments?{iid, cid, since, page, per_page}'
+    };
+    Object.keys(ans).map((key) => ans[key] = url + ans[key]);
+    res.status(200).json(ans);
+})
+
 app.use('/users', usersRouter);
 app.use('/problems', problemsRouter);
 app.use('/interviews', interviewsRouter);
@@ -58,13 +72,10 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
+    res.json({
+        "message": err.message,
+        "documentation_url": "https://app.swaggerhub.com/apis-docs/tootal/codeview/1.0.0"
+    })
 });
 
 module.exports = app;
