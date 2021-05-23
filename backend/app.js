@@ -72,7 +72,7 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-    res.json({
+    res.status(err.status || 500).json({
         "message": err.message,
         "documentation_url": "https://app.swaggerhub.com/apis-docs/tootal/codeview/1.0.0"
     })
