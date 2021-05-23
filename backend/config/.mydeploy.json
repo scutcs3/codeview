@@ -3,8 +3,5 @@
     "url": "https://github.com/scutcs3/codeview",
     "localdir": "/root/codeview",
     "port": 3001,
-    "hook": {
-        "postchanged": "cmd for changed"
-    },
     "branch": "feature/deploy"
 }
