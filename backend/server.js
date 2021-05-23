@@ -1,11 +1,11 @@
 var web_socket = require('ws')
 var wss = new web_socket.Server({ port: 3000 })
 wss.on("connection", function (ws) {
-    console.log("ÓÃ»§ÒÑÁ¬½Ó")
+    console.log("ç”¨æˆ·å·²è¿æ¥")
     ws.on("message", function (data) {
         wss.clients.forEach(function (client) {
             client.send(data)
         })
     })
 })
-console.log("WebSocket·şÎñÆ÷ÕıÔÚÔËĞĞ")
+console.log("WebSocketæœåŠ¡å™¨æ­£åœ¨è¿è¡Œ")
