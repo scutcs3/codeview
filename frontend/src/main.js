@@ -7,7 +7,7 @@ import store from './store.js'
 import './main.css'
 import installElementPlus from './plugins/element'
 
-if (process.env.VUE_APP_MOCK === "true") {
+if (process.env.VUE_APP_API_MODE === "mock") {
     console.log('Mock enabled!');
     require('./mock.js')
 }
