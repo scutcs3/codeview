@@ -59,6 +59,10 @@ app.get('/', function(req, res, next) {
     res.status(200).json(ans);
 })
 
+app.get('/test', function(req, res, next) {
+    res.send('test auto deploy');
+});
+
 app.use('/users', usersRouter);
 app.use('/problems', problemsRouter);
 app.use('/interviews', interviewsRouter);
