@@ -63,7 +63,7 @@ app.get('/test', function(req, res, next) {
     res.send('测试自动部署!');
 });
 
-app.use('/users', usersRouter);
+app.use(['/users','/tokens'], usersRouter);
 app.use('/problems', problemsRouter);
 app.use('/interviews', interviewsRouter);
 app.use('/answers', answersRouter);
