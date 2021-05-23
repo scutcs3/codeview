@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import router from "../router.js";
 import { ElMessage } from "element-plus";
+import { login } from '../api/user.js';
 
 export default {
   name: "Login",
@@ -71,44 +71,35 @@ export default {
   },
   methods: {
     toRegister() {
-      router.push("/register");
+      this.$router.push("/register");
     },
     onSubmit() {
+      var errorHandle = (msg) => {
+        ElMessage.error(msg);
+        this.loading = false;
+      };
       this.loading = true;
-      var url =
-        "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0/tokens";
-      var data = {
+      login({
         username: this.loginParam.username,
         password: this.loginParam.password,
-      };
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-      })
-        .then((res) => res.json())
-        .catch((error) => {
-          console.error("Error:", error);
-          this.loading = false;
-        })
-        .then((response) => {
-          ElMessage.success({
-            message: "登陆成功",
-            type: "success",
-          });
+      }).handle({
+        200: (data) => {
+          ElMessage.success("登陆成功");
           this.$store.commit({
             type: "login",
-            token: response.token,
+            token: data.token,
           });
           this.loading = false;
           if (this.$route.query && this.$route.query.redirect) {
-            router.push(this.$route.query.redirect);
+            this.$router.push(this.$route.query.redirect);
           } else {
-            router.push("/console");
+            this.$router.push("/console");
           }
-        });
+        },
+        400: () => errorHandle("登录失败"),
+        404: () => errorHandle("登录失败"),
+        410: () => errorHandle("数据库错误"),
+      });
     },
   },
 };

@@ -1,9 +1,11 @@
 <template>
   <div class="overview">
     <el-button @click="createDialogVisible = true">创建面试</el-button>
-    <p class="console-view text-center" v-for="i in 10" :key="i">
-      第{{ i }}场面试情况。
-    </p>
+    <div class="view-cards">
+      <ViewCard v-for="i in 10" :key="i" class="view-card"
+        :title="'第' + i + '场面试'"
+      ></ViewCard>
+    </div>
     <el-dialog title="创建面试" v-model="createDialogVisible" width="60%">
       <el-form :model="createForm">
         <el-form-item label="面试者">
@@ -33,8 +35,12 @@
   </div>
 </template>
 <script>
+import ViewCard from '../components/ViewCard.vue';
 export default {
   name: "Overview",
+  components: {
+    ViewCard,
+  },
   data() {
     return {
       createDialogVisible: false,
@@ -79,7 +85,12 @@ export default {
 };
 </script>
 <style scoped>
-p {
-  margin-bottom: 300px;
+.view-cards {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+.view-card {
+  margin: 1rem;
 }
 </style>

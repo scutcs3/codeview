@@ -8,6 +8,7 @@
         :rules="rules"
         label-width="0px"
         class="content"
+        v-loading="loading"
       >
         <el-form-item prop="username">
           <el-input
@@ -44,7 +45,7 @@
         </el-form-item>
 
         <div class="register-btn">
-          <el-button type="primary" @click="submitRegisterForm('registerForm')"
+          <el-button type="primary" @click="submitRegisterForm()"
             >注册</el-button
           >
         </div>
@@ -60,6 +61,8 @@
   </div>
 </template>
 <script>
+import { ElMessage } from 'element-plus';
+import { register } from '../api/user.js';
 import router from "../router.js";
 export default {
   name: "Register",
@@ -74,7 +77,7 @@ export default {
       }
     };
     return {
-      
+      loading: false,
       registerParam: {},
       rules: {
         username: [
@@ -100,9 +103,35 @@ export default {
     toLogin() {
       router.push("/login");
     },
-  },
-  mounted() {
-    console.log("Register mounted!");
+    submitRegisterForm() {
+      var errorHandle = (msg) => {
+        ElMessage.error(msg);
+        this.loading = false;
+      };
+      this.loading = true;
+      register({
+        email: this.registerParam.email,
+        password: this.registerParam.password,
+      }).handle({
+        201: (data) => {
+          ElMessage.success("注册成功，已自动登录");
+          this.$store.commit({
+            type: 'login',
+            token: data.token,
+          });
+          this.loading = false;
+          if (this.$route.query && this.$route.query.redirect) {
+            this.$router.push(this.$route.query.redirect);
+          } else {
+            this.$router.push("/console");
+          }
+        },
+        400: () => errorHandle("注册失败"),
+        404: () => errorHandle("注册失败"),
+        409: () => errorHandle("该用户已存在"),
+        410: () => errorHandle("数据库错误"),
+      });
+    }
   },
 };
 </script>

@@ -1,19 +1,19 @@
 <template>
   <div>
     <div class="head shadow-bottom d-flex align-items-center">
-      <h1 class="title" @click="goIndex()">在线编程笔试平台</h1>
-      <Menu></Menu>
+      <h1 class="title" @click="goIndex()">Code View</h1>
+      <HeadMenu></HeadMenu>
     </div>
   </div>
 </template>
 <script>
-import Menu from "./Menu.vue";
+import HeadMenu from "./HeadMenu.vue";
 import router from "../router.js";
 
 export default {
-  name: "Head",
+  name: "TheHead",
   components: {
-    Menu,
+    HeadMenu,
   },
   methods: {
     goIndex() {
@@ -30,6 +30,7 @@ export default {
   z-index: 9;
 }
 .title {
+  font-size: 1.7rem;
   margin-left: 20px;
 }
 .title:hover {

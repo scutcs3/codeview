@@ -1,14 +1,14 @@
 <template>
-  <Layout>
+  <IndexLayout>
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
       </keep-alive>
     </router-view>
-  </Layout>
+  </IndexLayout>
 </template>
 <script>
-import Layout from "./layouts/Layout.vue";
+import IndexLayout from "./layouts/IndexLayout.vue";
 export default {
   name: "App",
   data() {
@@ -17,7 +17,7 @@ export default {
     }
   },
   components: {
-    Layout,
+    IndexLayout,
   },
   mounted() {
     this.isLogin = localStorage.getItem['token'] !== null;

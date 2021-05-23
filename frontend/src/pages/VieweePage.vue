@@ -1,27 +1,27 @@
 <template>
   <el-row>
     <el-col :span="6">
-      <Document></Document>
+      <BaseProblem></BaseProblem>
     </el-col>
     <el-col :span="12">
-      <Editor msg="编程部分"></Editor>
+      <CodeEditor msg="编程部分"></CodeEditor>
     </el-col>
     <el-col :span="6"> 
-        <Comment></Comment>
+        <BaseComment></BaseComment>
     </el-col>
   </el-row>
 </template>
 
 <script>
-import Editor from "../components/Editor.vue";
-import Document from "../components/Document.vue";
-import Comment from "../components/Comment.vue";
+import CodeEditor from "../components/CodeEditor.vue";
+import BaseProblem from "../components/BaseProblem.vue";
+import BaseComment from "../components/BaseComment.vue";
 export default {
-  name: "App",
+  name: "VieweePage",
   components: {
-    Editor,
-    Document,
-    Comment,
+    CodeEditor,
+    BaseProblem,
+    BaseComment,
   },
 };
 </script>

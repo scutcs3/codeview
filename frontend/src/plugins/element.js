@@ -22,6 +22,10 @@ import {
     ElDialog,
     ElDatePicker,
     ElPagination,
+    ElImage,
+    ElCard,
+    ElTimeline,
+    ElTimelineItem,
 } from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 import lang from 'element-plus/lib/locale/lang/zh-cn'
@@ -51,4 +55,8 @@ export default (app) => {
     app.use(ElDialog)
     app.use(ElDatePicker)
     app.use(ElPagination)
+    app.use(ElImage)
+    app.use(ElCard)
+    app.use(ElTimeline)
+    app.use(ElTimelineItem)
 }

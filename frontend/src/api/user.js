@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { baseUrl } from './global.js'
+import { baseUrl, Handler } from './global.js'
 
 export function login(data) {
-    return axios.post(baseUrl + '/tokens', data);
+    return new Handler(axios.post(baseUrl + '/tokens', data));
 }
 
 export function register(data) {
-    return axios.post(baseUrl + '/users', data);
+    return new Handler(axios.post(baseUrl + '/users', data));
 }

@@ -4,9 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var problemsRouter = require('./routes/problems');
+var interviewsRouter = require('./routes/interviews');
+var answersRouter = require('./routes/answers');
+var commentsRouter = require('./routes/comments');
 
 var app = express();
 
@@ -20,6 +22,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var expressJwt = require("express-jwt");
+// jwt中间件
+app.use(expressJwt({
+    credentialsRequired: false,
+    secret: "codeview", //加密密钥
+    algorithms: ['HS256']
+}).unless({
+    path: ["/users","/tokens"]//添加不需要token验证的路由
+}));
 
 // 允许跨域
 app.all('*', function (req, res, next) {
@@ -34,9 +45,11 @@ app.all('*', function (req, res, next) {
     else next();
 });
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/problems', problemsRouter);
+app.use('/interviews', interviewsRouter);
+app.use('/answers', answersRouter);
+app.use('/comments', commentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -78,7 +78,8 @@ export default {
 };
 </script>
 <style scoped>
-.console-view {
-  margin-bottom: 100px;
+h2 {
+  margin: 2rem 0;
+  margin-left: 2rem;
 }
 </style>

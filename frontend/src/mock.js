@@ -1,7 +1,6 @@
 const Mock = require('mockjs');
 const Random = Mock.Random;
-
-const baseUrl = 'https://virtserver.swaggerhub.com/tootal/codeview/1.0.0';
+const { baseUrl } = require('./api/global.js');
 
 var originMock = Mock.mock;
 
@@ -9,9 +8,8 @@ Mock.mock = function(url, callback) {
     return originMock(baseUrl + url, callback);
 }
 
-Mock.mock('/problems', (req) => {
+Mock.mock('/problems', () => {
     let list = [];
-    console.log(req);
     for (let i = 0; i < 30; i++) {
         list.push({
             title: Random.ctitle(),
