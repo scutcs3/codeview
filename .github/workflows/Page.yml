@@ -2,7 +2,7 @@ name: Build Static Page
 on:
   push:
     branches:
-      - feature/static-page
+      - bugfix/static-page
       - develop
   pull_request:
     branches:
@@ -21,8 +21,7 @@ jobs:
         id: cache
         with:
           path: frontend/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
@@ -33,6 +32,9 @@ jobs:
         run: |
           cd frontend
           npm run build
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          BUILD_ID: ${{ github.run_id }}
       - name: GitHub Pages
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
         uses: crazy-max/ghaction-github-pages@v2.3.0

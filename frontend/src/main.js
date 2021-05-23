@@ -1,12 +1,22 @@
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import router from './routes.js'
+import router from './router.js'
+import store from './store.js'
+
+import './main.css'
 import installElementPlus from './plugins/element'
 
-const app = createApp(App)
-installElementPlus(app)
+if (process.env.VUE_APP_MOCK === "true") {
+    console.log('Mock enabled!');
+    require('./mock.js')
+}
 
-app.use(router)
+const app = createApp(App);
+installElementPlus(app);
 
-app.mount('#app')
+app.use(router);
+app.use(store);
+app.mount('#app');
+
+export default app;

@@ -41,6 +41,8 @@ paths:
           $ref: '#/components/responses/TokenResp'
         '400':
           description: 验证失败。
+        '410':
+          description: 数据库错误。
   /users:
     get:
       summary: 获取用户信息
@@ -69,6 +71,11 @@ paths:
       responses:
         '200':
           description: 返回符合条件的用户列表。
+          headers:
+            Link:
+              description: 分页信息。
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -77,6 +84,8 @@ paths:
                   $ref: '#/components/schemas/User'
         '401':
           description: 需要登陆。
+        '410':
+          description: 数据库错误。
     post:
       summary: 注册用户
       tags:
@@ -90,12 +99,50 @@ paths:
         '201':
           $ref: '#/components/responses/TokenResp'
         '400':
-          description: '参数错误'
+          description: 参数错误。
         '409':
-          description: '用户已存在'
+          description: 用户已存在。
+        '410':
+          description: 数据库错误。
+    patch:
+      summary: 修改用户信息
+      description: 修改用户名/用户密码。
+      tags:
+      - 用户模块
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - id
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  description: 用户ID。
+                name:
+                  type: string
+                  description: 用户名。
+                  example: 小黄同学
+                password:
+                  type: string
+                  format: password
+                  description: 用户密码。
+      responses:
+        '200':
+          description: 修改用户信息成功。
+        '401':
+          description: 需要登陆。
+        '403':
+          description: 没有权限修改用户信息。
+        '404':
+          description: 找不到指定id的用户。
+        '410':
+          description: 数据库错误。
   /problems:
     get:
-      summary: 获取题目数据。
+      summary: 获取题目数据
       description: 通过ID/关键字搜索题目。
       parameters:
       - in: query
@@ -117,7 +164,7 @@ paths:
       - $ref: '#/components/parameters/PerPageParam'
       responses:
         '200':
-          description: 返回题目列表
+          description: 返回题目列表。
           content:
             application/json:
               schema:
@@ -125,7 +172,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Problem'
         '400':
-          description: 参数错误
+          description: 参数错误。
+        '410':
+          description: 数据库错误。
       tags:
       - 题目模块
     post:
@@ -157,8 +206,10 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '401':
           description: 需要登陆。
+        '410':
+          description: 数据库错误。
     delete:
-      summary: 删除题目。
+      summary: 删除题目
       description: 只能删除自己创建的题目。
       tags:
       - 题目模块
@@ -183,8 +234,10 @@ paths:
           description: 没有权限删除题目。
         '404':
           description: 找不到指定id的题目。
+        '410':
+          description: 数据库错误。
     patch:
-      summary: 修改题目。
+      summary: 修改题目
       tags:
       - 题目模块
       requestBody:
@@ -203,20 +256,18 @@ paths:
       responses:
         '200':
           description: 修改题目成功。
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         '401':
           description: 需要登陆。
         '403':
           description: 没有权限修改题目。
         '404':
           description: 找不到指定id的题目。
+        '410':
+          description: 数据库错误。
   /answers:
     get:
-      summary: 获取答案列表。
-      description: 获取在面试`iid`过程中针对题目`pid`提交的答案列表
+      summary: 获取答案列表
+      description: 获取在面试`iid`过程中针对题目`pid`提交的答案列表。
       tags:
       - 答案模块
       parameters:
@@ -236,7 +287,7 @@ paths:
       - $ref: '#/components/parameters/PerPageParam'
       responses:
         '200':
-          description: 获取答案列表成功
+          description: 获取答案列表成功。
           content:
             application/json:
               schema:
@@ -244,7 +295,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Answer'
         '400':
-          description: 参数错误
+          description: 参数错误。
+        '410':
+          description: 数据库错误。
     post:
       summary: 提交答案
       tags:
@@ -261,9 +314,11 @@ paths:
           description: 提交代码失败。
         '401':
           description: 需要登陆。
+        '410':
+          description: 数据库错误。
   /interviews:
     get:
-      summary: 获取面试列表。
+      summary: 获取面试列表
       description: 包括当前用户创建的和参与的面试列表。
       tags:
       - 面试模块
@@ -284,7 +339,7 @@ paths:
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
-        '202':
+        '200':
           description: 成功获取面试列表。
           content:
             application/json:
@@ -296,6 +351,10 @@ paths:
           description: 需要登陆。
         '403':
           description: 没有权限获取面试信息。
+        '404':
+          description: 面试ID不存在。
+        '410':
+          description: 数据库错误。
     post:
       summary: 创建面试
       tags:
@@ -306,7 +365,7 @@ paths:
             schema:
               $ref: '#/components/schemas/InterviewBody'
       responses:
-        '202':
+        '200':
           description: 创建面试成功。
           content:
             application/json:
@@ -316,8 +375,10 @@ paths:
           description: 创建面试失败。
         '401':
           description: 需要登陆。
+        '410':
+          description: 数据库错误。
     patch:
-      summary: 修改面试信息。
+      summary: 修改面试信息
       tags:
       - 面试模块
       requestBody:
@@ -334,7 +395,7 @@ paths:
               - required:
                 - iid
       responses:
-        '202':
+        '200':
           description: 成功修改面试信息。
           content:
             application/json:
@@ -346,9 +407,11 @@ paths:
           description: 参数错误。
         '404':
           description: 面试ID不存在。
+        '410':
+          description: 数据库错误。
   /comments:
     get:
-      summary: 获取留言列表。
+      summary: 获取留言列表
       description: 获取面试`iid`过程中的留言列表。
       tags:
       - 留言模块
@@ -359,15 +422,26 @@ paths:
         description: 面试ID。
         schema:
           type: integer
+          format: int32
+          example: 3
       - in: query 
         name: cid
         description: 留言ID。
         schema:
           type: integer
+          format: int32
+          example: 2
+      - in: query
+        name: since
+        description: 返回`since`时间之后的留言。预计用于留言自动刷新时减少查询量。
+        schema:
+          type: string
+          format: date-time
+          example: "2021-05-15T16:07:01.122Z"
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
-        '202':
+        '200':
           description: '成功获取留言列表'
           content:
             application/json:
@@ -375,6 +449,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
+        '403':
+          description: 参数错误。
+        '410':
+          description: 数据库错误。
     post:
       summary: '创建留言'
       tags:
@@ -392,9 +470,10 @@ paths:
               - properties:
                   iid:
                     type: integer
+                    example: 5
                     description: 面试ID。
       responses:
-        '202':
+        '200':
           description: 留言成功。
           content:
             application/json:
@@ -404,6 +483,8 @@ paths:
           description: 留言失败。
         '401':
           description: 需要登陆。
+        '410':
+          description: 数据库错误。
 components:
   schemas:
     Token:
@@ -431,6 +512,7 @@ components:
         name:
           type: string
           description: 用户名。
+          example: 小黄同学
         email:
           type: string
           format: email
@@ -464,18 +546,22 @@ components:
           id:
             type: integer
             format: int32
+            example: 6
             description: 题目ID。
           owner_id:
             type: integer
             format: int32
+            example: 5
             description: 题目创建者ID。
-          created_time:
+          created_at:
             type: string
             format: date-time
+            example: "2021-05-15T16:07:01.122Z"
             description: 题目创建时间。
-          updated_time:
+          updated_at:
             type: string
             format: date-time
+            example: "2021-05-15T16:07:01.122Z"
             description: 题目更新时间。
     InterviewBody:
       description: 面试关键数据，用于创建面试。
@@ -487,14 +573,18 @@ components:
       properties:
         viewee_id:
           type: integer
+          format: int32
+          example: 4
           description: 面试者ID。
         start_time:
           type: string
           format: date-time
+          example: "2021-05-15T16:07:01.122Z"
           description: 面试开始时间。
         finish_time:
           type: string
           format: date-time
+          example: "2021-05-15T16:07:01.122Z"
           description: 面试结束时间。
     Interview:
       description: 面试信息。
@@ -505,14 +595,6 @@ components:
           viewer_id:
             type: integer
             description: 面试官ID。
-          created_time:
-            type: string
-            format: date-time
-            description: 面试创建时间。
-          updated_time:
-            type: string
-            format: date-time
-            description: 面试更新时间。
           status:
             description: 面试状态。面试创建完成（created），面试者同意面试（ready），面试者拒绝面试（rejected），面试官取消面试（cancelled）。
             type: string
@@ -584,7 +666,7 @@ components:
             type: integer
             format: int32
             description: 留言用户ID。
-          created_time:
+          created_at:
             type: string
             format: date-time
             description: 留言时间。
@@ -592,20 +674,23 @@ components:
     PageParam:
       name: page
       in: query
-      description: 页数，用于列表分页，从1开始。
+      description: 页数，用于列表分页。
       required: false
       schema:
         type: integer
         format: int32
         minimum: 1
+        example: 2
     PerPageParam:
       name: per_page
       in: query
-      description: 每页数量，最大100，默认30。
+      description: 每页数量。
       required: false
       schema:
         type: integer
         format: int32
+        example: 50
+        default: 30
         minimum: 1
         maximum: 100
   responses:
