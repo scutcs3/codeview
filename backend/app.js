@@ -60,7 +60,7 @@ app.get('/', function(req, res, next) {
 })
 
 app.get('/test', function(req, res, next) {
-    res.send('test auto deploy');
+    res.send('测试自动部署!');
 });
 
 app.use('/users', usersRouter);
