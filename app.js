@@ -19,7 +19,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 var expressJwt = require("express-jwt");
 // jwt中间件
@@ -44,7 +43,7 @@ app.all('*', function (req, res, next) {
     else next();
 });
 
-app.get('/', function(req, res, next) {
+app.get('/', function(req, res) {
     var port = app.get('port') === 80 ? '' : app.get('port');
     var url =`${req.protocol}://${req.hostname}:${port}`;
     var ans = {
@@ -59,7 +58,7 @@ app.get('/', function(req, res, next) {
     res.status(200).json(ans);
 })
 
-app.get('/test', function(req, res, next) {
+app.get('/test', function(req, res) {
     res.send('测试自动部署!');
 });
 
