@@ -1,4 +1,4 @@
-const ws = require("npm install nodejs-websocket");
+const ws = require("nodejs-websocket");
 const PORT = 3000;
 let num=0;
 const serve = ws.createServer(function (connect) {
