@@ -1,5 +1,5 @@
 const ws = require("nodejs-websocket");
-const PORT = 3000;
+const PORT = 3002;
 let num=0;
 const serve = ws.createServer(function (connect) {
   let id=num;
@@ -25,8 +25,7 @@ const serve = ws.createServer(function (connect) {
 
     })
   }
-  
 });
 serve.listen(PORT, function () {
-  console.log("启动成功，监听3000端口");
+  console.log("启动成功，监听" + PORT + "端口");
 });
