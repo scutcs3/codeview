@@ -71,7 +71,7 @@ export default {
     };
   },
   created() {
-    this.socket = new WebSocket("ws://localhost:3000");
+    this.socket = new WebSocket("ws://localhost:3002");
     this.socket.onopen = this.onopen;
     this.socket.onclose = this.onclose;
     this.socket.onmessage = this.onmessage;
