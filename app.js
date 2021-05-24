@@ -1,6 +1,5 @@
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
@@ -74,7 +73,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     res.status(err.status || 500).json({
         "message": err.message,
         "documentation_url": "https://app.swaggerhub.com/apis-docs/tootal/codeview/1.0.0"
