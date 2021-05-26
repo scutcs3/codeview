@@ -10,11 +10,11 @@
         class="content"
         v-loading="loading"
       >
-        <el-form-item prop="username">
+        <el-form-item prop="email">
           <el-input
-            v-model="registerParam.username"
-            placeholder="用户名"
-            prefix-icon="el-icon-user"
+            v-model="registerParam.email"
+            placeholder="邮箱"
+            prefix-icon="el-icon-message"
           ></el-input>
         </el-form-item>
 
@@ -33,14 +33,6 @@
             placeholder="确认密码"
             v-model="registerParam.r_password"
             prefix-icon="el-icon-lock"
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item prop="email">
-          <el-input
-            v-model="registerParam.email"
-            placeholder="邮箱"
-            prefix-icon="el-icon-message"
           ></el-input>
         </el-form-item>
 
@@ -80,10 +72,6 @@ export default {
       loading: false,
       registerParam: {},
       rules: {
-        username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 2, max: 32, message: "请输入2-20位字符", trigger: "blur" },
-        ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, max: 32, message: "请输入6-32位字符", trigger: "blur" },
@@ -113,7 +101,7 @@ export default {
         email: this.registerParam.email,
         password: this.registerParam.password,
       }).handle({
-        201: (data) => {
+        200: (data) => {
           ElMessage.success("注册成功，已自动登录");
           this.$store.commit({
             type: "login",
@@ -126,10 +114,8 @@ export default {
             this.$router.push("/console");
           }
         },
-        400: () => errorHandle("注册失败"),
         404: () => errorHandle("注册失败"),
         409: () => errorHandle("该用户已存在"),
-        410: () => errorHandle("数据库错误"),
       });
     },
   },
