@@ -27,6 +27,7 @@
   import 'tinymce/plugins/preview'
   import 'tinymce/plugins/fullscreen'
   import 'tinymce/plugins/help'
+  import { inject } from 'vue'
   export default {
       components: {
           Editor
@@ -57,13 +58,15 @@
           toolbar: {
               type: [String, Array],
               default: 'bold italic underline strikethrough | fontsizeselect | formatselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | undo redo | removeformat | fullscreen preview'
-          }
+          },
       },
       data () {
           return {
-              str:'',
+              str:"",
               content:"nihao",
               flag:false,
+              currentUser: inject('CurrentID'),
+
           init: {
               language_url: `${this.baseUrl}/tinymce/langs/zh_CN.js`,
               language: 'zh_CN',
@@ -82,16 +85,24 @@
               }
           }
           }
-      },
+    },
       methods:{
-          printf(){
-              alert(this.str)
-          },
-          add(){
+        printf(){
+            alert(this.str);
+            var mynowmsg = {
+                title: this.t,
+                content: this.c,
+                IsPorblem:1,
+            };
+            var jsonstr = JSON.stringify(mynowmsg);
+            this.$emit('problemPressed',jsonstr);
+        },
+        add(){
               this.flag=true,
               console.log(this.c),
               this.str=this.c
-          }
+              
+        },
       },
       mounted () {
           tinymce.init({})

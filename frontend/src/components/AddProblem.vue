@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tinymce ref="editor" :disabled="disabled" :t="title1" :c="content1">
+    <tinymce @problemPressed="problemPressed" ref="editor" :disabled="disabled" :t="title1" :c="content1">
     </tinymce>
   </div>
 </template>
@@ -21,6 +21,11 @@ export default {
   },
   components:{
     tinymce
-  }
+  },
+  methods:{
+    problemPressed(val){
+        this.$emit("problemsend",val);
+    }
+  },
 }
 </script>
