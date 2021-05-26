@@ -1,4 +1,5 @@
 <template>
+    <h1>{{codestr}}</h1>
     <div class="monaco-container">
         <div class="Choose">
             语言：
@@ -42,12 +43,16 @@
 </template>
 <script>
 import MonacoEditor from './MonacoEditor.vue';
-
+import { inject } from 'vue'
 export default {
     name: "CodeEditor",
     components: { MonacoEditor },
     data() {
         return {
+            chatnum:0,
+            Onechat:inject('Onechat'), //用来接收父组件传来的消息
+            codestr:"",//假设这是代码
+            currentUser: inject('CurrentID'),//当前使用者ID，用于判断是面试官还是面试者
             sets: {
                 language: {
                     cpp: "cpp",
@@ -68,6 +73,7 @@ export default {
                     "hc-black": "hc-black",
                 },
             },
+            
             opts: {
                 value: "",
                 readOnly: false, // 是否可编辑
@@ -76,6 +82,22 @@ export default {
             },
         };
     },
+    watch: {
+        Onechat:{//判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
+        handler(val,oldval){
+                console.log(oldval);
+                var jsObj = JSON.parse(val);
+                if(typeof(jsObj.IsCode)=="undefined"){
+                    return;
+                }
+                //console.log(jsObj.IsCode);
+                console.log("服务端返回的数据啊:" + jsObj.value);
+                this.codestr=jsObj.value;
+            },
+            deep: true,
+        }
+    },
+
     methods: {
         changeLanguage(val) {
             this.opts.language = val;
@@ -90,7 +112,20 @@ export default {
         },
         // 内容改变自动获取值
         changeValue(val) {
-            console.log(val);
+            console.log("哈哈哈哈"+val);
+            if(typeof(val)!='string'){
+                return;
+            }
+            var mycode = {
+                username: this.currentUser,
+                value: val,
+                language:this.opts.language,
+                theme:this.opts.theme,
+                IsCode:1,
+                chatnum:this.num,
+            };
+            var jsonstr = JSON.stringify(mycode);
+            this.$emit("codeMsg",jsonstr)
         },
     },
 };
