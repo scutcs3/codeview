@@ -25,6 +25,7 @@ import "tinymce/plugins/code";
 import "tinymce/plugins/preview";
 import "tinymce/plugins/fullscreen";
 import "tinymce/plugins/help";
+import { inject } from "vue";
 export default {
   components: {
     Editor,
@@ -63,6 +64,7 @@ export default {
       str: "",
       content: "nihao",
       flag: false,
+      currentUser: inject("CurrentID"),
       init: {
         language_url: `${this.baseUrl}/tinymce/langs/zh_CN.js`,
         language: "zh_CN",
@@ -85,6 +87,13 @@ export default {
   methods: {
     printf() {
       alert(this.str);
+      var mynowmsg = {
+        title: this.t,
+        content: this.c,
+        IsPorblem: 1,
+      };
+      var jsonstr = JSON.stringify(mynowmsg);
+      this.$emit("problemPressed", jsonstr);
     },
     add() {
       (this.flag = true), console.log(this.c), (this.str = this.c);

@@ -1,16 +1,12 @@
 <template>
   <div id="main">
     <el-container id="main-content">
-      <el-header id="chat-title">Chat Online</el-header>
+      <el-header id="chat-title">Chat online</el-header>
       <el-divider></el-divider>
       <el-main id="chat-content">
         <div id="content">
           <div v-for="item in chatHistory" :key="item">
-            <div v-if="typeof item === 'string'">
-              <div style="text-align: center; color: grey; margin-bottom: 20px">
-                {{ item }}
-              </div>
-            </div>
+            <div v-if="typeof item.Ischat === 'undefined'"></div>
             <div class="my-msg" v-else-if="item.username === currentUser">
               <div class="message-box">
                 <div class="my message">
@@ -61,21 +57,20 @@
 </template>
 
 <script>
+import { inject } from "vue";
 export default {
+  name: "BaseComment",
   data() {
     return {
       input: "",
       chatHistory: [],
-      currentUser: "wowo1",
+      currentUser: inject("CurrentID"),
       socket: "",
+      Onechat: inject("Onechat"), //用来接收父组件传来的消息
+      chatnum: 0,
     };
   },
-  created() {
-    this.socket = new WebSocket("ws://localhost:3002");
-    this.socket.onopen = this.onopen;
-    this.socket.onclose = this.onclose;
-    this.socket.onmessage = this.onmessage;
-  },
+
   mounted() {
     if (localStorage.getItem("chatHistory") === null) {
       localStorage.setItem("chatHistory", "");
@@ -92,26 +87,28 @@ export default {
         document.getElementById("content").scrollIntoView(false);
       });
     },
+    currentUser: {
+      handler(val, oldval) {
+        console.log(val);
+        console.log(oldval);
+      },
+    },
+    Onechat: {
+      //判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
+      handler(val, oldval) {
+        console.log(oldval);
+        var jsObj = JSON.parse(val);
+        if (typeof jsObj.Ischat == "undefined") {
+          return;
+        }
+        console.log("服务端返回的数据:" + val);
+        this.chatHistory.push(jsObj);
+        localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
+      },
+      deep: true,
+    },
   },
   methods: {
-    onopen() {
-      console.log("连接建立");
-    },
-    onclose() {
-      console.log("连接关闭");
-    },
-    onmessage(event) {
-      console.log("服务端返回的数据:" + event.data);
-      var jsObj = JSON.parse(event.data);
-      this.chatHistory.push(jsObj);
-      localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
-    },
-    add() {
-      let tmp = document.getElementById("value");
-      console.log(tmp.value);
-      this.msg.push(tmp.value);
-      tmp.value = "";
-    },
     sendMsg() {
       if (this.input == "") {
         return;
@@ -119,15 +116,15 @@ export default {
       var mynowmsg = {
         username: this.currentUser,
         input: this.input.trim(),
+        Ischat: 1,
+        chatnum: this.chatnum,
       };
-      //this.chatHistory.push(mynowmsg);
-      console.log(this.chatHistory);
-      console.log(this.input);
-      console.log(this.chatHistory);
+      this.chatnum++;
+
       localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
 
       var jsonstr = JSON.stringify(mynowmsg);
-      this.socket.send(jsonstr);
+      this.$emit("fct", jsonstr);
       this.input = "";
     },
   },
