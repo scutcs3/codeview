@@ -11,9 +11,9 @@
           label-width="0px"
           class="ms-content"
         >
-          <el-form-item prop="username">
+          <el-form-item prop="email">
             <el-input
-              v-model="loginParam.username"
+              v-model="loginParam.email"
               placeholder="邮箱 如123456@qq.com"
               prefix-icon="el-icon-user"
             ></el-input>
@@ -58,7 +58,7 @@ export default {
       loading: false,
       loginParam: {},
       rules: {
-        username: [
+        email: [
           { required: true, message: "请输入邮箱", trigger: "blur" },
           { type: "email", message: "请输入正确电子邮件地址", trigger: "blur" },
         ],
@@ -80,7 +80,7 @@ export default {
       };
       this.loading = true;
       login({
-        username: this.loginParam.username,
+        email: this.loginParam.email,
         password: this.loginParam.password,
       }).handle({
         200: (data) => {
@@ -96,9 +96,7 @@ export default {
             this.$router.push("/console");
           }
         },
-        400: () => errorHandle("登录失败"),
         404: () => errorHandle("登录失败"),
-        410: () => errorHandle("数据库错误"),
       });
     },
   },

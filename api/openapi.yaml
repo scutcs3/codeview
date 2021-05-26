@@ -41,7 +41,7 @@ paths:
           $ref: '#/components/responses/TokenResp'
         '400':
           description: 验证失败。
-        '410':
+        '500':
           description: 数据库错误。
   /users:
     get:
@@ -96,7 +96,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UserBody'
       responses:
-        '201':
+        '200':
           $ref: '#/components/responses/TokenResp'
         '400':
           description: 参数错误。
@@ -173,7 +173,7 @@ paths:
                   $ref: '#/components/schemas/Problem'
         '400':
           description: 参数错误。
-        '410':
+        '500':
           description: 数据库错误。
       tags:
       - 题目模块
@@ -198,7 +198,7 @@ paths:
                     format: int32
                     description: 题目ID。
       responses:
-        '201':
+        '200':
           description: 添加题目成功。
           content:
             application/json:
@@ -206,7 +206,11 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '401':
           description: 需要登陆。
-        '410':
+        '404':
+          description: 题目ID不存在。
+        '405':
+          description: 面试ID不存在。
+        '500':
           description: 数据库错误。
     delete:
       summary: 删除题目
@@ -226,7 +230,7 @@ paths:
         schema:
           type: integer
       responses:
-        '204':
+        '200':
           description: 删除题目成功
         '401':
           description: 需要登陆。
@@ -234,7 +238,7 @@ paths:
           description: 没有权限删除题目。
         '404':
           description: 找不到指定id的题目。
-        '410':
+        '500':
           description: 数据库错误。
     patch:
       summary: 修改题目
@@ -262,7 +266,7 @@ paths:
           description: 没有权限修改题目。
         '404':
           description: 找不到指定id的题目。
-        '410':
+        '500':
           description: 数据库错误。
   /answers:
     get:
@@ -296,7 +300,7 @@ paths:
                   $ref: '#/components/schemas/Answer'
         '400':
           description: 参数错误。
-        '410':
+        '500':
           description: 数据库错误。
     post:
       summary: 提交答案
@@ -306,15 +310,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AnswerBody'
+              allOf:
+              - required:
+                - language
+                - content
+                - problem_id
+                - interview_id
+              - $ref: '#/components/schemas/AnswerBody'
       responses:
         '200':
           description: 提交代码成功。
         '400':
-          description: 提交代码失败。
+          description: 参数错误。
         '401':
           description: 需要登陆。
-        '410':
+        '500':
           description: 数据库错误。
   /interviews:
     get:
@@ -353,7 +363,7 @@ paths:
           description: 没有权限获取面试信息。
         '404':
           description: 面试ID不存在。
-        '410':
+        '500':
           description: 数据库错误。
     post:
       summary: 创建面试
@@ -363,7 +373,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InterviewBody'
+              allOf:
+              - $ref: '#/components/schemas/InterviewBody'
+              - required:
+                - viewee_id
+                - start_time
+                - finish_time
       responses:
         '200':
           description: 创建面试成功。
@@ -375,7 +390,7 @@ paths:
           description: 创建面试失败。
         '401':
           description: 需要登陆。
-        '410':
+        '500':
           description: 数据库错误。
     patch:
       summary: 修改面试信息
@@ -401,13 +416,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Interview'
+        '400':
+          description: 参数错误。
         '401':
           description: 需要登陆。
-        '403':
-          description: 参数错误。
         '404':
           description: 面试ID不存在。
-        '410':
+        '500':
           description: 数据库错误。
   /comments:
     get:
@@ -449,9 +464,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Comment'
-        '403':
+        '400':
           description: 参数错误。
-        '410':
+        '500':
           description: 数据库错误。
     post:
       summary: '创建留言'
@@ -483,7 +498,7 @@ paths:
           description: 留言失败。
         '401':
           description: 需要登陆。
-        '410':
+        '500':
           description: 数据库错误。
 components:
   schemas:
@@ -566,10 +581,6 @@ components:
     InterviewBody:
       description: 面试关键数据，用于创建面试。
       type: object
-      required:
-      - viewee_id
-      - start_time
-      - finish_time
       properties:
         viewee_id:
           type: integer
@@ -626,9 +637,6 @@ components:
               printf("hello world!\n");
               return 0;
             }
-        owner_id:
-          type: integer
-          description: 创建用户ID。
         problem_id:
           type: integer
           description: 所属题目ID。
@@ -695,7 +703,7 @@ components:
         maximum: 100
   responses:
     TokenResp:
-      description: 成功获取用户令牌。
+      description: 创建Token成功（登录成功）。
       content:
         application/json:
           schema:
