@@ -1,6 +1,11 @@
 <template>
   <div class="intro-container">
-    <div class="intro" v-for="(intro, index) in introData" :key="intro.title" :class="{ reverse: index % 2 === 1 }">
+    <div
+      class="intro"
+      v-for="(intro, index) in introData"
+      :key="intro.title"
+      :class="{ reverse: index % 2 === 1 }"
+    >
       <div class="intro-item">
         <el-image
           :src="require('../assets/' + intro.icon)"

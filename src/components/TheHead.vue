@@ -8,7 +8,7 @@
 </template>
 <script>
 import HeadMenu from "./HeadMenu.vue";
-import router from "../router.js";
+import router from "../router";
 
 export default {
   name: "TheHead",
@@ -17,9 +17,9 @@ export default {
   },
   methods: {
     goIndex() {
-      router.push('/')
-    }
-  }
+      router.push("/");
+    },
+  },
 };
 </script>
 <style scoped>

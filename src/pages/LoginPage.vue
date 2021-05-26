@@ -49,7 +49,7 @@
 
 <script>
 import { ElMessage } from "element-plus";
-import { login } from '../api/user.js';
+import { login } from "../api/user.js";
 
 export default {
   name: "Login",

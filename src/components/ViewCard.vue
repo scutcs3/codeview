@@ -8,8 +8,10 @@
     </template>
     <div class="content">
       <div class="view-info">
-          <p>面试时间：<span :title="viewTimeInfo">{{ viewTimeShow }}</span></p>
-          <p>候选人：XXX</p>
+        <p>
+          面试时间：<span :title="viewTimeInfo">{{ viewTimeShow }}</span>
+        </p>
+        <p>候选人：XXX</p>
       </div>
       <div class="view-act">
         <el-timeline>
@@ -80,6 +82,6 @@ export default {
   justify-content: space-between;
 }
 .view-info p {
-    margin: .5rem;
+  margin: 0.5rem;
 }
 </style>

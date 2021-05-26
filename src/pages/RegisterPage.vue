@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center">
     <div class="registerdoor">
-        <h2 class="text-center">注册</h2>
+      <h2 class="text-center">注册</h2>
       <el-form
         :model="registerParam"
         ref="registerForm"
@@ -61,9 +61,9 @@
   </div>
 </template>
 <script>
-import { ElMessage } from 'element-plus';
-import { register } from '../api/user.js';
-import router from "../router.js";
+import { ElMessage } from "element-plus";
+import { register } from "../api/user.js";
+import router from "../router";
 export default {
   name: "Register",
   data: function () {
@@ -116,7 +116,7 @@ export default {
         201: (data) => {
           ElMessage.success("注册成功，已自动登录");
           this.$store.commit({
-            type: 'login',
+            type: "login",
             token: data.token,
           });
           this.loading = false;
@@ -131,7 +131,7 @@ export default {
         409: () => errorHandle("该用户已存在"),
         410: () => errorHandle("数据库错误"),
       });
-    }
+    },
   },
 };
 </script>

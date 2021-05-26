@@ -14,7 +14,7 @@
 <script>
 import CodeEditor from "../components/CodeEditor.vue";
 import AddProblem from "../components/AddProblem.vue";
-import BaseComment from "../components/BaseComment.vue"
+import BaseComment from "../components/BaseComment.vue";
 export default {
   name: "App",
   components: {
@@ -24,7 +24,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-
-
-</style>
+<style scoped></style>

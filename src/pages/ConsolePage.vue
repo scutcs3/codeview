@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import router from "../router.js";
+import router from "../router";
 
 export default {
   name: "Console",

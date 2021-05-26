@@ -46,8 +46,7 @@ export default {
         开发资源: [
           {
             title: "Vue3",
-            href:
-              "https://v3.cn.vuejs.org/guide/introduction.html#vue-js-%E6%98%AF%E4%BB%80%E4%B9%88",
+            href: "https://v3.cn.vuejs.org/guide/introduction.html#vue-js-%E6%98%AF%E4%BB%80%E4%B9%88",
           },
           {
             title: "Element+",
@@ -55,7 +54,7 @@ export default {
           },
           {
             title: "Express 4",
-            href: "http://expressjs.com/zh-cn/starter/installing.html"
+            href: "http://expressjs.com/zh-cn/starter/installing.html",
           },
           { title: "unDraw", href: "https://undraw.co/search" },
         ],
@@ -89,6 +88,6 @@ export default {
   margin: 2rem;
 }
 .info p {
-  padding: .2rem;
+  padding: 0.2rem;
 }
 </style>

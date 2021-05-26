@@ -1,15 +1,15 @@
-import { createApp } from 'vue'
+import { createApp } from "vue";
+import App from "./App.vue";
+import "./registerServiceWorker";
+import router from "./router";
+import store from "./store";
 
-import App from './App.vue'
-import router from './router.js'
-import store from './store.js'
-
-import './main.css'
-import installElementPlus from './plugins/element'
+import "./main.css";
+import installElementPlus from "./plugins/element";
 
 if (process.env.VUE_APP_API_MODE === "mock") {
-    console.log('Mock enabled!');
-    require('./mock.js')
+  console.log("Mock enabled!");
+  require("./mock");
 }
 
 const app = createApp(App);
@@ -17,6 +17,6 @@ installElementPlus(app);
 
 app.use(router);
 app.use(store);
-app.mount('#app');
+app.mount("#app");
 
 export default app;

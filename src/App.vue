@@ -14,15 +14,14 @@ export default {
   data() {
     return {
       isLogin: false,
-    }
+    };
   },
   components: {
     IndexLayout,
   },
   mounted() {
-    this.isLogin = localStorage.getItem['token'] !== null;
+    this.isLogin = localStorage.getItem["token"] !== null;
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

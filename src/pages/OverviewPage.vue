@@ -2,7 +2,10 @@
   <div class="overview">
     <el-button @click="createDialogVisible = true">创建面试</el-button>
     <div class="view-cards">
-      <ViewCard v-for="i in 10" :key="i" class="view-card"
+      <ViewCard
+        v-for="i in 10"
+        :key="i"
+        class="view-card"
         :title="'第' + i + '场面试'"
       ></ViewCard>
     </div>
@@ -35,7 +38,7 @@
   </div>
 </template>
 <script>
-import ViewCard from '../components/ViewCard.vue';
+import ViewCard from "../components/ViewCard.vue";
 export default {
   name: "Overview",
   components: {

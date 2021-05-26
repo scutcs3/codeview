@@ -4,7 +4,7 @@
       <TheHead></TheHead>
     </el-header>
     <el-main>
-        <slot></slot>
+      <slot></slot>
     </el-main>
     <el-footer>
       <TheFoot></TheFoot>
@@ -24,7 +24,9 @@ export default {
 };
 </script>
 <style scoped>
-.el-header, .el-main, .el-footer {
-    padding: 0;
+.el-header,
+.el-main,
+.el-footer {
+  padding: 0;
 }
 </style>

@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import tinymce from '../components/TinymceEditor'
+import tinymce from "../components/TinymceEditor";
 export default {
   name: "AddProblem",
   data: function () {
@@ -17,10 +17,10 @@ export default {
        {[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}，
         {2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}，
         {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。`,
-    }
+    };
   },
-  components:{
-    tinymce
-  }
-}
+  components: {
+    tinymce,
+  },
+};
 </script>
