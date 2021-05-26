@@ -39,8 +39,8 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
     }
   });
 
-  var page = page ? page : 1;
-  var per_page = per_page ? per_page : 30;
+  page = page ? page : 1;
+  per_page = per_page ? per_page : 30;
   var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
   var preSize = (page - 1) * per_page;
 

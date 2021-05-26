@@ -1,8 +1,8 @@
 import axios from "axios";
-import { baseUrl } from "./global.js";
+import { baseUrl, Handler } from "./global.js";
 
 export function getProblems() {
-  return axios.post(baseUrl + "/problems");
+  return new Handler(axios.get(baseUrl + "/problems"));
 }
 
 export function getProblem(data) {

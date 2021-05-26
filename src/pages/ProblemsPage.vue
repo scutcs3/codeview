@@ -51,19 +51,18 @@ export default {
   },
   mounted() {
     const self = this;
-    getProblems()
-      .then(function (response) {
-        return JSON.parse(response.data);
-      })
-      .then(function (json) {
-        for (let problem of json) {
+    getProblems().handle({
+      200: (data) => {
+        for (let problem of data) {
           self.tableData.push({
             id: problem.id,
             title: problem.title,
             updated_at: problem.updated_at,
           });
         }
-      });
+      },
+      404: () => console.log("获取题目列表失败"),
+    });
   },
 };
 </script>
