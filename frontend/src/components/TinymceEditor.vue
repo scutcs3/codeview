@@ -12,6 +12,7 @@
   </template>
   
   <script>
+      
   import tinymce from 'tinymce/tinymce'
   import Editor from '@tinymce/tinymce-vue'
   import 'tinymce/skins/content/default/content.css'
@@ -27,6 +28,7 @@
   import 'tinymce/plugins/preview'
   import 'tinymce/plugins/fullscreen'
   import 'tinymce/plugins/help'
+
   export default {
       components: {
           Editor
@@ -88,8 +90,10 @@
               alert(this.str)
           },
           add(){
+              alert(this.c)
               this.flag=true,
               console.log(this.c),
+
               this.str=this.c
           }
       },

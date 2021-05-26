@@ -2,7 +2,7 @@
   <div>
     <!--class="problem"-->
     <el-header>
-      <h3>{{ id }} {{ title }}</h3>
+      <h3>{{ tempid }} {{ title }}</h3>
     </el-header>
     <el-main>
       <p>{{ content }}</p>
@@ -17,24 +17,48 @@
         <div v-if="show" class="testshow">?????????</div>
       </el-collapse>
     </el-main>
+    
+    <button @click="leave" class="leave-ui">离开</button>
   </div>
 </template>
 
 <script>
 import { getProblem } from "../api/problem.js";
-
+ 
 export default {
   name: "ProblemPage",
   data() {
     return {
+     
       show: false,
+      tempid:this.$route.params.id,
 
       title: "",
       content: "",
       id: "",
     };
   },
+  
+  
+
+ methods: {
+    handleChange(val) {
+      console.log(val);
+    },
+    leave()
+    {
+      //location.reload();
+       //this.$unmounted();
+      history.back();
+     
+      
+    }
+  },
+
   mounted() {
+    this.tempid=this.$route.params.id;
+
+    alert(this.tempid);
     const self = this;
     getProblem()
       .then((response) => JSON.parse(response.data))
@@ -44,12 +68,12 @@ export default {
         self.id = json[0].id;
       });
   },
+ 
+ 
+  
+ 
 
-  methods: {
-    handleChange(val) {
-      console.log(val);
-    },
-  },
+ 
 };
 </script>
 
@@ -79,5 +103,10 @@ button {
   font-size: 17px; /*设置字体大小*/
   text-align: left; /*字体居中*/
   cursor: pointer; /*设置鼠标箭头手势*/
+}
+.leave-ui
+{
+ width: 10%; /*设置按钮宽度*/
+ background-color: rgb(57, 227, 233); /*按钮背景颜色*/
 }
 </style>

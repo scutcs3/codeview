@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tinymce ref="editor" :disabled="disabled" :t="title1" :c="content1">
+    <tinymce ref="editor" :disabled="disabled" :t="title1" :c="content1" >
     </tinymce>
   </div>
 </template>
@@ -10,6 +10,7 @@ export default {
   name: "AddProblem",
   data: function () {
     return {
+      
       title1: "滑动窗口的最大值",
       content1: `给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。
       例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，
