@@ -603,10 +603,10 @@ components:
       allOf:
       - $ref: '#/components/schemas/InterviewBody'
       - properties:
-          hash_id: 
+          hashid: 
             type: string 
             example: "zxElkj1209FD123sdS"
-            description: 面试hash id，用于面试url。
+            description: 面试hashid，用于面试url。
           viewer_id:
             type: integer
             description: 面试官ID。
