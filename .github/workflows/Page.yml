@@ -25,12 +25,10 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          cd frontend 
           npm install
       - name: Build static Page
         shell: bash
         run: |
-          cd frontend
           npm run build
         env:
           BUILD_NUMBER: ${{ github.run_number }}
@@ -40,6 +38,6 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v2.3.0
         with:
           target_branch: gh-pages
-          build_dir: frontend/dist
+          build_dir: dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
