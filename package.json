@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint",
     "start": "node ./bin/www.js",
     "test": "mocha",
+    "pm2": "pm2 start ./bin/www.js --name codeview --watch",
     "chatonline": "node ./bin/server.js"
   },
   "dependencies": {
