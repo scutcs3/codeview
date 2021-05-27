@@ -23,6 +23,9 @@ router.use(function (req, res, next) {
 
 var connection = require('../config/mysql');
 
+var hashids = require("hashids");
+var hashes = new hashids("codeview salt", 16);
+
 function getInterviewList(field, page, per_page, res, req) {
     var sql;
     sql = `SELECT COUNT(*) FROM interview`;
@@ -51,6 +54,7 @@ function getInterviewList(field, page, per_page, res, req) {
             var results = [];
             for (var i = 0; i < result.length; i++) {
                 results.push(result[i]);
+                results[i]['hashid'] = hashes.encode(result[i].id);
             }
 
             if (page > 1) {
@@ -93,6 +97,7 @@ router.get('/', function (req, res, next) {
                         var results = [];
                         for (var i = 0; i < result.length; i++) {
                             results.push(result[i]);
+                            results[i]['hashid'] = hashes.encode(result[i].id);
                         }
                         res.json({
                             data: results,
