@@ -10,3 +10,15 @@ export function getProblem(data) {
     params: data,
   });
 }
+
+export function addProblem(data) {
+  return new Handler(axios.post(baseUrl + "/problems", data));
+}
+
+export function removeProblem(data) {
+  return new Handler(axios.delete(baseUrl + "/problems", data));
+}
+
+export function modifyProblem(data) {
+  return new Handler(axios.patch(baseUrl + "/problems", data));
+}

@@ -14,11 +14,14 @@
           v-model="textarea"
         >
         </el-input>
+        <el-button type="primary" @click="onSubmit">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
+import { ElMessage } from "element-plus";
+import { addProblem } from "../api/problem";
 export default {
   name: "ProblemsNewPage",
   data() {
@@ -26,6 +29,22 @@ export default {
       textarea: "",
       createForm: {},
     };
+  },
+  methods: {
+    onSubmit() {
+      addProblem({
+        title: this.createForm.title,
+        content: this.createForm.content,
+      }).handle({
+        200: () => {
+          ElMessage.success("添加题目成功");
+          this.$router.push({
+            name: "problems-list",
+          });
+        },
+        404: () => ElMessage.warning("添加题目失败！"),
+      });
+    },
   },
 };
 </script>
