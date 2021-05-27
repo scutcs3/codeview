@@ -1,5 +1,4 @@
 <template>
-    <h1>{{codestr}}</h1>
     <div class="monaco-container">
         <div class="Choose">
             语言：
@@ -37,7 +36,8 @@
         </div>
         <!--调用子组件-->
         <div class="monaco-editor">
-            <MonacoEditor ref="monaco" :opts="opts" @change="changeValue"></MonacoEditor>
+            <MonacoEditor ref="monaco" :opts="opts" @change="changeValue" 
+            @ChangeEditorLanguage="ChangeEditorLanguage"></MonacoEditor>
         </div>
     </div>
 </template>
@@ -82,6 +82,7 @@ export default {
             },
         };
     },
+
     watch: {
         Onechat:{//判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
         handler(val,oldval){
@@ -95,6 +96,22 @@ export default {
                 this.codestr=jsObj.value;
             },
             deep: true,
+        },
+        opts:{
+            handler(val,oldval){
+                if(val!=oldval){
+                    var mycode = {
+                        username: this.currentUser,
+                        value: this.getValue(),
+                        language:this.opts.language,
+                        theme:this.opts.theme,
+                        IsCode:1,
+                        chatnum:this.num,
+                    };
+                    var jsonstr = JSON.stringify(mycode);
+                    this.$emit("codeMsg",jsonstr)
+                }
+            }
         }
     },
 
@@ -127,6 +144,9 @@ export default {
             var jsonstr = JSON.stringify(mycode);
             this.$emit("codeMsg",jsonstr)
         },
+        ChangeEditorLanguage(val){
+            this.opts.language = val;
+        }
     },
 };
 </script>

@@ -8,9 +8,12 @@
 
 <script>
 import * as monaco from "monaco-editor";
+import { inject } from 'vue';
+
 export default {
     name: "MonacoEditor",
     props: {
+        
         opts: {
             type: Object,
             default() {
@@ -24,8 +27,14 @@ export default {
     },
     data() {
         return {
+            timer:null,
+            Onechat:inject('Onechat'),
+            currentUser: inject('CurrentID'),
+            codelanguage: inject('codelanguage'),
             // 主要配置
             defaultOpts: {
+                
+                codestr:"",
                 value: "", // 编辑器的值
                 theme: "vs", // 编辑器主题：vs, hc-black, or vs-dark
                 roundedSelection: false, // 右侧不显示编辑器预览框
@@ -41,13 +50,26 @@ export default {
     watch: {
         opts: {
             handler() {
+                this.codestr=this.getVal(),
+                this.monacoEditor.dispose(),
+                this.monacoEditor=null;
                 this.init();
+                this.monacoEditor.setValue(this.codestr);
+                
             },
             deep: true,
         },
     },
     mounted() {
         this.init();
+    },
+    created(){
+        this.timer=window.setInterval(()=>{
+            setTimeout(this.pollData(),0);
+        },500);
+    },
+    beforeUnmount () {
+        clearInterval(this.timer)
     },
     methods: {
         init() {
@@ -69,6 +91,27 @@ export default {
         getVal() {
             return this.monacoEditor.getValue();
         },
+        pollData(){
+            //console.log(this.currentUser);
+            if(this.Onechat==""||typeof(this.Onechat)=="undefined"){
+                return;
+            }
+            var jsObj = JSON.parse(this.Onechat);
+            if(typeof(jsObj.IsCode)=="undefined"){
+                    return;
+            }
+            if(this.currentUser==jsObj.username){
+                return;
+            }
+            //console.log(jsObj.IsCode);
+            //console.log("服务端返回的数据啊:" + jsObj.value);
+            if(jsObj.value!=this.getVal()){
+                this.monacoEditor.setValue(jsObj.value);
+            }
+            this.$emit("ChangeEditorLanguage",jsObj.language);
+            
+        }
     },
+
 };
 </script>

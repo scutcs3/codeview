@@ -48,10 +48,12 @@ export default {
   },
   watch:{
     chatdata:{
-      handler(val,oldval){
+      handler(val){
+        console.log("miximixi");
         this.socket.send(val);
-        console.log(oldval);
-      }
+        console.log("hahahaha");
+      },
+      deep:true,
     }
   },
   methods:{
