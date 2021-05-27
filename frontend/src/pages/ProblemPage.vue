@@ -6,7 +6,6 @@
     </el-header>
     <el-main>
       <p>{{ content }}</p>
-
       <el-collapse>
         <p>示例</p>
         <p>???</p>
