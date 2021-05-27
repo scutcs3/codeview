@@ -11,7 +11,7 @@ export function getInterview(data) {
   });
 }
 
-export function addInterview(data) {
+export function createInterview(data) {
   return new Handler(axios.post(baseUrl + "/interviews", data));
 }
 

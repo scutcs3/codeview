@@ -3,7 +3,7 @@
     <h2>新建题目</h2>
     <el-form :model="createForm">
       <el-form-item label="标题">
-        <el-input v-model="createForm.name"></el-input>
+        <el-input v-model="createForm.title"></el-input>
       </el-form-item>
       <el-form-item label="内容">
         <!-- 暂时用普通编辑器，等富文本编辑器代码整理好了再引入 -->
@@ -11,7 +11,7 @@
           type="textarea"
           :rows="5"
           placeholder="请输入内容"
-          v-model="textarea"
+          v-model="createForm.content"
         >
         </el-input>
         <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -26,8 +26,10 @@ export default {
   name: "ProblemsNewPage",
   data() {
     return {
-      textarea: "",
-      createForm: {},
+      createForm: {
+        title: "",
+        content: "",
+      },
     };
   },
   methods: {

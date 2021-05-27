@@ -16,10 +16,13 @@
         >
         </el-date-picker>
       </el-form-item>
+      <el-button type="primary" @click="onSubmit">提交</el-button>
     </el-form>
   </div>
 </template>
 <script>
+import { ElMessage } from "element-plus";
+import { createInterview } from "../api/interview";
 export default {
   name: "ProblemsNewPage",
   data() {
@@ -30,6 +33,19 @@ export default {
         time_range: "",
       },
     };
+  },
+  methods: {
+    onSubmit() {
+      createInterview({}).handle({
+        200: () => {
+          ElMessage.success("创建面试成功");
+          this.$router.push({
+            name: "interviews-list",
+          });
+        },
+        404: () => ElMessage.warning("创建面试失败！"),
+      });
+    },
   },
 };
 </script>

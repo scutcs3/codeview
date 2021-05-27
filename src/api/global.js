@@ -12,7 +12,11 @@ export class Handler {
         })
         .catch(function (error) {
           if (error.response) {
-            callback[error.response.status]();
+            try {
+              callback[error.response.status]();
+            } catch (e) {
+              callback[404]();
+            }
           } else {
             callback[404]();
           }
