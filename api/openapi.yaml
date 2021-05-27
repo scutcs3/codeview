@@ -373,12 +373,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-              - $ref: '#/components/schemas/InterviewBody'
-              - required:
-                - viewee_id
-                - start_time
-                - finish_time
+              $ref: '#/components/schemas/InterviewBody'
       responses:
         '200':
           description: 创建面试成功。
