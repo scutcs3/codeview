@@ -40,7 +40,7 @@ paths:
         '200':
           $ref: '#/components/responses/TokenResp'
         '400':
-          description: 验证失败。
+          description: 请求语法错误。
         '500':
           description: 数据库错误。
   /users:
@@ -603,6 +603,10 @@ components:
       allOf:
       - $ref: '#/components/schemas/InterviewBody'
       - properties:
+          hash_id: 
+            type: string 
+            example: "zxElkj1209FD123sdS"
+            description: 面试hash id，用于面试url。
           viewer_id:
             type: integer
             description: 面试官ID。
