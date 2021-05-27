@@ -12,6 +12,7 @@
         "debug": "~2.6.9",
         "express": "^4.16.4",
         "express-jwt": "^6.0.0",
+        "hashids": "^2.2.8",
         "http-errors": "~1.6.3",
         "jade": "~1.11.0",
         "jsonwebtoken": "^8.5.1",
