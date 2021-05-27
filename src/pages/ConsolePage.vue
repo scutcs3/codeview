@@ -34,9 +34,9 @@ export default {
     return {
       menus: [
         {
-          name: "overview",
+          name: "interviews",
           icon: "view",
-          title: "总览",
+          title: "面试",
         },
         {
           name: "problems",
@@ -70,9 +70,7 @@ export default {
   },
   methods: {
     handleSelect(key) {
-      router.push({
-        name: key,
-      });
+      router.push(`/console/${key}`);
     },
   },
 };

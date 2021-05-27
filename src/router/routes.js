@@ -41,13 +41,32 @@ export default [
     meta: { requiresAuth: true },
     children: [
       {
-        path: "overview",
-        name: "overview",
+        path: "interviews",
+        name: "interviews",
         component: () =>
           import(
-            /* webpackChunkName: "overview" */ "../pages/OverviewPage.vue"
+            /* webpackChunkName: "interviews" */ "../pages/InterviewsPage.vue"
           ),
         alias: "",
+        children: [
+          {
+            path: "list",
+            name: "interviews-list",
+            component: () =>
+              import(
+                /* webpackChunkName: "interviews" */ "../pages/InterviewsListPage.vue"
+              ),
+            alias: "",
+          },
+          {
+            path: "new",
+            name: "interviews-new",
+            component: () =>
+              import(
+                /* webpackChunkName: "problems" */ "../pages/InterviewsNewPage.vue"
+              ),
+          },
+        ],
       },
       {
         path: "problems",
@@ -56,6 +75,25 @@ export default [
           import(
             /* webpackChunkName: "problems" */ "../pages/ProblemsPage.vue"
           ),
+        children: [
+          {
+            path: "list",
+            name: "problems-list",
+            component: () =>
+              import(
+                /* webpackChunkName: "problems" */ "../pages/ProblemsListPage.vue"
+              ),
+            alias: "",
+          },
+          {
+            path: "new",
+            name: "problems-new",
+            component: () =>
+              import(
+                /* webpackChunkName: "problems" */ "../pages/ProblemsNewPage.vue"
+              ),
+          },
+        ],
       },
       {
         path: "problems/:id",

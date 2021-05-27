@@ -1,5 +1,5 @@
 <template>
-  <div class="problems">
+  <div class="overview">
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
@@ -9,6 +9,6 @@
 </template>
 <script>
 export default {
-  name: "ProblemsPage",
+  name: "Interviews",
 };
 </script>

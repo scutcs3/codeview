@@ -9,7 +9,7 @@ const serve = ws.createServer(function (connect) {
   connect.on("text", function (str) {
     console.log("接受到: " + str);
     //connect.sendText(str);//向这个浏览器回发str
-    sentall(str)//向所有连接上来的浏览器发送str
+    sentall(str); //向所有连接上来的浏览器发送str
   });
   //有连接断开函数
   connect.on("close", function () {
@@ -22,8 +22,7 @@ const serve = ws.createServer(function (connect) {
   function sentall(str) {
     serve.connections.forEach(function (connect) {
       connect.sendText(str);
-
-    })
+    });
   }
 });
 serve.listen(PORT, function () {
