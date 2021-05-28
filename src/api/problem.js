@@ -6,9 +6,11 @@ export function getProblems() {
 }
 
 export function getProblem(data) {
-  return axios.get(baseUrl + "/problems", {
-    params: data,
-  });
+  return new Handler(
+    axios.get(baseUrl + "/problems", {
+      params: data,
+    })
+  );
 }
 
 export function addProblem(data) {
