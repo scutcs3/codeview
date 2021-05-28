@@ -47,9 +47,11 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
   if (!word && field == "iid") {
     sql = `SELECT * FROM interview_problem where interview_id = ${param} limit ${preSize},${per_page}`;
   } else if (!word && field == "pid") {
-    sql = `SELECT * FROM problem where id = ${param}`;
+    sql = `SELECT * FROM problem where id = ${param} limit ${preSize},${per_page}`;
+  } else if (word) {
+    sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%' limit ${preSize},${per_page}`;
   } else {
-    sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%'`;
+    sql = `SELECT * FROM problem limit ${preSize},${per_page}`;
   }
   connection.query(sql, function (err, result) {
     if (err) {
@@ -58,35 +60,41 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
         data: "[SELECT ERROR]:" + err.message,
       });
     } else {
-      var results = [];
-      for (var i = 0; i < result.length; i++) {
-        results.push(result[i]);
-      }
+      if (result.length > 0) {
+        var results = [];
+        for (var i = 0; i < result.length; i++) {
+          results.push(result[i]);
+        }
 
-      if (page > 1) {
+        if (page > 1) {
+          res.setHeader(
+            "prevLink",
+            `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`
+          );
+        }
+        if (page < totalPageNum) {
+          res.setHeader(
+            "nextLink",
+            `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`
+          );
+        }
         res.setHeader(
-          "prevLink",
-          `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`
+          "firstLink",
+          `${req.baseUrl}?page=${1}&per_page=${per_page}`
         );
-      }
-      if (page < totalPageNum) {
         res.setHeader(
-          "nextLink",
-          `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`
+          "lastLink",
+          `${req.baseUrl}?page=${totalPageNum}&per_page=${per_page}`
         );
-      }
-      res.setHeader(
-        "firstLink",
-        `${req.baseUrl}?page=${1}&per_page=${per_page}`
-      );
-      res.setHeader(
-        "lastLink",
-        `${req.baseUrl}?page=${totalPageNum}&per_page=${per_page}`
-      );
 
-      res.json({
-        data: results,
-      });
+        res.json({
+          data: results,
+        });
+      } else {
+        res.status(400).json({
+          data: "参数错误",
+        });
+      }
     }
   });
   return res;
@@ -129,9 +137,7 @@ router.get("/", function (req, res, next) {
       req
     );
   } else {
-    res.status(400).json({
-      data: "参数错误",
-    });
+    getProblemDetail(null, null, query.page, query.per_page, null, res, req);
   }
 });
 
