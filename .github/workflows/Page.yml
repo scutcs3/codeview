@@ -25,7 +25,6 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          npm install @vue/cli-service -g
           npm install
       - name: Build static Page
         shell: bash
