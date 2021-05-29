@@ -1,7 +1,17 @@
 <template>
   <div>
-    <h2>题目列表</h2>
-    <el-button @click="newProblems">新建题目</el-button>
+    <h2 class="title">题目列表</h2>
+    <el-input placeholder="搜索题目" v-model="word">
+      <template #prepend>
+        <el-select v-model="select" placeholder="过滤器">
+          <el-option label="id" value="1"></el-option>
+          <el-option label="关键词" value="2"></el-option>
+        </el-select>
+      </template>
+      <template #append>
+        <el-button @click="newProblems">新建题目</el-button>
+      </template>
+    </el-input>
     <el-table
       :data="tableData"
       highlight-current-row
@@ -23,6 +33,7 @@
         layout="sizes, prev, pager, next, total"
         :pager-count="9"
         background
+        hide-on-single-page="true"
         :current-page="currentPage"
         :total="totalCount"
         :page-size="pageSize"
@@ -41,6 +52,8 @@ export default {
   name: "ProblemsList",
   data() {
     return {
+      select: "1",
+      word: "",
       tableData: [],
       currentPage: 0,
       pageSize: 0,
@@ -121,6 +134,9 @@ export default {
 };
 </script>
 <style scoped>
+.title {
+  margin: 2rem;
+}
 .pages {
   margin: 2rem auto;
   text-align: center;

@@ -32,6 +32,7 @@
         v-model="dictCurrentPage"
         :pager-count="9"
         background
+        hide-on-single-page="true"
         :total="tableData.length"
         :page-size="30"
         :page-sizes="[30, 50, 100]"

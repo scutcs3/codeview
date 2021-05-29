@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="problem">
     <!--class="problem"-->
-    <h3>{{ id }} {{ title }}</h3>
-    <p>{{ content }}</p>
+    <h3 class="problem-title">{{ id }} {{ title }}</h3>
+    <div class="problem-content" v-html="content"></div>
 
     <!-- <el-collapse>
       <p>示例</p>
@@ -56,5 +56,12 @@ export default {
 <style scoped>
 .testshow {
   background-color: white;
+}
+.problem {
+  margin: 2rem 3rem;
+}
+.problem-title {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>

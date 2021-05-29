@@ -12,3 +12,8 @@ export default {
   name: "ProblemsPage",
 };
 </script>
+<style scoped>
+.problems {
+  margin: 1rem;
+}
+</style>
