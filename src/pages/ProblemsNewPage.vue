@@ -40,6 +40,9 @@ export default {
       }).handle({
         200: () => {
           ElMessage.success("添加题目成功");
+          // 清除输入内容
+          this.createForm.title = "";
+          this.createForm.content = "";
           this.$router.push({
             name: "problems-list",
           });

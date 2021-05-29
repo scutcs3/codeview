@@ -62,27 +62,7 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
             for (var i = 0; i < result.length; i++) {
               results.push(result[i]);
             }
-
-            if (page > 1) {
-              res.setHeader(
-                "prevLink",
-                `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`
-              );
-            }
-            if (page < totalPageNum) {
-              res.setHeader(
-                "nextLink",
-                `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`
-              );
-            }
-            res.setHeader(
-              "firstLink",
-              `${req.baseUrl}?page=${1}&per_page=${per_page}`
-            );
-            res.setHeader(
-              "lastLink",
-              `${req.baseUrl}?page=${totalPageNum}&per_page=${per_page}`
-            );
+            res.setHeader("Total-Count", totalRecord);
 
             res.json({
               data: results,

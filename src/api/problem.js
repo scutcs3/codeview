@@ -1,14 +1,20 @@
 import axios from "axios";
 import { baseUrl, Handler } from "./global.js";
 
-export function getProblems() {
-  return new Handler(axios.get(baseUrl + "/problems"));
+export function getProblems(data) {
+  return new Handler(
+    axios.get(baseUrl + "/problems", {
+      params: data,
+    })
+  );
 }
 
 export function getProblem(data) {
-  return axios.get(baseUrl + "/problems", {
-    params: data,
-  });
+  return new Handler(
+    axios.get(baseUrl + "/problems", {
+      params: data,
+    })
+  );
 }
 
 export function addProblem(data) {
