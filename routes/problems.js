@@ -36,68 +36,66 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
       });
     } else {
       totalRecord = result[0]["COUNT(*)"];
-    }
-  });
+      page = page ? parseInt(page) : 1;
+      per_page = per_page ? parseInt(per_page) : 30;
+      var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
+      var preSize = (page - 1) * per_page;
 
-  page = page ? page : 1;
-  per_page = per_page ? per_page : 30;
-  var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
-  var preSize = (page - 1) * per_page;
-
-  if (!word && field == "iid") {
-    sql = `SELECT * FROM interview_problem where interview_id = ${param} limit ${preSize},${per_page}`;
-  } else if (!word && field == "pid") {
-    sql = `SELECT * FROM problem where id = ${param} limit ${preSize},${per_page}`;
-  } else if (word) {
-    sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%' limit ${preSize},${per_page}`;
-  } else {
-    sql = `SELECT * FROM problem limit ${preSize},${per_page}`;
-  }
-  connection.query(sql, function (err, result) {
-    if (err) {
-      console.log("[SELECT ERROR]:", err.message);
-      res.status(500).json({
-        data: "[SELECT ERROR]:" + err.message,
-      });
-    } else {
-      if (result.length > 0) {
-        var results = [];
-        for (var i = 0; i < result.length; i++) {
-          results.push(result[i]);
-        }
-
-        if (page > 1) {
-          res.setHeader(
-            "prevLink",
-            `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`
-          );
-        }
-        if (page < totalPageNum) {
-          res.setHeader(
-            "nextLink",
-            `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`
-          );
-        }
-        res.setHeader(
-          "firstLink",
-          `${req.baseUrl}?page=${1}&per_page=${per_page}`
-        );
-        res.setHeader(
-          "lastLink",
-          `${req.baseUrl}?page=${totalPageNum}&per_page=${per_page}`
-        );
-
-        res.json({
-          data: results,
-        });
+      if (!word && field == "iid") {
+        sql = `SELECT * FROM interview_problem where interview_id = ${param} limit ${preSize},${per_page}`;
+      } else if (!word && field == "pid") {
+        sql = `SELECT * FROM problem where id = ${param} limit ${preSize},${per_page}`;
+      } else if (word) {
+        sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%' limit ${preSize},${per_page}`;
       } else {
-        res.status(400).json({
-          data: "参数错误",
-        });
+        sql = `SELECT * FROM problem limit ${preSize},${per_page}`;
       }
+      connection.query(sql, function (err, result) {
+        if (err) {
+          console.log("[SELECT ERROR]:", err.message);
+          res.status(500).json({
+            data: "[SELECT ERROR]:" + err.message,
+          });
+        } else {
+          if (result.length > 0) {
+            var results = [];
+            for (var i = 0; i < result.length; i++) {
+              results.push(result[i]);
+            }
+
+            if (page > 1) {
+              res.setHeader(
+                "prevLink",
+                `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`
+              );
+            }
+            if (page < totalPageNum) {
+              res.setHeader(
+                "nextLink",
+                `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`
+              );
+            }
+            res.setHeader(
+              "firstLink",
+              `${req.baseUrl}?page=${1}&per_page=${per_page}`
+            );
+            res.setHeader(
+              "lastLink",
+              `${req.baseUrl}?page=${totalPageNum}&per_page=${per_page}`
+            );
+
+            res.json({
+              data: results,
+            });
+          } else {
+            res.status(400).json({
+              data: "参数错误",
+            });
+          }
+        }
+      });
     }
   });
-  return res;
 }
 
 /**
