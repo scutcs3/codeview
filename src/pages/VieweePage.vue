@@ -13,6 +13,7 @@
 </template>
 <script>
 import { ref, provide } from "vue";
+import hashids from "hashids";
 import CodeEditor from "../components/CodeEditor.vue";
 import BaseProblem from "../components/BaseProblem.vue";
 import BaseComment from "../components/BaseComment.vue";
@@ -48,7 +49,18 @@ export default {
   watch: {
     chatdata: {
       handler(val, oldval) {
-        this.socket.send(val);
+        //从子部件传来的数据是字符串数据，所以在这里将其转换为data属性，
+        var jsObj = JSON.parse(val);
+        let hash = new hashids("codeview salt", 16);
+        //添加interviewID属性
+        let interview_id = hash.decode(this.$route.query.hashid);
+        console.log(interview_id);
+        jsObj.intervierID=1;
+        //转换为字符串属性，然后将其发送到服务器上
+        var jsonstr = JSON.stringify(jsObj);
+        
+        console.log(jsonstr);
+        this.socket.send(jsonstr);
         console.log(oldval);
       },
     },
