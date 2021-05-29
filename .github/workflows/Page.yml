@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v2.1.3
         id: cache
         with:
-          path: frontend/node_modules
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
