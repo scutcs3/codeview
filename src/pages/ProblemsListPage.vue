@@ -46,7 +46,6 @@ export default {
     return {
       tableData: [],
       currentPage: 1,
-      dictTotal: 1000,
       dictCurrentPage: 1,
       dictPageSize: 30,
     };
@@ -60,7 +59,10 @@ export default {
   },
   activated() {
     const self = this;
-    getProblems().handle({
+    getProblems({
+      page: self.currentPage,
+      per_page: self.dictPageSize,
+    }).handle({
       200: (data) => {
         self.tableData = [];
         for (let problem of data) {
