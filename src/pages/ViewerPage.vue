@@ -41,7 +41,7 @@ export default {
     BaseComment,
   },
   created() {
-    this.socket = new WebSocket("ws://localhost:3002");
+    this.socket = new WebSocket(process.env.VUE_APP_WS_API);
     this.socket.onopen = this.onopen;
     this.socket.onclose = this.onclose;
     this.socket.onmessage = this.onmessage;
