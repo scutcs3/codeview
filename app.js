@@ -31,8 +31,9 @@ app.use(
   })
 );
 
-// 允许跨域
 app.all("*", function (req, res, next) {
+  // 允许访问header字段
+  res.header("Access-Control-Expose-Headers", "Total-Count");
   // 暂时允许所有跨域请求
   res.header("Access-Control-Allow-Origin", "*");
   res.header(

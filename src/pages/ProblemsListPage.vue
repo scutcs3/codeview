@@ -29,7 +29,7 @@
         v-model="dictCurrentPage"
         :pager-count="9"
         background
-        :total="tableData.length"
+        :total="totalCount"
         :page-size="30"
         :page-sizes="[30, 50, 100]"
       >
@@ -48,6 +48,7 @@ export default {
       currentPage: 1,
       dictCurrentPage: 1,
       dictPageSize: 30,
+      totalCount: 0,
     };
   },
   methods: {
@@ -63,7 +64,8 @@ export default {
       page: self.currentPage,
       per_page: self.dictPageSize,
     }).handle({
-      200: (data) => {
+      200: (data, headers) => {
+        this.totalCount = parseInt(headers["total-count"]);
         self.tableData = [];
         for (let problem of data) {
           self.tableData.push({
