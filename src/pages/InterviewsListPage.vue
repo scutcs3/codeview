@@ -48,7 +48,6 @@ export default {
   data() {
     return {
       tableData: [],
-      currentPage: 1,
       dictCurrentPage: 1,
       dictPageSize: 30,
       props: {
@@ -103,6 +102,7 @@ export default {
             start_time: interview.start_time || "待定",
             finish_time: interview.finish_time || "待定",
             status: interview.status,
+            hashid: interview.hasid,
           });
         }
       },

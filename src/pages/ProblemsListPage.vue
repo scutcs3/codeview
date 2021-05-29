@@ -3,12 +3,7 @@
     <h2>题目列表</h2>
     <el-button @click="newProblems">新建题目</el-button>
     <el-table
-      :data="
-        tableData.slice(
-          (dictCurrentPage - 1) * dictPageSize,
-          dictCurrentPage * dictPageSize
-        )
-      "
+      :data="tableData"
       highlight-current-row
       border
       style="width: 100%"
@@ -26,12 +21,14 @@
       <el-pagination
         class="fy"
         layout="sizes, prev, pager, next, total"
-        v-model="dictCurrentPage"
         :pager-count="9"
         background
+        :current-page="currentPage"
         :total="totalCount"
-        :page-size="30"
+        :page-size="pageSize"
         :page-sizes="[30, 50, 100]"
+        @current-change="currentPageChange"
+        @size-change="pageSizeChange"
       >
       </el-pagination>
     </div>
@@ -45,42 +42,81 @@ export default {
   data() {
     return {
       tableData: [],
-      currentPage: 1,
-      dictCurrentPage: 1,
-      dictPageSize: 30,
+      currentPage: 0,
+      pageSize: 0,
       totalCount: 0,
+      page: 0,
+      per_page: 0,
     };
   },
+  mounted() {
+    this.parseQuery();
+  },
   methods: {
+    parseQuery() {
+      this.currentPage = parseInt(this.$route.query.page) || 1;
+      this.pageSize = parseInt(this.$route.query.per_page) || 30;
+    },
+    loadProblems() {
+      getProblems({
+        page: this.currentPage,
+        per_page: this.pageSize,
+      }).handle({
+        200: (data, headers) => {
+          this.totalCount = parseInt(headers["total-count"]);
+          this.tableData = [];
+          for (let problem of data) {
+            this.tableData.push({
+              id: problem.id,
+              title: problem.title,
+              updated_at: problem.updated_at,
+            });
+          }
+        },
+        401: () => {
+          ElMessage.warning("登录信息失效，请重新登录！");
+          this.$router.push("/login");
+        },
+        404: () => console.log("获取题目列表失败"),
+      });
+    },
     newProblems() {
       this.$router.push({
         name: "problems-new",
       });
     },
+    currentPageChange(page) {
+      this.$router.push({
+        name: "problems-list",
+        query: {
+          page,
+          per_page: this.pageSize,
+        },
+      });
+    },
+    pageSizeChange(per_page) {
+      this.$router.push({
+        name: "problems-list",
+        query: {
+          page: this.currentPage,
+          per_page,
+        },
+      });
+    },
   },
   activated() {
-    const self = this;
-    getProblems({
-      page: self.currentPage,
-      per_page: self.dictPageSize,
-    }).handle({
-      200: (data, headers) => {
-        this.totalCount = parseInt(headers["total-count"]);
-        self.tableData = [];
-        for (let problem of data) {
-          self.tableData.push({
-            id: problem.id,
-            title: problem.title,
-            updated_at: problem.updated_at,
-          });
-        }
-      },
-      401: () => {
-        ElMessage.warning("登录信息失效，请重新登录！");
-        this.$router.push("/login");
-      },
-      404: () => console.log("获取题目列表失败"),
-    });
+    this.loadProblems();
+  },
+  watch: {
+    $route() {
+      this.parseQuery();
+    },
+    currentPage() {
+      this.loadProblems();
+    },
+    pageSize() {
+      this.loadProblems();
+    },
   },
 };
 </script>
