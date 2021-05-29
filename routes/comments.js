@@ -44,57 +44,56 @@ router.get("/", function (req, res, next) {
         });
       } else {
         totalRecord = result[0]["COUNT(*)"];
-      }
-    });
+        var page = req.query.page ? parseInt(req.query.page) : 1;
+        var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
+        var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
+        var preSize = (page - 1) * per_page;
 
-    var page = req.query.page ? req.query.page : 1;
-    var per_page = req.query.per_page ? req.query.per_page : 30;
-    var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
-    var preSize = (page - 1) * per_page;
-
-    var sql = `SELECT * FROM comment WHERE interview_id = ${req.query.iid} `;
-    if (req.query.cid) {
-      sql += `AND id = ${req.query.cid} `;
-    }
-    if (req.query.since) {
-      sql += `AND created_at >= '${req.query.since}' `;
-    }
-    sql += `limit ${preSize},${per_page}`;
-    connection.query(sql, function (err, result) {
-      if (err) {
-        console.log("[SELECT ERROR]:", err.message);
-        res.status(500).json({
-          data: "[SELECT ERROR]:" + err.message,
-        });
-      } else {
-        var results = [];
-        for (var i = 0; i < result.length; i++) {
-          results.push(result[i]);
+        var sql = `SELECT * FROM comment WHERE interview_id = ${req.query.iid} `;
+        if (req.query.cid) {
+          sql += `AND id = ${req.query.cid} `;
         }
-
-        if (page > 1) {
-          res.setHeader(
-            "prevLink",
-            `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`
-          );
+        if (req.query.since) {
+          sql += `AND created_at >= '${req.query.since}' `;
         }
-        if (page < totalPageNum) {
-          res.setHeader(
-            "nextLink",
-            `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`
-          );
-        }
-        res.setHeader(
-          "firstLink",
-          `${req.baseUrl}?page=${1}&per_page=${per_page}`
-        );
-        res.setHeader(
-          "lastLink",
-          `${req.baseUrl}?page=${totalPageNum}&per_page=${per_page}`
-        );
+        sql += `limit ${preSize},${per_page}`;
+        connection.query(sql, function (err, result) {
+          if (err) {
+            console.log("[SELECT ERROR]:", err.message);
+            res.status(500).json({
+              data: "[SELECT ERROR]:" + err.message,
+            });
+          } else {
+            var results = [];
+            for (var i = 0; i < result.length; i++) {
+              results.push(result[i]);
+            }
 
-        res.json({
-          data: results,
+            if (page > 1) {
+              res.setHeader(
+                "prevLink",
+                `${req.baseUrl}?page=${page - 1}&per_page=${per_page}`
+              );
+            }
+            if (page < totalPageNum) {
+              res.setHeader(
+                "nextLink",
+                `${req.baseUrl}?page=${page + 1}&per_page=${per_page}`
+              );
+            }
+            res.setHeader(
+              "firstLink",
+              `${req.baseUrl}?page=${1}&per_page=${per_page}`
+            );
+            res.setHeader(
+              "lastLink",
+              `${req.baseUrl}?page=${totalPageNum}&per_page=${per_page}`
+            );
+
+            res.json({
+              data: results,
+            });
+          }
         });
       }
     });
