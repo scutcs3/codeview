@@ -31,6 +31,9 @@ process.env.VUE_APP_API = api_maps[process.env.VUE_APP_API_MODE];
 
 module.exports = {
   publicPath: "./",
+  devServer: {
+    disableHostCheck: true,
+  },
   configureWebpack: {
     plugins: [new MonacoWebpackPlugin()],
   },
