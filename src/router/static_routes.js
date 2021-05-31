@@ -15,92 +15,92 @@ import SettingsPage from "../pages/SettingsPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 
 export default [
-    {
-        path: "/index",
-        name: "index",
-        component: IndexPage,
-        alias: "/",
-    },
-    {
-        path: "/login",
-        name: "login",
-        component: LoginPage,
-    },
-    {
-        path: "/viewer",
-        name: "viewer",
-        component: ViewerPage,
-        meta: { requiresAuth: true },
-    },
-    {
-        path: "/viewee",
-        name: "viewee",
-        component: VieweePage,
-        meta: { requiresAuth: true },
-    },
-    {
-        path: "/register",
-        name: "register",
-        component: RegisterPage,
-    },
-    {
-        path: "/console",
-        name: "console",
-        component: ConsolePage,
-        meta: { requiresAuth: true },
+  {
+    path: "/index",
+    name: "index",
+    component: IndexPage,
+    alias: "/",
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginPage,
+  },
+  {
+    path: "/viewer",
+    name: "viewer",
+    component: ViewerPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/viewee",
+    name: "viewee",
+    component: VieweePage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: RegisterPage,
+  },
+  {
+    path: "/console",
+    name: "console",
+    component: ConsolePage,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "interviews",
+        name: "interviews",
+        component: InterviewsPage,
+        alias: "",
         children: [
-            {
-                path: "interviews",
-                name: "interviews",
-                component: InterviewsPage,
-                alias: "",
-                children: [
-                    {
-                        path: "list",
-                        name: "interviews-list",
-                        component: InterviewsListPage,
-                        alias: "",
-                    },
-                    {
-                        path: "new",
-                        name: "interviews-new",
-                        component: InterviewsNewPage,
-                    },
-                ],
-            },
-            {
-                path: "problems",
-                name: "problems",
-                component: ProblemsPage,
-                children: [
-                    {
-                        path: "list",
-                        name: "problems-list",
-                        component: ProblemsListPage,
-                        alias: "",
-                    },
-                    {
-                        path: "new",
-                        name: "problems-new",
-                        component: ProblemsNewPage,
-                    },
-                ],
-            },
-            {
-                path: "problems/:id",
-                name: "problem",
-                component: ProblemPage,
-            },
-            {
-                path: "settings",
-                name: "settings",
-                component: SettingsPage,
-            },
-            {
-                path: "profile",
-                name: "profile",
-                component: ProfilePage,
-            },
+          {
+            path: "list",
+            name: "interviews-list",
+            component: InterviewsListPage,
+            alias: "",
+          },
+          {
+            path: "new",
+            name: "interviews-new",
+            component: InterviewsNewPage,
+          },
         ],
-    },
+      },
+      {
+        path: "problems",
+        name: "problems",
+        component: ProblemsPage,
+        children: [
+          {
+            path: "list",
+            name: "problems-list",
+            component: ProblemsListPage,
+            alias: "",
+          },
+          {
+            path: "new",
+            name: "problems-new",
+            component: ProblemsNewPage,
+          },
+        ],
+      },
+      {
+        path: "problems/:id",
+        name: "problem",
+        component: ProblemPage,
+      },
+      {
+        path: "settings",
+        name: "settings",
+        component: SettingsPage,
+      },
+      {
+        path: "profile",
+        name: "profile",
+        component: ProfilePage,
+      },
+    ],
+  },
 ];
