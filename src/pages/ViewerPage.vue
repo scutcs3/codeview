@@ -56,10 +56,10 @@ export default {
         let hash = new hashids("codeview salt", 16);
         let interview_id = hash.decode(this.$route.query.hashid);
         console.log(interview_id);
-        jsObj.intervierID=1;
+        jsObj.intervierID = 1;
         //转换为字符串属性，然后将其发送到服务器上
         var jsonstr = JSON.stringify(jsObj);
-        
+
         console.log(jsonstr);
         this.socket.send(jsonstr);
         console.log(oldval);

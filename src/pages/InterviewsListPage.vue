@@ -46,7 +46,6 @@
   </div>
 </template>
 <script>
-import { ElMessage } from "element-plus";
 import { getInterviews } from "../api/interview";
 export default {
   name: "InterviewsList",
@@ -112,10 +111,10 @@ export default {
         }
       },
       401: () => {
-        ElMessage.warning("登录信息失效，请重新登录！");
+        this.$message.warning("登录信息失效，请重新登录！");
         this.$router.push("/login");
       },
-      404: () => ElMessage.warning("获取面试列表失败！"),
+      404: () => this.$message.warning("获取面试列表失败！"),
     });
   },
 };

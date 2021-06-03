@@ -40,7 +40,6 @@
   </div>
 </template>
 <script>
-import { ElMessage } from "element-plus";
 import { getProblems } from "../api/problem.js";
 export default {
   name: "ProblemsList",
@@ -81,7 +80,7 @@ export default {
           }
         },
         401: () => {
-          ElMessage.warning("登录信息失效，请重新登录！");
+          this.$message.warning("登录信息失效，请重新登录！");
           this.$router.push("/login");
         },
         404: () => console.log("获取题目列表失败"),

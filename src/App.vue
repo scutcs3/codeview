@@ -11,17 +11,11 @@
 import IndexLayout from "./layouts/IndexLayout.vue";
 export default {
   name: "App",
-  data() {
-    return {
-      isLogin: false,
-    };
-  },
+  data() {},
   components: {
     IndexLayout,
   },
-  mounted() {
-    this.isLogin = localStorage.getItem["token"] !== null;
-  },
+  mounted() {},
 };
 </script>
 <style scoped></style>
