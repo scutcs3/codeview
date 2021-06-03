@@ -23,7 +23,6 @@
     </el-table>
     <div class="pages">
       <el-pagination
-        class="fy"
         layout="sizes, prev, pager, next, total"
         :pager-count="9"
         background
@@ -49,7 +48,7 @@ export default {
       word: "",
       tableData: [],
       currentPage: 0,
-      pageSize: 0,
+      pageSize: 30,
       totalCount: 0,
       page: 0,
       per_page: 0,

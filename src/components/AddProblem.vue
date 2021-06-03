@@ -10,7 +10,6 @@
     <tinymce
       @problemPressed="problemPressed"
       ref="editor"
-      :disabled="disabled"
       :t="state"
       :c="middle_content"
     >

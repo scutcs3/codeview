@@ -29,7 +29,6 @@ export default {
       timer: null,
       Onechat: inject("Onechat"),
       currentUser: inject("CurrentID"),
-      codelanguage: inject("codelanguage"),
       // 主要配置
       defaultOpts: {
         codestr: "",
