@@ -7,10 +7,9 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "start": "node ./bin/www.js",
+    "start": "node ./bin/server.js",
     "test": "mocha",
-    "pm2": "pm2 start ./bin/www.js --name codeview --watch",
-    "chatonline": "node ./bin/server.js"
+    "pm2": "pm2 start ./bin/server.js --name codeview --watch"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^4.0.2",
