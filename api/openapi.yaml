@@ -447,7 +447,7 @@ paths:
         schema:
           type: string
           format: date-time
-          example: "2021-05-15T16:07:01.122Z"
+          example: "2021-06-03 21:12:34"
       - $ref: '#/components/parameters/PageParam'
       - $ref: '#/components/parameters/PerPageParam'
       responses:
@@ -566,12 +566,12 @@ components:
           created_at:
             type: string
             format: date-time
-            example: "2021-05-15T16:07:01.122Z"
+            example: "2021-06-03 21:12:34"
             description: 题目创建时间。
           updated_at:
             type: string
             format: date-time
-            example: "2021-05-15T16:07:01.122Z"
+            example: "2021-06-03 21:12:34"
             description: 题目更新时间。
     InterviewBody:
       description: 面试关键数据，用于创建面试。
@@ -585,12 +585,12 @@ components:
         start_time:
           type: string
           format: date-time
-          example: "2021-05-15T16:07:01.122Z"
+          example: "2021-06-03 21:09:44"
           description: 面试开始时间。
         finish_time:
           type: string
           format: date-time
-          example: "2021-05-15T16:07:01.122Z"
+          example: "2021-06-03 21:09:44"
           description: 面试结束时间。
     Interview:
       description: 面试信息。

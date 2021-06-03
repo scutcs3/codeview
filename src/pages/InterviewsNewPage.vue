@@ -11,15 +11,25 @@
       <el-form-item label="面试者" v-show="form.viewee_type === '站内用户'">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="面试时间">
+      <el-form-item label="面试日期">
         <el-date-picker
-          v-model="form.time_range"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          v-model="form.date"
+          type="date"
+          placeholder="选择日期"
+          format="YYYY 年 MM 月 DD 日"
         >
         </el-date-picker>
+      </el-form-item>
+      <el-form-item label="面试时间">
+        <el-time-picker
+          is-range
+          v-model="form.time"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          placeholder="选择面试时间范围"
+        >
+        </el-time-picker>
       </el-form-item>
       <el-button type="primary" @click="onSubmit">提交</el-button>
     </el-form>
@@ -27,6 +37,8 @@
 </template>
 <script>
 import { createInterview } from "../api/interview";
+import moment from "moment";
+
 export default {
   name: "ProblemsNewPage",
   data() {
@@ -35,13 +47,30 @@ export default {
       form: {
         viewee_type: "外部用户",
         viewee_id: "",
-        time_range: "",
+        date: new Date(),
+        time: [new Date(), new Date()],
       },
     };
   },
+  computed: {
+    start_time() {
+      return `${moment(this.form.date).format("YYYY-MM-DD")} ${moment(
+        this.form.time[0]
+      ).format("HH:mm:ss")}`;
+    },
+    finish_time() {
+      return `${moment(this.form.date).format("YYYY-MM-DD")} ${moment(
+        this.form.time[1]
+      ).format("HH:mm:ss")}`;
+    },
+  },
   methods: {
     onSubmit() {
-      createInterview({}).handle({
+      console.log(this.start_time, this.finish_time);
+      createInterview({
+        start_time: this.start_time,
+        finish_time: this.finish_time,
+      }).handle({
         200: () => {
           this.$message.success("创建面试成功");
           this.$router.push({

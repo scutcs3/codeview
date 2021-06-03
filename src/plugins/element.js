@@ -21,6 +21,7 @@ import {
   ElLoading,
   ElDialog,
   ElDatePicker,
+  ElTimePicker,
   ElPagination,
   ElImage,
   ElCard,
@@ -60,6 +61,7 @@ export default (app) => {
   app.use(ElLoading);
   app.use(ElDialog);
   app.use(ElDatePicker);
+  app.use(ElTimePicker);
   app.use(ElPagination);
   app.use(ElImage);
   app.use(ElCard);

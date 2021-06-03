@@ -41,6 +41,7 @@
 </template>
 <script>
 import { getInterviews } from "../api/interview";
+
 export default {
   name: "InterviewsList",
   data() {
@@ -48,38 +49,6 @@ export default {
       tableData: [],
       dictCurrentPage: 1,
       dictPageSize: 30,
-      props: {
-        fieldValue: [String, Boolean],
-      },
-      shortcuts: [
-        {
-          text: "最近一周",
-          value: (() => {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            return [start, end];
-          })(),
-        },
-        {
-          text: "最近一个月",
-          value: (() => {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            return [start, end];
-          })(),
-        },
-        {
-          text: "最近三个月",
-          value: (() => {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            return [start, end];
-          })(),
-        },
-      ],
     };
   },
   methods: {
@@ -90,15 +59,16 @@ export default {
     },
   },
   activated() {
-    const self = this;
     getInterviews().handle({
       200: (data) => {
-        self.tableData = [];
+        console.log(data);
+        this.tableData = [];
+        let formatDate = (dt) => (dt ? this.$moment(dt).fromNow() : "待定");
         for (let interview of data) {
-          self.tableData.push({
+          this.tableData.push({
             id: interview.id,
-            start_time: interview.start_time || "待定",
-            finish_time: interview.finish_time || "待定",
+            start_time: formatDate(interview.start_time),
+            finish_time: formatDate(interview.finish_time),
             status: interview.status,
             hashid: interview.hasid,
           });

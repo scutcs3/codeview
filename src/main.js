@@ -3,10 +3,11 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import element from "./plugins/element";
+import moment from "./plugins/moment";
+import axios from "axios";
 
 import "./main.css";
-import installElementPlus from "./plugins/element";
-import axios from "axios";
 
 if (process.env.VUE_APP_API_MODE === "mock") {
   console.log("Mock enabled!");
@@ -14,8 +15,8 @@ if (process.env.VUE_APP_API_MODE === "mock") {
 }
 
 const app = createApp(App);
-installElementPlus(app);
-
+app.use(element);
+app.use(moment);
 app.use(router);
 app.use(store);
 app.mount("#app");
