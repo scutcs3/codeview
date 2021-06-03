@@ -22,6 +22,8 @@ router.use(function (req, res, next) {
 });
 
 var connection = require("../config/mysql");
+var hashids = require("hashids");
+var hashes = new hashids("codeview salt", 16);
 
 /**
  * @api {get} /comments
@@ -46,7 +48,6 @@ router.get("/", function (req, res, next) {
         totalRecord = result[0]["COUNT(*)"];
         var page = req.query.page ? parseInt(req.query.page) : 1;
         var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
-        var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
         var preSize = (page - 1) * per_page;
 
         var sql = `SELECT * FROM comment WHERE interview_id = ${req.query.iid} `;
@@ -91,7 +92,8 @@ router.post("/", function (req, res, next) {
     });
   } else {
     var dt = require("moment")().format("YYYY-MM-DD HH:mm:ss");
-    var sql = `INSERT INTO comment (content,interview_id,owner_id,created_at) VALUES ('${req.body.content}',${req.body.iid},${tk.obj.id},'${dt}')`;
+    let iid = hashes.decode(req.body.iid);
+    var sql = `INSERT INTO comment (content,interview_id,owner_id,created_at) VALUES ('${req.body.content}',${iid},${tk.obj.id},'${dt}')`;
     connection.query(sql, function (err, result) {
       if (err) {
         console.log("[INSERT ERROR]:", err.message);

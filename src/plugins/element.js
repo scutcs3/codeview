@@ -21,6 +21,7 @@ import {
   ElLoading,
   ElDialog,
   ElDatePicker,
+  ElTimePicker,
   ElPagination,
   ElImage,
   ElCard,
@@ -29,6 +30,9 @@ import {
   ElDivider,
   ElAutocomplete,
   ElCollapse,
+  ElRadioGroup,
+  ElRadio,
+  ElMessage,
 } from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
 import lang from "element-plus/lib/locale/lang/zh-cn";
@@ -57,6 +61,7 @@ export default (app) => {
   app.use(ElLoading);
   app.use(ElDialog);
   app.use(ElDatePicker);
+  app.use(ElTimePicker);
   app.use(ElPagination);
   app.use(ElImage);
   app.use(ElCard);
@@ -65,4 +70,7 @@ export default (app) => {
   app.use(ElDivider);
   app.use(ElAutocomplete);
   app.use(ElCollapse);
+  app.use(ElRadio);
+  app.use(ElRadioGroup);
+  app.config.globalProperties.$message = ElMessage;
 };

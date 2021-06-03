@@ -1,17 +1,11 @@
 <template>
   <div>
-    <h2 class="title">题目列表</h2>
-    <el-input placeholder="搜索题目" v-model="word">
-      <template #prepend>
-        <el-select v-model="select" placeholder="过滤器">
-          <el-option label="id" value="1"></el-option>
-          <el-option label="关键词" value="2"></el-option>
-        </el-select>
-      </template>
-      <template #append>
-        <el-button @click="newProblems">新建题目</el-button>
-      </template>
-    </el-input>
+    <div class="header">
+      <el-input placeholder="搜索题目" v-model="word"> </el-input>
+      <el-button type="primary" class="new-button" @click="newProblems"
+        >新建题目</el-button
+      >
+    </div>
     <el-table
       :data="tableData"
       highlight-current-row
@@ -29,11 +23,10 @@
     </el-table>
     <div class="pages">
       <el-pagination
-        class="fy"
         layout="sizes, prev, pager, next, total"
         :pager-count="9"
         background
-        hide-on-single-page="true"
+        :hide-on-single-page="true"
         :current-page="currentPage"
         :total="totalCount"
         :page-size="pageSize"
@@ -46,7 +39,6 @@
   </div>
 </template>
 <script>
-import { ElMessage } from "element-plus";
 import { getProblems } from "../api/problem.js";
 export default {
   name: "ProblemsList",
@@ -56,7 +48,7 @@ export default {
       word: "",
       tableData: [],
       currentPage: 0,
-      pageSize: 0,
+      pageSize: 30,
       totalCount: 0,
       page: 0,
       per_page: 0,
@@ -87,7 +79,7 @@ export default {
           }
         },
         401: () => {
-          ElMessage.warning("登录信息失效，请重新登录！");
+          this.$message.warning("登录信息失效，请重新登录！");
           this.$router.push("/login");
         },
         404: () => console.log("获取题目列表失败"),
@@ -134,8 +126,12 @@ export default {
 };
 </script>
 <style scoped>
-.title {
-  margin: 2rem;
+.header {
+  display: flex;
+  margin-bottom: 1rem;
+}
+.new-button {
+  margin-left: 1rem;
 }
 .pages {
   margin: 2rem auto;

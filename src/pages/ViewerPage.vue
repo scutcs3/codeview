@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="6">
-      <AddProblem @problemsend="problemsend"></AddProblem>
+      <ManageModule @problemsend="problemsend"></ManageModule>
     </el-col>
     <el-col :span="12">
       <CodeEditor msg="编程部分" @codeMsg="codeMsg"></CodeEditor>
@@ -13,14 +13,13 @@
 </template>
 <script>
 import { ref, provide } from "vue";
-import hashids from "hashids";
 import CodeEditor from "../components/CodeEditor.vue";
-import AddProblem from "../components/AddProblem.vue";
+import ManageModule from "../components/ManageModule.vue";
 import BaseComment from "../components/BaseComment.vue";
 
 export default {
   name: "ViewrPage",
-  data: function () {
+  data() {
     return {
       chatdata: "",
     };
@@ -37,7 +36,7 @@ export default {
     };
   },
   components: {
-    AddProblem,
+    ManageModule,
     CodeEditor,
     BaseComment,
   },
@@ -53,13 +52,12 @@ export default {
         //从子部件传来的数据是字符串数据，所以在这里将其转换为data属性，
         var jsObj = JSON.parse(val);
         //添加interviewID属性
-        let hash = new hashids("codeview salt", 16);
-        let interview_id = hash.decode(this.$route.query.hashid);
+        let interview_id = this.$route.params.id;
         console.log(interview_id);
-        jsObj.intervierID=1;
+        jsObj.intervierID = 1;
         //转换为字符串属性，然后将其发送到服务器上
         var jsonstr = JSON.stringify(jsObj);
-        
+
         console.log(jsonstr);
         this.socket.send(jsonstr);
         console.log(oldval);

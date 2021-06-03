@@ -18,13 +18,13 @@ module.exports = {
 
 try {
   fs.accessSync("config/mysql.local.js", fs.constants.R_OK);
-  console.log("Use local config!");
+  console.log("检测到本地配置，将覆盖默认数据库配置！");
   var local = require("./mysql.local.js");
   if (local.user) user = local.user;
   if (local.password) password = local.password;
   if (local.database) database = local.database;
 } catch (error) {
-  console.log("Use default config!");
+  console.log("未检测到本地配置，使用默认数据库配置！");
 }
 
 var connection;
