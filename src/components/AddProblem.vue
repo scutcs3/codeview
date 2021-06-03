@@ -21,7 +21,7 @@
 import tinymce from "../components/TinymceEditor";
 export default {
   name: "AddProblem",
-  data: function () {
+  data() {
     return {
       middle_content: "",
       restaurants: [],

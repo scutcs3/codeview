@@ -11,7 +11,6 @@
 import IndexLayout from "./layouts/IndexLayout.vue";
 export default {
   name: "App",
-  data() {},
   components: {
     IndexLayout,
   },

@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
-// import routes from "./routes";
-import routes from "./static_routes";
+import routes from "./routes";
+// import routes from "./static_routes";
 
 const router = createRouter({
   history: createWebHashHistory(),

@@ -20,7 +20,7 @@ import BaseComment from "../components/BaseComment.vue";
 
 export default {
   name: "ViewrPage",
-  data: function () {
+  data() {
     return {
       chatdata: "",
     };

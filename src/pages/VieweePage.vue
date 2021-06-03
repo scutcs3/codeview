@@ -19,7 +19,7 @@ import BaseProblem from "../components/BaseProblem.vue";
 import BaseComment from "../components/BaseComment.vue";
 export default {
   name: "VieweePage",
-  data: function () {
+  data() {
     return {
       chatdata: "", //用于接收子组件传来的数据
     };

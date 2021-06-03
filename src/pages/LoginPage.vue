@@ -52,7 +52,7 @@ import { login } from "../api/user.js";
 
 export default {
   name: "Login",
-  data: function () {
+  data() {
     return {
       loading: false,
       loginParam: {},

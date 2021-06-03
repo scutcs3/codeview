@@ -1,18 +1,13 @@
 <template>
   <div>
     <div class="header">
-      <el-input placeholder="搜索面试" v-model="word"> </el-input>
+      <el-input placeholder="搜索面试"> </el-input>
       <el-button type="primary" class="new-button" @click="newInterviews"
         >创建面试</el-button
       >
     </div>
     <el-table
-      :data="
-        tableData.slice(
-          (dictCurrentPage - 1) * dictPageSize,
-          dictCurrentPage * dictPageSize
-        )
-      "
+      :data="tableData"
       highlight-current-row
       border
       style="width: 100%"
@@ -26,8 +21,7 @@
       </el-table-column>
       <el-table-column prop="finish_time" label="结束时间" width="200">
       </el-table-column>
-      <el-table-column prop="status" label="当前状态" width="100">
-      </el-table-column>
+      <el-table-column prop="status" label="当前状态"> </el-table-column>
     </el-table>
     <div class="pages">
       <el-pagination
@@ -36,7 +30,7 @@
         v-model="dictCurrentPage"
         :pager-count="9"
         background
-        hide-on-single-page="true"
+        :hide-on-single-page="true"
         :total="tableData.length"
         :page-size="30"
         :page-sizes="[30, 50, 100]"

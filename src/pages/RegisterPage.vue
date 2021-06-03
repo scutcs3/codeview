@@ -57,7 +57,7 @@ import { register } from "../api/user.js";
 import router from "../router";
 export default {
   name: "Register",
-  data: function () {
+  data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));

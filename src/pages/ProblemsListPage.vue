@@ -27,7 +27,7 @@
         layout="sizes, prev, pager, next, total"
         :pager-count="9"
         background
-        hide-on-single-page="true"
+        :hide-on-single-page="true"
         :current-page="currentPage"
         :total="totalCount"
         :page-size="pageSize"
