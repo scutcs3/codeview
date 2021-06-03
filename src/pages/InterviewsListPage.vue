@@ -12,20 +12,18 @@
       border
       style="width: 100%"
     >
-      <el-table-column label="面试ID" v-slot="{ row }" width="100">
-        面试 #{{ row.id }}
-      </el-table-column>
+      <el-table-column label="序号" type="index" width="50"> </el-table-column>
       <el-table-column prop="start_time" label="开始时间" width="200">
       </el-table-column>
       <el-table-column prop="finish_time" label="结束时间" width="200">
       </el-table-column>
       <el-table-column prop="status" label="当前状态" width="100">
       </el-table-column>
-      <el-table-column label="测试链接" v-slot="{ row }">
-        <router-link :to="{ name: 'viewer', params: { hashid: row.hashid } }">
+      <el-table-column label="操作" v-slot="{ row }">
+        <router-link :to="{ name: 'viewer', params: { id: row.id } }">
           前往面试官页面
         </router-link>
-        <router-link :to="{ name: 'viewee', params: { hashid: row.hashid } }">
+        <router-link :to="{ name: 'viewee', params: { id: row.id } }">
           前往面试者页面
         </router-link>
       </el-table-column>
@@ -76,7 +74,6 @@ export default {
             start_time: formatDate(interview.start_time),
             finish_time: formatDate(interview.finish_time),
             status: interview.status,
-            hashid: interview.hashid,
           });
         }
       },

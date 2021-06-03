@@ -58,7 +58,7 @@ function getInterviewList(field, page, per_page, res, req) {
             result[i].start_time = formatDate(result[i].start_time);
             result[i].finish_time = formatDate(result[i].finish_time);
             results.push(result[i]);
-            results[i]["hashid"] = hashes.encode(result[i].id);
+            results[i]["id"] = hashes.encode(result[i].id);
           }
           res.setHeader("Total-Count", totalRecord);
 

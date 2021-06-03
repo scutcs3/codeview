@@ -13,7 +13,6 @@
 </template>
 <script>
 import { ref, provide } from "vue";
-import hashids from "hashids";
 import CodeEditor from "../components/CodeEditor.vue";
 import BaseProblem from "../components/BaseProblem.vue";
 import BaseComment from "../components/BaseComment.vue";
@@ -51,9 +50,8 @@ export default {
       handler(val, oldval) {
         //从子部件传来的数据是字符串数据，所以在这里将其转换为data属性，
         var jsObj = JSON.parse(val);
-        let hash = new hashids("codeview salt", 16);
         //添加interviewID属性
-        let interview_id = hash.decode(this.$route.query.hashid);
+        let interview_id = this.$route.params.id;
         console.log(interview_id);
         jsObj.intervierID = 1;
         //转换为字符串属性，然后将其发送到服务器上

@@ -66,10 +66,10 @@ export default {
   },
   computed: {
     viewTimeShow() {
-      return moment(this.viewTime, moment.ISO_8601).fromNow();
+      return this.$moment(this.viewTime, this.$moment.ISO_8601).fromNow();
     },
     viewTimeInfo() {
-      return moment(this.viewTime, moment.ISO_8601);
+      return this.$moment(this.viewTime, this.$moment.ISO_8601);
     },
   },
 };

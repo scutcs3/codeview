@@ -598,10 +598,10 @@ components:
       allOf:
       - $ref: '#/components/schemas/InterviewBody'
       - properties:
-          hashid: 
+          id: 
             type: string 
             example: "zxElkj1209FD123sdS"
-            description: 面试hashid，用于面试url。
+            description: 面试id。
           viewer_id:
             type: integer
             description: 面试官ID。

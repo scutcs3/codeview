@@ -58,6 +58,8 @@
 
 <script>
 import { inject } from "vue";
+import { addComment } from "../api/comments";
+
 export default {
   name: "BaseComment",
   data() {
@@ -110,7 +112,8 @@ export default {
   },
   methods: {
     sendMsg() {
-      if (this.input == "") {
+      if (this.input === "") {
+        this.$message.warning("不能发送空白消息");
         return;
       }
       var mynowmsg = {
@@ -120,7 +123,18 @@ export default {
         chatnum: this.chatnum,
       };
       this.chatnum++;
-
+      // 保存发送的信息到数据库
+      addComment({
+        content: this.input.trim(),
+        iid: this.$route.params.id,
+      }).handle({
+        200: (data) => {
+          console.log("发送信息成功", data);
+        },
+        404: () => {
+          this.$message.error("发送信息失败");
+        },
+      });
       localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
 
       var jsonstr = JSON.stringify(mynowmsg);
