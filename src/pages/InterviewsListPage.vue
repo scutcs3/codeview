@@ -1,7 +1,11 @@
 <template>
   <div>
-    <h2>面试列表</h2>
-    <el-button @click="newInterviews">创建面试</el-button>
+    <div class="header">
+      <el-input placeholder="搜索面试" v-model="word"> </el-input>
+      <el-button type="primary" class="new-button" @click="newInterviews"
+        >创建面试</el-button
+      >
+    </div>
     <el-table
       :data="
         tableData.slice(
@@ -117,6 +121,13 @@ export default {
 };
 </script>
 <style scoped>
+.header {
+  display: flex;
+  margin-bottom: 1rem;
+}
+.new-button {
+  margin-left: 1rem;
+}
 .view-cards {
   display: flex;
   flex-wrap: wrap;

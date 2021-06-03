@@ -1,5 +1,5 @@
 <template>
-  <div class="overview">
+  <div class="interviews">
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
@@ -12,3 +12,8 @@ export default {
   name: "Interviews",
 };
 </script>
+<style scoped>
+.interviews {
+  margin: 1rem;
+}
+</style>

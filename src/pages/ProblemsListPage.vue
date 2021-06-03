@@ -1,17 +1,11 @@
 <template>
   <div>
-    <h2 class="title">题目列表</h2>
-    <el-input placeholder="搜索题目" v-model="word">
-      <template #prepend>
-        <el-select v-model="select" placeholder="过滤器">
-          <el-option label="id" value="1"></el-option>
-          <el-option label="关键词" value="2"></el-option>
-        </el-select>
-      </template>
-      <template #append>
-        <el-button @click="newProblems">新建题目</el-button>
-      </template>
-    </el-input>
+    <div class="header">
+      <el-input placeholder="搜索题目" v-model="word"> </el-input>
+      <el-button type="primary" class="new-button" @click="newProblems"
+        >新建题目</el-button
+      >
+    </div>
     <el-table
       :data="tableData"
       highlight-current-row
@@ -134,8 +128,12 @@ export default {
 };
 </script>
 <style scoped>
-.title {
-  margin: 2rem;
+.header {
+  display: flex;
+  margin-bottom: 1rem;
+}
+.new-button {
+  margin-left: 1rem;
 }
 .pages {
   margin: 2rem auto;
