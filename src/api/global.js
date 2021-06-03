@@ -8,7 +8,8 @@ export class Handler {
     try {
       this.res
         .then(function ({ status, headers, data }) {
-          callback[status](data, headers);
+          if (data.data) callback[status](data.data, headers);
+          else callback[status](data, headers);
         })
         .catch(function (error) {
           if (error.response) {

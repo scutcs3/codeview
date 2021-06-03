@@ -28,6 +28,7 @@ import {
   ElTimelineItem,
   ElDivider,
   ElAutocomplete,
+  ElCollapse,
 } from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
 import lang from "element-plus/lib/locale/lang/zh-cn";
@@ -63,4 +64,5 @@ export default (app) => {
   app.use(ElTimelineItem);
   app.use(ElDivider);
   app.use(ElAutocomplete);
+  app.use(ElCollapse);
 };

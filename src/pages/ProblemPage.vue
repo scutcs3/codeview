@@ -1,22 +1,18 @@
 <template>
-  <div>
+  <div class="problem">
     <!--class="problem"-->
-    <el-header>
-      <h3>{{ id }} {{ title }}</h3>
-    </el-header>
-    <el-main>
-      <p>{{ content }}</p>
+    <h3 class="problem-title">{{ id }} {{ title }}</h3>
+    <div class="problem-content" v-html="content"></div>
 
-      <el-collapse>
-        <p>示例</p>
-        <p>???</p>
-      </el-collapse>
+    <!-- <el-collapse>
+      <p>示例</p>
+      <p>???</p>
+    </el-collapse>
 
-      <div><button @click="show = !show">提示</button></div>
-      <el-collapse>
-        <div v-if="show" class="testshow">?????????</div>
-      </el-collapse>
-    </el-main>
+    <div><button @click="show = !show">提示</button></div>
+    <el-collapse>
+      <div v-if="show" class="testshow">?????????</div>
+    </el-collapse> -->
   </div>
 </template>
 
@@ -34,15 +30,19 @@ export default {
       id: "",
     };
   },
-  mounted() {
+  activated() {
     const self = this;
-    getProblem()
-      .then((response) => JSON.parse(response.data))
-      .then(function (json) {
-        self.title = json[0].title;
-        self.content = json[0].content;
-        self.id = json[0].id;
-      });
+    const pid = self.$route.params.id;
+    this.id = pid;
+    getProblem({
+      pid,
+    }).handle({
+      200: (data) => {
+        this.title = data[0].title;
+        this.content = data[0].content;
+      },
+      404: () => self.$message.error("获取题目数据失败！"),
+    });
   },
 
   methods: {
@@ -54,30 +54,14 @@ export default {
 </script>
 
 <style scoped>
-.el-header {
-  background-color: white;
-  color: #333;
-  text-align: left;
-  line-height: 30px;
-}
-.el-main {
-  background-color: #f2f6fc;
-}
 .testshow {
   background-color: white;
 }
-button {
-  width: 100%; /*设置按钮宽度*/
-  height: 30px; /*设置按钮高度*/
-  color: black; /*字体颜色*/
-  background-color: white; /*按钮背景颜色*/
-  border-radius: 3px; /*让按钮变得圆滑一点*/
-  border-width: 0; /*消去按钮丑的边框*/
-  margin: 0;
-  outline: none; /*取消轮廓*/
-  font-family: KaiTi; /*字体设置为楷体*/
-  font-size: 17px; /*设置字体大小*/
-  text-align: left; /*字体居中*/
-  cursor: pointer; /*设置鼠标箭头手势*/
+.problem {
+  margin: 2rem 3rem;
+}
+.problem-title {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>

@@ -19,6 +19,11 @@ const api_maps = {
   dev: "http://cv-api.tootal.xyz",
 };
 
+const ws_maps = {
+  local: "ws://localhost:3002",
+  dev: "ws://cv-api.tootal.xyz:3002",
+};
+
 if (!process.env.VUE_APP_API_MODE) {
   if (process.env.NODE_ENV === "development") {
     process.env.VUE_APP_API_MODE = "mock";
@@ -28,6 +33,7 @@ if (!process.env.VUE_APP_API_MODE) {
 }
 
 process.env.VUE_APP_API = api_maps[process.env.VUE_APP_API_MODE];
+process.env.VUE_APP_WS_API = ws_maps[process.env.VUE_APP_API_MODE];
 
 module.exports = {
   publicPath: "./",
@@ -35,6 +41,7 @@ module.exports = {
     disableHostCheck: true,
   },
   configureWebpack: {
+    devtool: "inline-source-map",
     plugins: [new MonacoWebpackPlugin()],
   },
 };
