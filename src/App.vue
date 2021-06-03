@@ -17,4 +17,6 @@ export default {
   mounted() {},
 };
 </script>
-<style scoped></style>
+<style>
+@import "./style/base.css";
+</style>

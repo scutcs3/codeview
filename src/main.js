@@ -7,8 +7,6 @@ import element from "./plugins/element";
 import moment from "./plugins/moment";
 import axios from "axios";
 
-import "./main.css";
-
 if (process.env.VUE_APP_API_MODE === "mock") {
   console.log("Mock enabled!");
   require("./mock");
