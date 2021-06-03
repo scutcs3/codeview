@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <el-container id="main-content">
-      <el-header id="chat-title">Chat online</el-header>
+      <el-header id="chat-title">在线聊天</el-header>
       <el-divider></el-divider>
       <el-main id="chat-content">
         <div id="content">
@@ -49,7 +49,7 @@
           type="primary"
           @click="sendMsg"
           style="width: 25%"
-          >Send</el-button
+          >发送</el-button
         >
       </el-footer>
     </el-container>
@@ -190,7 +190,7 @@ textarea {
   margin-top: 5px;
   border: none;
   resize: none;
-  cursor: pointer;
+  cursor: text;
   outline: none;
   font-size: 20px;
 }
