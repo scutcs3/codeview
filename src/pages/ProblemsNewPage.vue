@@ -20,7 +20,6 @@
   </div>
 </template>
 <script>
-import { ElMessage } from "element-plus";
 import { addProblem } from "../api/problem";
 export default {
   name: "ProblemsNewPage",
@@ -39,7 +38,7 @@ export default {
         content: this.createForm.content,
       }).handle({
         200: () => {
-          ElMessage.success("添加题目成功");
+          this.$message.success("添加题目成功");
           // 清除输入内容
           this.createForm.title = "";
           this.createForm.content = "";
@@ -47,7 +46,7 @@ export default {
             name: "problems-list",
           });
         },
-        404: () => ElMessage.warning("添加题目失败！"),
+        404: () => this.$message.warning("添加题目失败！"),
       });
     },
   },

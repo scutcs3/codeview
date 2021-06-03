@@ -32,9 +32,6 @@
   </el-card>
 </template>
 <script>
-import moment from "moment";
-import "moment/locale/zh-cn.js";
-moment.locale("zh-cn");
 export default {
   name: "ViewCard",
   props: ["title"],
@@ -44,26 +41,35 @@ export default {
       activities: [
         {
           content: "候选人已接受面试",
-          timestamp: moment("2021-05-22T15:00:00", moment.ISO_8601).fromNow(),
+          timestamp: this.$moment(
+            "2021-05-22T15:00:00",
+            this.$moment.ISO_8601
+          ).fromNow(),
           type: "primary",
         },
         {
           content: "邀请候选人",
-          timestamp: moment("2021-05-22T13:00:00", moment.ISO_8601).fromNow(),
+          timestamp: this.$moment(
+            "2021-05-22T13:00:00",
+            this.$moment.ISO_8601
+          ).fromNow(),
         },
         {
           content: "创建面试",
-          timestamp: moment("2021-05-21T15:00:00", moment.ISO_8601).fromNow(),
+          timestamp: this.$moment(
+            "2021-05-21T15:00:00",
+            this.$moment.ISO_8601
+          ).fromNow(),
         },
       ],
     };
   },
   computed: {
     viewTimeShow() {
-      return moment(this.viewTime, moment.ISO_8601).fromNow();
+      return this.$moment(this.viewTime, this.$moment.ISO_8601).fromNow();
     },
     viewTimeInfo() {
-      return moment(this.viewTime, moment.ISO_8601);
+      return this.$moment(this.viewTime, this.$moment.ISO_8601);
     },
   },
 };

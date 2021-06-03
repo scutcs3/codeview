@@ -47,7 +47,6 @@ router.get("/", function (req, res, next) {
       } else {
         var page = req.query.page ? parseInt(req.query.page) : 1;
         var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
-        var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
         var preSize = (page - 1) * per_page;
 
         var sql = `SELECT * FROM answer WHERE interview_id = ${req.query.iid} AND problem_id = ${req.query.pid} limit ${preSize},${per_page}`;

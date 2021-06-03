@@ -53,12 +53,11 @@
   </div>
 </template>
 <script>
-import { ElMessage } from "element-plus";
 import { register } from "../api/user.js";
 import router from "../router";
 export default {
   name: "Register",
-  data: function () {
+  data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
@@ -93,7 +92,7 @@ export default {
     },
     submitRegisterForm() {
       var errorHandle = (msg) => {
-        ElMessage.error(msg);
+        this.$message.error(msg);
         this.loading = false;
       };
       this.loading = true;
@@ -102,7 +101,7 @@ export default {
         password: this.registerParam.password,
       }).handle({
         200: (data) => {
-          ElMessage.success("注册成功，已自动登录");
+          this.$message.success("注册成功，已自动登录");
           this.$store.commit({
             type: "login",
             token: data.token,

@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
+const moment = require("moment");
 var token = require("../utils/token");
 var tk;
 router.use(function (req, res, next) {
@@ -38,7 +38,6 @@ function getInterviewList(field, page, per_page, res, req) {
       });
     } else {
       totalRecord = result[0]["COUNT(*)"];
-      var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
       var preSize = (page - 1) * per_page;
 
       var sql = `SELECT * FROM interview WHERE ${field} = ${tk.obj.id} limit ${preSize},${per_page}`;
@@ -50,9 +49,16 @@ function getInterviewList(field, page, per_page, res, req) {
           });
         } else {
           var results = [];
+          let formatDate = function (dt) {
+            if (dt) {
+              return moment(dt, moment.ISO_8601).format("YYYY-MM-DD HH:mm:ss");
+            } else return dt;
+          };
           for (var i = 0; i < result.length; i++) {
+            result[i].start_time = formatDate(result[i].start_time);
+            result[i].finish_time = formatDate(result[i].finish_time);
             results.push(result[i]);
-            results[i]["hashid"] = hashes.encode(result[i].id);
+            results[i]["id"] = hashes.encode(result[i].id);
           }
           res.setHeader("Total-Count", totalRecord);
 
@@ -124,7 +130,7 @@ router.post("/", function (req, res, next) {
   let viewee_id = req.body.viewee_id || "null";
   let start_time = req.body.start_time || "null";
   let finish_time = req.body.finish_time || "null";
-  var sql = `INSERT INTO interview (viewer_id,viewee_id,start_time,finish_time,status) VALUES (${tk.obj.id},${viewee_id},${start_time},${finish_time},'created')`;
+  var sql = `INSERT INTO interview (viewer_id,viewee_id,start_time,finish_time,status) VALUES (${tk.obj.id},${viewee_id},'${start_time}','${finish_time}','created')`;
   console.log(sql);
   connection.query(sql, function (err, result) {
     if (err) {

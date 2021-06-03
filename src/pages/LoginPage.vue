@@ -48,12 +48,11 @@
 </template>
 
 <script>
-import { ElMessage } from "element-plus";
 import { login } from "../api/user.js";
 
 export default {
   name: "Login",
-  data: function () {
+  data() {
     return {
       loading: false,
       loginParam: {},
@@ -75,7 +74,7 @@ export default {
     },
     onSubmit() {
       var errorHandle = (msg) => {
-        ElMessage.error(msg);
+        this.$message.error(msg);
         this.loading = false;
       };
       this.loading = true;
@@ -84,7 +83,7 @@ export default {
         password: this.loginParam.password,
       }).handle({
         200: (data) => {
-          ElMessage.success("登陆成功");
+          this.$message.success("登陆成功");
           this.$store.commit({
             type: "login",
             token: data.token,

@@ -1,7 +1,13 @@
 <template>
   <div class="tinymce-box">
     <h3 v-if="flag" style="text-align: center">题目：{{ t }}</h3>
-    <editor v-model="str" :init="init" :disabled="disabled"> </editor>
+    <Editor
+      apiKey="5wyzzlc3q04wdx1nzfxn2c5464d6gwsblr3cm1fdwfrqow3u"
+      v-model="str"
+      :init="init"
+      :disabled="disabled"
+    >
+    </Editor>
     <div>
       <el-button style="bottom: 0; left: 50px" @click="printf">发送</el-button>
     </div>
@@ -9,20 +15,7 @@
 </template>
 
 <script>
-import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
-import "tinymce/skins/content/default/content.css";
-import "tinymce/themes/silver/theme.min.js";
-import "tinymce/icons/default/icons";
-import "tinymce/plugins/image";
-import "tinymce/plugins/table";
-import "tinymce/plugins/lists";
-import "tinymce/plugins/wordcount";
-import "tinymce/plugins/link";
-import "tinymce/plugins/code";
-import "tinymce/plugins/preview";
-import "tinymce/plugins/fullscreen";
-import "tinymce/plugins/help";
 import { inject } from "vue";
 export default {
   components: {
@@ -98,9 +91,6 @@ export default {
     add() {
       (this.flag = true), (this.str = this.c);
     },
-  },
-  mounted() {
-    tinymce.init({});
   },
   watch: {
     str: function (newname) {

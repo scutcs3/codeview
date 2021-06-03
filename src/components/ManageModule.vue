@@ -1,27 +1,28 @@
 <template>
   <div>
-    <el-autocomplete
-      v-model="state"
-      :fetch-suggestions="querySearchAsync"
-      placeholder="请输入内容"
-      @select="handleSelect"
-    ></el-autocomplete>
-    <el-button @click="father_add">添加题目</el-button><br /><br />
-    <tinymce
+    <div class="header">
+      <el-autocomplete
+        v-model="state"
+        :fetch-suggestions="querySearchAsync"
+        placeholder="请输入内容"
+        @select="handleSelect"
+      ></el-autocomplete>
+      <el-button @click="father_add">添加题目</el-button>
+    </div>
+    <TextEditor
       @problemPressed="problemPressed"
       ref="editor"
-      :disabled="disabled"
       :t="state"
       :c="middle_content"
     >
-    </tinymce>
+    </TextEditor>
   </div>
 </template>
 <script>
-import tinymce from "../components/TinymceEditor";
+import TextEditor from "../components/TextEditor";
 export default {
-  name: "AddProblem",
-  data: function () {
+  name: "ManageModule",
+  data() {
     return {
       middle_content: "",
       restaurants: [],
@@ -30,7 +31,7 @@ export default {
     };
   },
   components: {
-    tinymce,
+    TextEditor,
   },
   methods: {
     problemPressed(val) {
@@ -186,3 +187,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.header {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+}
+</style>

@@ -37,6 +37,9 @@ process.env.VUE_APP_WS_API = ws_maps[process.env.VUE_APP_API_MODE];
 
 module.exports = {
   publicPath: "./",
+  devServer: {
+    disableHostCheck: true,
+  },
   configureWebpack: {
     devtool: "inline-source-map",
     plugins: [new MonacoWebpackPlugin()],
