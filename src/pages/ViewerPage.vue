@@ -54,7 +54,7 @@ export default {
         //添加interviewID属性
         let interview_id = this.$route.params.id;
         console.log(interview_id);
-        jsObj.intervierID = 1;
+        jsObj.interviewID = interview_id;
         //转换为字符串属性，然后将其发送到服务器上
         var jsonstr = JSON.stringify(jsObj);
 

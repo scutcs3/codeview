@@ -54,6 +54,7 @@ let conns = {};
 
 function boardcast(obj) {
   if (obj.interviewID) {
+    console.log("发送数据 ", obj);
     conns[obj.interviewID].sendText(JSON.stringify(obj));
   }
   return;
