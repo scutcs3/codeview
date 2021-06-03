@@ -1,7 +1,7 @@
 <template>
   <div class="tinymce-box">
     <h3 v-if="flag" style="text-align: center">题目：{{ t }}</h3>
-    <editor v-model="str" :init="init" :disabled="disabled"> </editor>
+    <Editor v-model="str" :init="init" :disabled="disabled"> </Editor>
     <div>
       <el-button style="bottom: 0; left: 50px" @click="printf">发送</el-button>
     </div>

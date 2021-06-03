@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="6">
-      <AddProblem @problemsend="problemsend"></AddProblem>
+      <ManageModule @problemsend="problemsend"></ManageModule>
     </el-col>
     <el-col :span="12">
       <CodeEditor msg="编程部分" @codeMsg="codeMsg"></CodeEditor>
@@ -15,7 +15,7 @@
 import { ref, provide } from "vue";
 import hashids from "hashids";
 import CodeEditor from "../components/CodeEditor.vue";
-import AddProblem from "../components/AddProblem.vue";
+import ManageModule from "../components/ManageModule.vue";
 import BaseComment from "../components/BaseComment.vue";
 
 export default {
@@ -37,7 +37,7 @@ export default {
     };
   },
   components: {
-    AddProblem,
+    ManageModule,
     CodeEditor,
     BaseComment,
   },

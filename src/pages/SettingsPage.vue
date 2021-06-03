@@ -1,7 +1,6 @@
 <template>
   <div class="settings">
     <h2>设置页面</h2>
-    <router-link to="/viewee"> 前往面试者页面 </router-link>
   </div>
 </template>
 <script>
