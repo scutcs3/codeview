@@ -12,16 +12,23 @@
       border
       style="width: 100%"
     >
-      <el-table-column label="面试ID" v-slot="{ row }" width="200">
-        <router-link :to="{ name: 'viewer', params: { id: row.hashid } }">
-          面试 #{{ row.id }}
-        </router-link>
+      <el-table-column label="面试ID" v-slot="{ row }" width="100">
+        面试 #{{ row.id }}
       </el-table-column>
       <el-table-column prop="start_time" label="开始时间" width="200">
       </el-table-column>
       <el-table-column prop="finish_time" label="结束时间" width="200">
       </el-table-column>
-      <el-table-column prop="status" label="当前状态"> </el-table-column>
+      <el-table-column prop="status" label="当前状态" width="100">
+      </el-table-column>
+      <el-table-column label="测试链接" v-slot="{ row }">
+        <router-link :to="{ name: 'viewer', params: { hashid: row.hashid } }">
+          前往面试官页面
+        </router-link>
+        <router-link :to="{ name: 'viewee', params: { hashid: row.hashid } }">
+          前往面试者页面
+        </router-link>
+      </el-table-column>
     </el-table>
     <div class="pages">
       <el-pagination
@@ -61,7 +68,6 @@ export default {
   activated() {
     getInterviews().handle({
       200: (data) => {
-        console.log(data);
         this.tableData = [];
         let formatDate = (dt) => (dt ? this.$moment(dt).fromNow() : "待定");
         for (let interview of data) {
@@ -70,7 +76,7 @@ export default {
             start_time: formatDate(interview.start_time),
             finish_time: formatDate(interview.finish_time),
             status: interview.status,
-            hashid: interview.hasid,
+            hashid: interview.hashid,
           });
         }
       },

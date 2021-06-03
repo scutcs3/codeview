@@ -14,14 +14,14 @@ export default [
       import(/* webpackChunkName: "login" */ "../pages/LoginPage.vue"),
   },
   {
-    path: "/viewer",
+    path: "/viewer/:hashid",
     name: "viewer",
     component: () =>
       import(/* webpackChunkName: "viewer" */ "../pages/ViewerPage.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path: "/viewee",
+    path: "/viewee/:hashid",
     name: "viewee",
     component: () =>
       import(/* webpackChunkName: "viewee" */ "../pages/VieweePage.vue"),
