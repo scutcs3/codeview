@@ -58,7 +58,7 @@
 
 <script>
 import { inject } from "vue";
-import { addComment } from "../api/comments";
+import { addComment, getComments } from "../api/comments";
 
 export default {
   name: "BaseComment",
@@ -74,10 +74,19 @@ export default {
   },
 
   mounted() {
+    getComments({
+      iid: this.$route.params.id,
+    }).handle({
+      200: (data) => {
+        console.log(data);
+      },
+      404: () => console.error("获取留言失败！"),
+    });
     if (localStorage.getItem("chatHistory") === null) {
       localStorage.setItem("chatHistory", "");
     } else {
       this.chatHistory = JSON.parse(localStorage.getItem("chatHistory"));
+      console.log(this.chatHistory);
     }
     //window.onbeforeunload = function () {
     //  localStorage.removeItem('chatHistory');
