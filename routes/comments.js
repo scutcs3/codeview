@@ -50,7 +50,8 @@ router.get("/", function (req, res, next) {
         var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
         var preSize = (page - 1) * per_page;
 
-        var sql = `SELECT * FROM comment WHERE interview_id = ${req.query.iid} `;
+        var iid = hashes.decode(req.query.iid)[0];
+        var sql = `SELECT * FROM comment WHERE interview_id = ${iid} `;
         if (req.query.cid) {
           sql += `AND id = ${req.query.cid} `;
         }
@@ -92,7 +93,7 @@ router.post("/", function (req, res, next) {
     });
   } else {
     var dt = require("moment")().format("YYYY-MM-DD HH:mm:ss");
-    let iid = hashes.decode(req.body.iid);
+    var iid = hashes.decode(req.body.iid)[0];
     var sql = `INSERT INTO comment (content,interview_id,owner_id,created_at) VALUES ('${req.body.content}',${iid},${tk.obj.id},'${dt}')`;
     connection.query(sql, function (err, result) {
       if (err) {
