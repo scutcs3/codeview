@@ -141,11 +141,7 @@ router.post("/", function (req, res, next) {
       });
     } else {
       res.json({
-        viewee_id: req.body.viewee_id,
-        viewer_id: tk.obj.id,
-        start_time: req.body.start_time,
-        finish_time: req.body.finish_time,
-        status: "created",
+        data: "创建成功",
       });
     }
   });
