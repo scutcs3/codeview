@@ -57,8 +57,8 @@ function getInterviewList(field, page, per_page, res, req) {
           for (var i = 0; i < result.length; i++) {
             result[i].start_time = formatDate(result[i].start_time);
             result[i].finish_time = formatDate(result[i].finish_time);
+            result[i].id = hashes.encode(result[i].id);
             results.push(result[i]);
-            results[i].id = hashes.encode(result[i].id);
           }
           res.setHeader("Total-Count", totalRecord);
 
@@ -78,7 +78,8 @@ function getInterviewList(field, page, per_page, res, req) {
 router.get("/", function (req, res, next) {
   var sql;
   if (req.query.id) {
-    sql = `SELECT * FROM interview WHERE id = ${req.query.id}`;
+    var id = hashes.decode(req.query.id)[0];
+    sql = `SELECT * FROM interview WHERE id = ${id}`;
     connection.query(sql, function (err, result) {
       if (err) {
         console.log("[SELECT ERROR]:", err.message);
@@ -97,7 +98,7 @@ router.get("/", function (req, res, next) {
           } else {
             var results = [];
             for (var i = 0; i < result.length; i++) {
-              results[i].id = hashes.encode(result[i].id);
+              result[i].id = hashes.encode(result[i].id);
               results.push(result[i]);
             }
             res.json({

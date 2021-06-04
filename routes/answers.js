@@ -22,6 +22,8 @@ router.use(function (req, res, next) {
 });
 
 var connection = require("../config/mysql");
+var hashids = require("hashids");
+var hashes = new hashids("codeview salt", 16);
 
 /**
  * @api {get} /answers
@@ -49,7 +51,8 @@ router.get("/", function (req, res, next) {
         var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
         var preSize = (page - 1) * per_page;
 
-        var sql = `SELECT * FROM answer WHERE interview_id = ${req.query.iid} AND problem_id = ${req.query.pid} limit ${preSize},${per_page}`;
+        var iid = hashes.decode(req.query.iid)[0];
+        var sql = `SELECT * FROM answer WHERE interview_id = ${iid} AND problem_id = ${req.query.pid} limit ${preSize},${per_page}`;
         connection.query(sql, function (err, result) {
           if (err) {
             console.log("[SELECT ERROR]:", err.message);
@@ -88,7 +91,8 @@ router.post("/", function (req, res, next) {
     });
   } else {
     var dt = require("moment")().format("YYYY-MM-DD HH:mm:ss");
-    var sql = `INSERT INTO answer (language,content,problem_id,interview_id,created_at) VALUES ('${req.body.language}','${req.body.content}',${req.body.problem_id},${req.body.interview_id},'${dt}')`;
+    var iid = hashes.decode(req.body.interview_id)[0];
+    var sql = `INSERT INTO answer (language,content,problem_id,interview_id,created_at) VALUES ('${req.body.language}','${req.body.content}',${req.body.problem_id},${iid},'${dt}')`;
     connection.query(sql, function (err, result) {
       if (err) {
         console.log("[INSERT ERROR]:", err.message);
