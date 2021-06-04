@@ -19,18 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-var expressJwt = require("express-jwt");
-// jwt中间件
-app.use(
-  expressJwt({
-    credentialsRequired: false,
-    secret: "codeview", //加密密钥
-    algorithms: ["HS256"],
-  }).unless({
-    path: ["/users", "/tokens"], //添加不需要token验证的路由
-  })
-);
-
 app.all("*", function (req, res, next) {
   // 允许访问header字段
   res.header("Access-Control-Expose-Headers", "Total-Count");
@@ -49,6 +37,18 @@ app.all("*", function (req, res, next) {
   if (req.method === "OPTIONS") res.sendStatus(200);
   /*让options请求快速返回*/ else next();
 });
+
+var expressJwt = require("express-jwt");
+// jwt中间件
+app.use(
+  expressJwt({
+    credentialsRequired: false,
+    secret: "codeview", //加密密钥
+    algorithms: ["HS256"],
+  }).unless({
+    path: ["/users", "/tokens"], //添加不需要token验证的路由
+  })
+);
 
 app.get("/", function (req, res) {
   var port = app.get("port") === 80 ? "" : app.get("port");
