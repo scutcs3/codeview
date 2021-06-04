@@ -8,6 +8,7 @@
 var app = require("../app");
 var http = require("http");
 const ws = require("nodejs-websocket");
+
 const crypto = require("crypto");
 const exec = require("child_process").exec;
 const path = require("path");
@@ -49,16 +50,26 @@ httpServer.on("error", function (error) {
 });
 
 let wsNum = 0;
+let conns = {};
+
+function boardcast(obj) {
+  if (obj.interviewID) {
+    console.log("发送数据 ", obj);
+    conns[obj.interviewID].sendText(JSON.stringify(obj));
+  }
+  return;
+}
 // 创建WebSocket服务器
 const wsServer = ws.createServer(function (connect) {
   let id = wsNum;
   console.log("用户" + id + "连接上来!");
   wsNum++;
   //接收到信息函数
-  connect.on("text", function (str) {
-    console.log("接受到: " + str);
-    //connect.sendText(str);//向这个浏览器回发str
-    sentall(str); //向所有连接上来的浏览器发送str
+  connect.on("text", function (obj) {
+    console.log("接受到: " + obj);
+    obj = JSON.parse(obj);
+    conns["" + obj.interviewID + ""] = connect;
+    boardcast(obj);
   });
   //有连接断开函数
   connect.on("close", function () {
@@ -68,11 +79,11 @@ const wsServer = ws.createServer(function (connect) {
   connect.on("error", function () {
     console.log("用户连接异常");
   });
-  function sentall(str) {
-    wsServer.connections.forEach(function (connect) {
-      connect.sendText(str);
-    });
-  }
+  //   function sentall(str) {
+  //     serve.connections.forEach(function (connect) {
+  //       connect.sendText(str);
+  //     });
+  //   }
 });
 
 wsServer.listen(WEBSOCKET_PORT, function () {

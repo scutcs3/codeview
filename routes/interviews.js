@@ -58,7 +58,7 @@ function getInterviewList(field, page, per_page, res, req) {
             result[i].start_time = formatDate(result[i].start_time);
             result[i].finish_time = formatDate(result[i].finish_time);
             results.push(result[i]);
-            results[i]["id"] = hashes.encode(result[i].id);
+            results[i].id = hashes.encode(result[i].id);
           }
           res.setHeader("Total-Count", totalRecord);
 
@@ -97,8 +97,8 @@ router.get("/", function (req, res, next) {
           } else {
             var results = [];
             for (var i = 0; i < result.length; i++) {
+              results[i].id = hashes.encode(result[i].id);
               results.push(result[i]);
-              results[i]["hashid"] = hashes.encode(result[i].id);
             }
             res.json({
               data: results,
@@ -131,7 +131,7 @@ router.post("/", function (req, res, next) {
   let start_time = req.body.start_time || "null";
   let finish_time = req.body.finish_time || "null";
   var sql = `INSERT INTO interview (viewer_id,viewee_id,start_time,finish_time,status) VALUES (${tk.obj.id},${viewee_id},'${start_time}','${finish_time}','created')`;
-  console.log(sql);
+  //   console.log(sql);
   connection.query(sql, function (err, result) {
     if (err) {
       console.log("[INSERT ERROR]:", err.message);
@@ -186,7 +186,7 @@ router.patch("/", function (req, res, next) {
           }
           sql = sql.substring(0, sql.length - 1);
           sql += ` WHERE id = ${req.body.iid}`;
-          console.log(sql);
+          //   console.log(sql);
           connection.query(sql, function (err, result) {
             if (err) {
               console.log("[UPDATE ERROR]:", err.message);
