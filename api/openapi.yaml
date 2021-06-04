@@ -106,7 +106,7 @@ paths:
           description: 数据库错误。
     patch:
       summary: 修改用户信息
-      description: 修改用户名/用户密码。
+      description: 修改用户密码。
       tags:
       - 用户模块
       requestBody:
@@ -114,17 +114,7 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-              - id
               properties:
-                id:
-                  type: integer
-                  format: int32
-                  description: 用户ID。
-                name:
-                  type: string
-                  description: 用户名。
-                  example: 小黄同学
                 password:
                   type: string
                   format: password
@@ -279,8 +269,9 @@ paths:
         name: iid
         description: 面试ID。
         required: true
+        example: axEs13asEx
         schema:
-          type: integer
+          type: string
       - in: query
         name: pid
         description: 题目ID。
@@ -377,10 +368,6 @@ paths:
       responses:
         '200':
           description: 创建面试成功。
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Interview'
         '400':
           description: 创建面试失败。
         '401':
@@ -407,10 +394,6 @@ paths:
       responses:
         '200':
           description: 成功修改面试信息。
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Interview'
         '400':
           description: 参数错误。
         '401':
@@ -431,9 +414,8 @@ paths:
         required: true
         description: 面试ID。
         schema:
-          type: integer
-          format: int32
-          example: 3
+          type: string
+          example: sex3sdDSe3
       - in: query 
         name: cid
         description: 留言ID。
@@ -479,8 +461,8 @@ paths:
                 - content
               - properties:
                   iid:
-                    type: integer
-                    example: 5
+                    type: string
+                    example: ex3Dsd2k
                     description: 面试ID。
       responses:
         '200':
@@ -640,7 +622,8 @@ components:
           type: integer
           description: 所属题目ID。
         interview_id:
-          type: integer
+          type: string
+          example: ExamPle2sdS
           description: 所属面试ID。
     Answer:
       description: '面试过程中提交的代码'
@@ -710,6 +693,11 @@ components:
             properties:
               token: 
                 $ref: '#/components/schemas/Token'
+              id:
+                type: integer
+                format: int32
+                description: 用户ID。
+                example: 5
 externalDocs:
   url: https://github.com/scutcs3/codeview/wiki
   description: Github Wiki
