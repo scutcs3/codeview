@@ -23,6 +23,8 @@ router.use(function (req, res, next) {
 });
 
 var connection = require("../config/mysql");
+var hashids = require("hashids");
+var hashes = new hashids("codeview salt", 16);
 
 function getProblemDetail(field, param, page, per_page, word, res, req) {
   var sql;
@@ -144,18 +146,24 @@ router.post("/", function (req, res, next) {
           data: "[INSERT ERROR]:" + err.message,
         });
       } else {
+        let formatDate = function (dt) {
+          if (dt) {
+            return moment(dt, moment.ISO_8601).format("YYYY-MM-DD HH:mm:ss");
+          } else return dt;
+        };
         res.json({
           title: req.body.title,
           content: req.body.content,
           id: result.insertId,
           owner_id: tk.obj.id,
-          created_at: dt,
-          updated_at: dt,
+          created_at: formatDate(dt),
+          updated_at: formatDate(dt),
         });
       }
     });
   } else {
-    sql = `SELECT * FROM interview WHERE id = ${req.body.iid}`;
+    var iid = hashes.decode(req.body.iid)[0];
+    sql = `SELECT * FROM interview WHERE id = ${iid}`;
     connection.query(sql, function (err, result) {
       if (err) {
         console.log("[SELECT ERROR]:", err.message);
@@ -233,7 +241,8 @@ router.delete("/", function (req, res, next) {
               });
             });
           } else {
-            sql = `DELETE FROM interview_problem WHERE problem_id = ${req.body.pid} AND interview_id = ${req.body.iid}`;
+            var iid = hashes.decode(req.body.iid)[0];
+            sql = `DELETE FROM interview_problem WHERE problem_id = ${req.body.pid} AND interview_id = ${iid}`;
             connection.query(sql, function (err, result) {
               if (err) {
                 console.log("[DELETE ERROR]:", err.message);
