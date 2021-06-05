@@ -178,42 +178,48 @@ router.patch("/", function (req, res) {
         data: tk.obj,
       });
     } else {
-      var sql;
-      sql = `SELECT * FROM user WHERE id = ${req.body.id}`;
-      connection.query(sql, function (err, result) {
-        if (err) {
-          console.log("[SELECT ERROR]:", err.message);
-          res.status(500).json({
-            data: "[SELECT ERROR]:" + err.message,
-          });
-        } else {
-          if (result.length > 0) {
-            if (result[0].id != tk.obj.id) {
-              res.status(403).json({
-                data: "没有权限修改用户信息",
-              });
+      if (req.body.old_password && req.body.new_password) {
+        var sql;
+        sql = `SELECT * FROM user WHERE id = ${tk.obj.id} AND password = '${req.body.old_password}'`;
+        connection.query(sql, function (err, result) {
+          if (err) {
+            console.log("[SELECT ERROR]:", err.message);
+            res.status(500).json({
+              data: "[SELECT ERROR]:" + err.message,
+            });
+          } else {
+            if (result.length > 0) {
+              if (result[0].id != tk.obj.id) {
+                res.status(403).json({
+                  data: "没有权限修改用户信息",
+                });
+              } else {
+                sql = `UPDATE user SET password = '${req.body.new_password}' WHERE id = ${tk.obj.id}`;
+                connection.query(sql, function (err, result) {
+                  if (err) {
+                    console.log("[UPDATE ERROR]:", err.message);
+                    res.status(500).json({
+                      data: "[UPDATE ERROR]:" + err.message,
+                    });
+                  } else {
+                    res.json({
+                      data: "更新成功",
+                    });
+                  }
+                });
+              }
             } else {
-              sql = `UPDATE user SET password = '${req.body.password}' WHERE id = ${tk.obj.id}`;
-              connection.query(sql, function (err, result) {
-                if (err) {
-                  console.log("[UPDATE ERROR]:", err.message);
-                  res.status(500).json({
-                    data: "[UPDATE ERROR]:" + err.message,
-                  });
-                } else {
-                  res.json({
-                    data: "更新成功",
-                  });
-                }
+              res.status(404).json({
+                data: "找不到指定id的用户",
               });
             }
-          } else {
-            res.status(404).json({
-              data: "找不到指定id的用户",
-            });
           }
-        }
-      });
+        });
+      } else {
+        res.status(400).json({
+          data: "参数错误",
+        });
+      }
     }
   } else {
     res.status(401).json({
