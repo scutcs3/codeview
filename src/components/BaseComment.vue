@@ -102,7 +102,6 @@ export default {
   },
   methods: {
     loadComments(page, per_page) {
-      console.log("loadComment", page, per_page);
       getComments({
         iid: this.$route.params.id,
         page,
@@ -116,7 +115,6 @@ export default {
               input: comment.content,
             });
           }
-          console.log(this.chatHistory.length, this.commentCount);
           if (this.chatHistory.length < this.commentCount) {
             this.loadComments(page + 1, per_page);
           }

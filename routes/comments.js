@@ -36,7 +36,8 @@ router.get("/", function (req, res, next) {
     });
   } else {
     var sql;
-    sql = `SELECT COUNT(*) FROM comment WHERE interview_id = ${req.query.iid}`;
+    var iid = hashes.decode(req.query.iid)[0];
+    sql = `SELECT COUNT(*) FROM comment WHERE interview_id = ${iid}`;
     var totalRecord = 0;
     connection.query(sql, function (err, result) {
       if (err) {
