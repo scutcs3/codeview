@@ -73,24 +73,23 @@ export default {
     };
   },
 
-  mounted() {
+  activated() {
     getComments({
       iid: this.$route.params.id,
     }).handle({
       200: (data) => {
-        console.log(data);
+        this.chatHistory = [];
+        for (let comment of data) {
+          this.chatHistory.push({
+            username: comment.owner_id,
+            input: comment.content,
+            Ischat: 1,
+          });
+        }
+        console.log(this.chatHistory);
       },
       404: () => console.error("获取留言失败！"),
     });
-    if (localStorage.getItem("chatHistory") === null) {
-      localStorage.setItem("chatHistory", "");
-    } else {
-      this.chatHistory = JSON.parse(localStorage.getItem("chatHistory"));
-      console.log(this.chatHistory);
-    }
-    //window.onbeforeunload = function () {
-    //  localStorage.removeItem('chatHistory');
-    //}
   },
   watch: {
     chatHistory() {

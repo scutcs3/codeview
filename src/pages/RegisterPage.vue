@@ -105,6 +105,7 @@ export default {
             type: "login",
             token: data.token,
             id: data.id,
+            email: this.registerParam.email,
           });
           this.loading = false;
           if (this.$route.query && this.$route.query.redirect) {
