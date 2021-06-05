@@ -47,16 +47,13 @@
 </template>
 <script>
 import MonacoEditor from "./MonacoEditor.vue";
-import { inject } from "vue";
 export default {
   name: "CodeEditor",
   components: { MonacoEditor },
   data() {
     return {
       chatnum: 0,
-      Onechat: inject("Onechat"), //用来接收父组件传来的消息
       codestr: "", //假设这是代码
-      currentUser: inject("CurrentID"), //当前使用者ID，用于判断是面试官还是面试者
       sets: {
         language: {
           cpp: "cpp",
@@ -88,20 +85,6 @@ export default {
   },
 
   watch: {
-    Onechat: {
-      //判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
-      handler(val, oldval) {
-        console.log(oldval);
-        var jsObj = JSON.parse(val);
-        if (typeof jsObj.IsCode == "undefined") {
-          return;
-        }
-        //console.log(jsObj.IsCode);
-        console.log("服务端返回的数据啊:" + jsObj.value);
-        this.codestr = jsObj.value;
-      },
-      deep: true,
-    },
     opts: {
       handler(val, oldval) {
         if (val != oldval) {

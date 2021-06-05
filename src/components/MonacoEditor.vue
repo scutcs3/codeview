@@ -8,7 +8,6 @@
 
 <script>
 import * as monaco from "monaco-editor";
-import { inject } from "vue";
 
 export default {
   name: "MonacoEditor",
@@ -27,8 +26,6 @@ export default {
   data() {
     return {
       timer: null,
-      Onechat: inject("Onechat"),
-      currentUser: inject("CurrentID"),
       // 主要配置
       defaultOpts: {
         codestr: "",

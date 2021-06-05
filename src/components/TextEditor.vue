@@ -16,7 +16,6 @@
 
 <script>
 import Editor from "@tinymce/tinymce-vue";
-import { inject } from "vue";
 export default {
   components: {
     Editor,
@@ -56,8 +55,6 @@ export default {
     return {
       str: "", //编辑器里的值
       flag: false,
-      currentUser: inject("CurrentID"),
-
       init: {
         language_url: `${this.baseUrl}/tinymce/langs/zh_CN.js`,
         language: "zh_CN",

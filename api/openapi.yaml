@@ -136,7 +136,7 @@ paths:
         '401':
           description: 需要登陆。
         '403':
-          description: 没有权限修改用户信息。
+          description: 旧密码错误。
         '404':
           description: 找不到指定id的用户。
         '500':

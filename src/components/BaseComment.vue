@@ -1,13 +1,12 @@
 <template>
   <div id="main">
     <el-container id="main-content">
-      <el-header id="chat-title">在线聊天</el-header>
+      <el-header id="chat-title">在线聊天 ({{ count }})</el-header>
       <el-divider></el-divider>
       <el-main id="chat-content">
         <div id="content">
-          <div v-for="item in chatHistory" :key="item">
-            <div v-if="typeof item.Ischat === 'undefined'"></div>
-            <div class="my-msg" v-else-if="item.username === currentUser">
+          <div v-for="item in messages" :key="item">
+            <div class="my-msg" v-if="item.uid == uid">
               <div class="message-box">
                 <div class="my message">
                   <img class="avatar" alt="" />
@@ -24,7 +23,7 @@
                 <div class="other message">
                   <img class="avatar" alt="" />
                   <div class="content">
-                    <div class="nickname">{{ item.username }}</div>
+                    <div class="nickname">用户 {{ item.uid }}</div>
                     <div class="bubble">
                       <div class="bubble_cont">{{ item.input }}</div>
                     </div>
@@ -57,97 +56,96 @@
 </template>
 
 <script>
-import { inject } from "vue";
 import { addComment, getComments } from "../api/comments";
 
 export default {
   name: "BaseComment",
   data() {
     return {
+      uid: localStorage.getItem("user.id"),
       input: "",
-      chatHistory: [],
-      currentUser: inject("CurrentID"),
+      chatHistory: [], // 仅保存历史聊天记录
       socket: "",
-      Onechat: inject("Onechat"), //用来接收父组件传来的消息
-      chatnum: 0,
+      commentPage: 0,
     };
   },
-
-  activated() {
-    getComments({
-      iid: this.$route.params.id,
-    }).handle({
-      200: (data) => {
-        this.chatHistory = [];
-        for (let comment of data) {
-          this.chatHistory.push({
-            username: comment.owner_id,
-            input: comment.content,
-            Ischat: 1,
-          });
-        }
-        console.log(this.chatHistory);
-      },
-      404: () => console.error("获取留言失败！"),
-    });
-  },
-  watch: {
-    chatHistory() {
+  computed: {
+    wsChatMsg() {
+      return this.$store.state.wsMessage.filter((msg) => msg.type === "chat");
+    },
+    wsOpenMsg() {
+      return this.$store.state.wsMessage.filter((msg) => {
+        return msg.type === "open" || msg.type === "close";
+      });
+    },
+    count() {
+      let len = this.wsOpenMsg.length;
+      //当前在线人数
+      if (len === 0) return 0;
+      else {
+        return this.wsOpenMsg[len - 1].count;
+      }
+    },
+    messages() {
       this.$nextTick(() => {
         document.getElementById("content").scrollIntoView(false);
       });
-    },
-    currentUser: {
-      handler(val, oldval) {
-        console.log(val);
-        console.log(oldval);
-      },
-    },
-    Onechat: {
-      //判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
-      handler(val, oldval) {
-        console.log("BaseComment Onechat handler");
-        console.log(oldval);
-        var jsObj = JSON.parse(val);
-        if (typeof jsObj.Ischat == "undefined") {
-          return;
-        }
-        console.log("服务端返回的数据:" + val);
-        this.chatHistory.push(jsObj);
-        localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
-      },
-      deep: true,
+      // 返回所有聊天信息
+      return this.chatHistory.concat(this.wsChatMsg);
     },
   },
+  activated() {
+    // 获取历史聊天记录
+    const per_page = 100;
+    this.loadComments(1, per_page);
+    if (this.commentPage > 1) {
+      for (let i = 2; i <= this.commentPage; i++) {
+        this.loadComments(i, per_page);
+      }
+    }
+  },
   methods: {
+    loadComments(page, per_page) {
+      getComments({
+        iid: this.$route.params.id,
+        page,
+        per_page,
+      }).handle({
+        200: (data, headers) => {
+          console.log(headers);
+          this.chatHistory = [];
+          for (let comment of data) {
+            this.chatHistory.push({
+              uid: comment.owner_id,
+              input: comment.content,
+            });
+          }
+        },
+        404: () => console.error("获取留言失败！"),
+      });
+    },
     sendMsg() {
       if (this.input === "") {
         this.$message.warning("不能发送空白消息");
         return;
       }
       var mynowmsg = {
-        username: this.currentUser,
+        type: "chat",
+        uid: this.uid,
         input: this.input.trim(),
-        Ischat: 1,
-        chatnum: this.chatnum,
       };
-      this.chatnum++;
+      // 利用WebSocket广播消息
+      this.$store.commit("wsSend", mynowmsg);
       // 保存发送的信息到数据库
       addComment({
         content: this.input.trim(),
         iid: this.$route.params.id,
       }).handle({
-        200: (data) => {
-          console.log("发送信息成功", data);
-        },
+        200: () => {},
         404: () => {
           this.$message.error("发送信息失败");
         },
       });
-      localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
-
-      var jsonstr = JSON.stringify(mynowmsg);
-      this.$emit("fct", jsonstr);
       this.input = "";
     },
   },

@@ -9,13 +9,7 @@
       ></el-autocomplete>
       <el-button @click="father_add">添加题目</el-button>
     </div>
-    <TextEditor
-      @problemPressed="problemPressed"
-      ref="editor"
-      :t="state"
-      :c="middle_content"
-    >
-    </TextEditor>
+    <TextEditor ref="editor" :t="state" :c="middle_content"> </TextEditor>
   </div>
 </template>
 <script>
@@ -34,9 +28,6 @@ export default {
     TextEditor,
   },
   methods: {
-    problemPressed(val) {
-      this.$emit("problemsend", val);
-    },
     loadAll() {
       return [
         { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },

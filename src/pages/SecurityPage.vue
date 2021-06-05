@@ -50,6 +50,9 @@ export default {
       }).handle({
         200: () => {
           this.$message.success("修改密码成功");
+          this.oldpwd = "";
+          this.pwd = "";
+          this.pwd2 = "";
           this.$router.push({
             name: "profile",
           });
