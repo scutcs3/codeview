@@ -114,6 +114,8 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - password
               properties:
                 password:
                   type: string
