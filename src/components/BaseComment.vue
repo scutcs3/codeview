@@ -96,28 +96,29 @@ export default {
   },
   activated() {
     // 获取历史聊天记录
+    this.chatHistory = [];
     const per_page = 10;
     this.loadComments(1, per_page);
-    let currentPage = 2;
-    while (this.chatHistory.length < this.commentCount) {
-      this.loadComments(currentPage, per_page);
-    }
   },
   methods: {
     loadComments(page, per_page) {
+      console.log("loadComment", page, per_page);
       getComments({
         iid: this.$route.params.id,
         page,
         per_page,
       }).handle({
         200: (data, headers) => {
-          this.commentCount = headers["total-count"];
-          this.chatHistory = [];
+          this.commentCount = parseInt(headers["total-count"]);
           for (let comment of data) {
             this.chatHistory.push({
               uid: comment.owner_id,
               input: comment.content,
             });
+          }
+          console.log(this.chatHistory.length, this.commentCount);
+          if (this.chatHistory.length < this.commentCount) {
+            this.loadComments(page + 1, per_page);
           }
         },
         404: () => console.error("获取留言失败！"),
