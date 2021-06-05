@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const moment = require("moment");
 
 var token = require("../utils/token");
 var tk;
@@ -58,7 +59,16 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
         } else {
           if (result.length > 0) {
             var results = [];
+            let formatDate = function (dt) {
+              if (dt) {
+                return moment(dt, moment.ISO_8601).format(
+                  "YYYY-MM-DD HH:mm:ss"
+                );
+              } else return dt;
+            };
             for (var i = 0; i < result.length; i++) {
+              result[i].created_at = formatDate(result[i].created_at);
+              result[i].updated_at = formatDate(result[i].updated_at);
               results.push(result[i]);
             }
             res.setHeader("Total-Count", totalRecord);
@@ -154,7 +164,6 @@ router.post("/", function (req, res, next) {
         });
       }
       if (result.length > 0) {
-        hasIID = true;
         sql = `SELECT * FROM problem WHERE id = ${req.body.pid}`;
         connection.query(sql, function (err, result) {
           if (err) {

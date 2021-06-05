@@ -68,6 +68,7 @@ router.get("/", function (req, res, next) {
           } else {
             var results = [];
             for (var i = 0; i < result.length; i++) {
+              result[i].interview_id = hashes.decode(result[i].interview_id)[0];
               results.push(result[i]);
             }
             res.setHeader("Total-Count", totalRecord);
