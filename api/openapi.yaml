@@ -182,8 +182,8 @@ paths:
               - $ref: '#/components/schemas/ProblemBody'
               - properties:
                   iid:
-                    type: integer
-                    format: int32
+                    type: string
+                    example: eXaMpl23sd
                     description: 面试ID。
                   pid:
                     type: integer
@@ -220,7 +220,8 @@ paths:
         name: iid
         description: 面试ID。如果指定了面试ID，则仅从面试中删去该题，不影响题库中的题目。
         schema:
-          type: integer
+          type: string
+          example: eZXsa23sdm
       responses:
         '200':
           description: 删除题目成功
