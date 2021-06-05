@@ -50,12 +50,17 @@ httpServer.on("error", function (error) {
 });
 
 let wsNum = 0;
-let conns = {};
+// 记录面试连接
+let wsConns = {};
 
 function boardcast(obj) {
-  if (obj.interviewID) {
-    console.log("发送数据 ", obj);
-    conns[obj.interviewID].sendText(JSON.stringify(obj));
+  let iid = obj.interviewID;
+  if (iid) {
+    console.log("向面试", iid, "广播数据 ", obj);
+    obj.count = wsConns[iid].length;
+    for (let con of wsConns[iid]) {
+      con.sendText(JSON.stringify(obj));
+    }
   }
   return;
 }
@@ -68,7 +73,12 @@ const wsServer = ws.createServer(function (connect) {
   connect.on("text", function (obj) {
     console.log("接受到: " + obj);
     obj = JSON.parse(obj);
-    conns["" + obj.interviewID + ""] = connect;
+    let iid = obj.interviewID;
+    if (wsConns[iid]) {
+      wsConns[iid].push(connect);
+    } else {
+      wsConns[iid] = [connect];
+    }
     boardcast(obj);
   });
   //有连接断开函数
@@ -79,11 +89,6 @@ const wsServer = ws.createServer(function (connect) {
   connect.on("error", function () {
     console.log("用户连接异常");
   });
-  //   function sentall(str) {
-  //     serve.connections.forEach(function (connect) {
-  //       connect.sendText(str);
-  //     });
-  //   }
 });
 
 wsServer.listen(WEBSOCKET_PORT, function () {

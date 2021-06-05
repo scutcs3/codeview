@@ -41,14 +41,6 @@ export default {
   },
   created() {
     this.socket = new WebSocket(process.env.VUE_APP_WS_API);
-    //添加interviewID属性
-    let interview_id = this.$route.params.id;
-    console.log(interview_id);
-    var jsObj = { interviewID: interview_id };
-    //转换为字符串属性，然后将其发送到服务器上
-    var jsonstr = JSON.stringify(jsObj);
-    this.socket.send(jsonstr);
-
     this.socket.onopen = this.onopen;
     this.socket.onclose = this.onclose;
     this.socket.onmessage = this.onmessage;
@@ -60,8 +52,7 @@ export default {
         var jsObj = JSON.parse(val);
         //添加interviewID属性
         let interview_id = this.$route.params.id;
-        console.log(interview_id);
-        jsObj.interviewID = 1;
+        jsObj.interviewID = interview_id;
         //转换为字符串属性，然后将其发送到服务器上
         var jsonstr = JSON.stringify(jsObj);
 
@@ -79,13 +70,14 @@ export default {
       this.chatdata = val;
     },
     onopen() {
-      console.log("连接建立");
+      console.log("WebSocket 连接建立");
+      this.socket.send(JSON.stringify({ interviewID: this.$route.params.id }));
     },
     onclose() {
-      console.log("连接关闭");
+      console.log("WebSocket 连接关闭");
     },
     onmessage(event) {
-      console.log("服务端返回的数据:" + event.data);
+      console.log("WebSocket 服务端返回的数据:" + event.data);
       this.Onechat = event.data; //赋值，传送到子组件中
     },
   },

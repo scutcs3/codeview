@@ -21,7 +21,6 @@ export default {
     Onechat: {
       //判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
       handler(val, oldval) {
-        console.log("hahahahahahah");
         console.log(oldval);
         var jsObj = JSON.parse(val);
         if (typeof jsObj.IsPorblem == "undefined") {

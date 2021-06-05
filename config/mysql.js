@@ -42,10 +42,10 @@ if (!isConnect) {
   // connect test
   connection.connect(function (err) {
     if (err) {
-      console.error("[connect error]: " + err.stack);
+      console.error("数据库连接失败: " + err.stack);
       return;
     }
-    console.log("[connect success]: id " + connection.threadId);
+    console.log("数据库连接成功，id = " + connection.threadId);
   });
 }
 isConnect = true;

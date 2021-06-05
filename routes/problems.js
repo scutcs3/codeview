@@ -19,7 +19,6 @@ router.use(function (req, res, next) {
       data: "需要登录",
     });
   }
-  console.log("[connect success]: id " + connection.threadId);
 });
 
 var connection = require("../config/mysql");
