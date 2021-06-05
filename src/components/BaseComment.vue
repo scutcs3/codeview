@@ -95,7 +95,6 @@ export default {
   },
   watch: {
     "wsInfoMsg.length": function (newVal, oldVal) {
-      console.log(newVal, oldVal);
       if (newVal == oldVal || newVal === 0) return;
       let len = this.wsInfoMsg.length;
       let lastMsg = this.wsInfoMsg[len - 1];
@@ -111,8 +110,7 @@ export default {
   activated() {
     // 获取历史聊天记录
     this.chatHistory = [];
-    const per_page = 10;
-    this.loadComments(1, per_page);
+    this.loadComments(1, 100);
   },
   methods: {
     loadComments(page, per_page) {

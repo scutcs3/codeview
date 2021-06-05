@@ -55,10 +55,8 @@ export default {
   },
   mounted() {
     this.init();
-  },
-  created() {
     this.timer = window.setInterval(() => {
-      setTimeout(this.pollData(), 0);
+      setTimeout(this.detectContent(), 0);
     }, 500);
   },
   beforeUnmount() {
@@ -75,33 +73,23 @@ export default {
         this.$refs.container,
         this.editorOptions
       );
-      // 编辑器内容发生改变时触发
-      this.monacoEditor.onDidChangeModelContent(() => {
-        this.$emit("change", this.monacoEditor.getValue());
-      });
+    },
+    // 定时检测内容变化
+    detectContent() {
+      let val = this.getVal();
+      if (this.codestr !== val) {
+        this.$emit("change", val, this.codestr);
+        this.codestr = val;
+      }
     },
     // 供父组件调用手动获取值
     getVal() {
       return this.monacoEditor.getValue();
     },
-    pollData() {
-      //console.log(this.currentUser);
-      if (this.Onechat == "" || typeof this.Onechat == "undefined") {
-        return;
-      }
-      var jsObj = JSON.parse(this.Onechat);
-      if (typeof jsObj.IsCode == "undefined") {
-        return;
-      }
-      if (this.currentUser == jsObj.username) {
-        return;
-      }
-      //console.log(jsObj.IsCode);
-      //console.log("服务端返回的数据啊:" + jsObj.value);
-      if (jsObj.value != this.getVal()) {
-        this.monacoEditor.setValue(jsObj.value);
-      }
-      this.$emit("ChangeEditorLanguage", jsObj.language);
+    setVal(val) {
+      // 不触发onChange
+      this.codestr = val;
+      this.monacoEditor.setValue(val);
     },
   },
 };
