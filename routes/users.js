@@ -180,7 +180,7 @@ router.patch("/", function (req, res) {
     } else {
       if (req.body.old_password && req.body.new_password) {
         var sql;
-        sql = `SELECT * FROM user WHERE id = ${tk.obj.id} AND password = '${req.body.old_password}'`;
+        sql = `SELECT * FROM user WHERE id = ${tk.obj.id} `;
         connection.query(sql, function (err, result) {
           if (err) {
             console.log("[SELECT ERROR]:", err.message);
@@ -189,11 +189,7 @@ router.patch("/", function (req, res) {
             });
           } else {
             if (result.length > 0) {
-              if (result[0].id != tk.obj.id) {
-                res.status(403).json({
-                  data: "没有权限修改用户信息",
-                });
-              } else {
+              if (result[0].password == req.body.old_password) {
                 sql = `UPDATE user SET password = '${req.body.new_password}' WHERE id = ${tk.obj.id}`;
                 connection.query(sql, function (err, result) {
                   if (err) {
@@ -206,6 +202,10 @@ router.patch("/", function (req, res) {
                       data: "更新成功",
                     });
                   }
+                });
+              } else {
+                res.status(403).json({
+                  data: "旧密码错误",
                 });
               }
             } else {
