@@ -12,28 +12,7 @@ export default {
   name: "HeadMenu",
   data() {
     return {
-      all_menus: [
-        {
-          index: "login",
-          title: "登录",
-          login: false,
-        },
-        {
-          index: "register",
-          title: "注册",
-          login: false,
-        },
-        {
-          index: "console",
-          title: "控制台",
-          login: true,
-        },
-        {
-          index: "logout",
-          title: "退出登录",
-          login: true,
-        },
-      ],
+      all_menus: [],
     };
   },
   computed: {
@@ -41,7 +20,33 @@ export default {
       return this.$store.state.isLogin;
     },
     menus() {
-      return this.all_menus.filter((menu) => menu.login == this.isLogin);
+      if (this.isLogin) {
+        return [
+          {
+            index: "console/profile",
+            title: localStorage.getItem("user.email"),
+          },
+          {
+            index: "console",
+            title: "控制台",
+          },
+          {
+            index: "logout",
+            title: "退出登录",
+          },
+        ];
+      } else {
+        return [
+          {
+            index: "login",
+            title: "登录",
+          },
+          {
+            index: "register",
+            title: "注册",
+          },
+        ];
+      }
     },
   },
   methods: {

@@ -54,7 +54,6 @@
 </template>
 <script>
 import { register } from "../api/user.js";
-import router from "../router";
 export default {
   name: "Register",
   data() {
@@ -88,7 +87,7 @@ export default {
   },
   methods: {
     toLogin() {
-      router.push("/login");
+      this.$router.push("/login");
     },
     submitRegisterForm() {
       var errorHandle = (msg) => {
@@ -105,6 +104,8 @@ export default {
           this.$store.commit({
             type: "login",
             token: data.token,
+            id: data.id,
+            email: this.registerParam.email,
           });
           this.loading = false;
           if (this.$route.query && this.$route.query.redirect) {

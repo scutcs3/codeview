@@ -61,5 +61,8 @@
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-element-plus": "0.0.13"
   },
+  "gitHooks": {
+    "pre-commit": "vue-cli-service lint"
+  },
   "description": "在线编程笔试平台"
 }

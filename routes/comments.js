@@ -36,7 +36,8 @@ router.get("/", function (req, res, next) {
     });
   } else {
     var sql;
-    sql = `SELECT COUNT(*) FROM user`;
+    var iid = hashes.decode(req.query.iid)[0];
+    sql = `SELECT COUNT(*) FROM comment WHERE interview_id = ${iid}`;
     var totalRecord = 0;
     connection.query(sql, function (err, result) {
       if (err) {
@@ -50,7 +51,8 @@ router.get("/", function (req, res, next) {
         var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
         var preSize = (page - 1) * per_page;
 
-        var sql = `SELECT * FROM comment WHERE interview_id = ${req.query.iid} `;
+        var iid = hashes.decode(req.query.iid)[0];
+        var sql = `SELECT * FROM comment WHERE interview_id = ${iid} `;
         if (req.query.cid) {
           sql += `AND id = ${req.query.cid} `;
         }
@@ -67,6 +69,7 @@ router.get("/", function (req, res, next) {
           } else {
             var results = [];
             for (var i = 0; i < result.length; i++) {
+              result[i].interview_id = hashes.decode(result[i].interview_id)[0];
               results.push(result[i]);
             }
             res.setHeader("Total-Count", totalRecord);
@@ -92,7 +95,7 @@ router.post("/", function (req, res, next) {
     });
   } else {
     var dt = require("moment")().format("YYYY-MM-DD HH:mm:ss");
-    let iid = hashes.decode(req.body.iid);
+    var iid = hashes.decode(req.body.iid)[0];
     var sql = `INSERT INTO comment (content,interview_id,owner_id,created_at) VALUES ('${req.body.content}',${iid},${tk.obj.id},'${dt}')`;
     connection.query(sql, function (err, result) {
       if (err) {

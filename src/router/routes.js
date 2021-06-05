@@ -115,6 +115,14 @@ export default [
         component: () =>
           import(/* webpackChunkName: "profile" */ "../pages/ProfilePage.vue"),
       },
+      {
+        path: "security",
+        name: "security",
+        component: () =>
+          import(
+            /* webpackChunkName: "security" */ "../pages/SecurityPage.vue"
+          ),
+      },
     ],
   },
 ];

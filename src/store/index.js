@@ -1,21 +1,13 @@
 import { createStore } from "vuex";
 
+import state from "./state";
+import mutations from "./mutations";
+import getters from "./getters";
+
 const store = createStore({
-  state() {
-    return {
-      isLogin: localStorage.getItem("token") !== null,
-    };
-  },
-  mutations: {
-    login(state, payload) {
-      state.isLogin = true;
-      localStorage.setItem("token", payload.token);
-    },
-    logout(state) {
-      state.isLogin = false;
-      localStorage.removeItem("token");
-    },
-  },
+  state,
+  mutations,
+  getters,
 });
 
 export default store;

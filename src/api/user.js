@@ -8,3 +8,7 @@ export function login(data) {
 export function register(data) {
   return new Handler(axios.post(baseUrl + "/users", data));
 }
+
+export function changePassword(data) {
+  return new Handler(axios.patch(baseUrl + "/users", data));
+}
