@@ -115,22 +115,31 @@ paths:
             schema:
               type: object
               required:
-                - password
+                - old_password
+                - new_password
               properties:
-                password:
+                old_password:
                   type: string
                   format: password
-                  description: 用户密码。
+                  example: oLdP2asw0rd
+                  description: 原密码。
+                new_password:
+                  type: string
+                  format: password
+                  example: n3wP2ssw0rd
+                  description: 新密码。
       responses:
         '200':
           description: 修改用户信息成功。
+        '400':
+          description: 参数错误。
         '401':
           description: 需要登陆。
         '403':
           description: 没有权限修改用户信息。
         '404':
           description: 找不到指定id的用户。
-        '410':
+        '500':
           description: 数据库错误。
   /problems:
     get:

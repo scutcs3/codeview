@@ -3,20 +3,21 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      isLogin: localStorage.getItem("token") !== null,
-      userId: 0,
+      isLogin: localStorage.getItem("user.token") !== null,
     };
   },
   mutations: {
     login(state, payload) {
       state.isLogin = true;
-      state.userId = payload.id;
-      localStorage.setItem("token", payload.token);
+      localStorage.setItem("user.token", payload.token);
+      localStorage.setItem("user.id", payload.id);
+      localStorage.setItem("user.email", payload.email);
     },
     logout(state) {
       state.isLogin = false;
-      state.userId = 0;
-      localStorage.removeItem("token");
+      localStorage.removeItem("user.token");
+      localStorage.removeItem("user.id");
+      localStorage.removeItem("user.email");
     },
   },
 });
