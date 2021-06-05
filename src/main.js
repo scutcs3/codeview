@@ -7,10 +7,15 @@ import element from "./plugins/element";
 import moment from "./plugins/moment";
 import axios from "axios";
 
-if (process.env.VUE_APP_API_MODE === "mock") {
-  console.log("Mock enabled!");
-  require("./mock");
+if (typeof process === "undefined") {
+  // 尝试vite配置
+} else {
+  if (process.env.VUE_APP_API_MODE === "mock") {
+    console.log("Mock enabled!");
+    require("./mock");
+  }
 }
+
 
 const app = createApp(App);
 app.use(element);
