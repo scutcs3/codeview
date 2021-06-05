@@ -87,6 +87,7 @@ export default {
           this.$store.commit({
             type: "login",
             token: data.token,
+            id: data.id,
           });
           this.loading = false;
           if (this.$route.query && this.$route.query.redirect) {
