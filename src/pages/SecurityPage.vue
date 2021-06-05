@@ -1,14 +1,28 @@
 <template>
   <h2>修改密码</h2>
-  <el-form :model="param">
-    <el-form-item label="旧密码" prop="oldpwd">
-      <el-input v-model="param.oldpwd" placeholder="旧密码"></el-input>
+  <el-form>
+    <el-form-item label="旧密码">
+      <el-input
+        v-model="oldpwd"
+        placeholder="旧密码"
+        autocomplete="off"
+        type="password"
+      ></el-input>
     </el-form-item>
-    <el-form-item label="新密码" prop="pwd">
-      <el-input type="password" placeholder="新密码"></el-input>
+    <el-form-item label="新密码">
+      <el-input
+        v-model="pwd"
+        type="password"
+        placeholder="新密码"
+        autocomplete="off"
+      ></el-input>
     </el-form-item>
-    <el-form-item label="重复新密码" prop="pwd2">
-      <el-input type="password" placeholder="重复新密码"></el-input>
+    <el-form-item label="重复新密码" autocomplete="off">
+      <el-input
+        v-model="pwd2"
+        type="password"
+        placeholder="重复新密码"
+      ></el-input>
     </el-form-item>
   </el-form>
   <el-button type="primary" @click="onSubmit()">修改密码</el-button>
@@ -19,22 +33,20 @@ export default {
   name: "SecurityPage",
   data() {
     return {
-      param: {
-        oldpwd: "",
-        pwd: "",
-        pwd2: "",
-      },
+      oldpwd: "",
+      pwd: "",
+      pwd2: "",
     };
   },
   methods: {
     onSubmit() {
-      if (this.param.pwd !== this.param.pwd2) {
+      if (this.pwd !== this.pwd2) {
         this.$message.warning("两次输入的密码不一致");
         return;
       }
       changePassword({
-        old_password: this.param.oldpwd,
-        new_password: this.param.pwd,
+        old_password: this.oldpwd,
+        new_password: this.pwd,
       }).handle({
         200: () => {
           this.$message.success("修改密码成功");
@@ -42,7 +54,7 @@ export default {
             name: "profile",
           });
         },
-        404: () => this.$message.error("登录失败"),
+        404: () => this.$message.error("修改密码失败"),
       });
     },
   },
