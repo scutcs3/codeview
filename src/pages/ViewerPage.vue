@@ -42,6 +42,14 @@ export default {
   },
   created() {
     this.socket = new WebSocket(process.env.VUE_APP_WS_API);
+
+    let interview_id = this.$route.params.id;
+    console.log(interview_id);
+    var jsObj = { interviewID: interview_id };
+    //转换为字符串属性，然后将其发送到服务器上
+    var jsonstr = JSON.stringify(jsObj);
+    this.socket.send(jsonstr);
+
     this.socket.onopen = this.onopen;
     this.socket.onclose = this.onclose;
     this.socket.onmessage = this.onmessage;
