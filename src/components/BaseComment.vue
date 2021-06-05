@@ -70,28 +70,42 @@ export default {
     };
   },
   computed: {
-    wsChatMsg() {
-      return this.$store.state.wsMessage.filter((msg) => msg.type === "chat");
-    },
-    wsOpenMsg() {
-      return this.$store.state.wsMessage.filter((msg) => {
+    wsInfoMsg() {
+      let infoMsg = this.$store.state.wsMessage.filter((msg) => {
         return msg.type === "open" || msg.type === "close";
       });
+      return infoMsg;
     },
     count() {
-      let len = this.wsOpenMsg.length;
+      let len = this.wsInfoMsg.length;
       //当前在线人数
       if (len === 0) return 0;
       else {
-        return this.wsOpenMsg[len - 1].count;
+        return this.wsInfoMsg[len - 1].count;
       }
     },
     messages() {
       this.$nextTick(() => {
-        document.getElementById("content").scrollIntoView(false);
+        let content = document.getElementById("content");
+        if (content) content.scrollIntoView(false);
       });
       // 返回所有聊天信息
-      return this.chatHistory.concat(this.wsChatMsg);
+      return this.chatHistory.concat(this.$store.getters.wsChatMsg);
+    },
+  },
+  watch: {
+    "wsInfoMsg.length": function (newVal, oldVal) {
+      console.log(newVal, oldVal);
+      if (newVal == oldVal || newVal === 0) return;
+      let len = this.wsInfoMsg.length;
+      let lastMsg = this.wsInfoMsg[len - 1];
+      if (lastMsg.uid !== this.uid) {
+        this.$notify({
+          message: `用户${lastMsg.uid} ${
+            lastMsg.type === "open" ? "进入" : "离开"
+          }了面试`,
+        });
+      }
     },
   },
   activated() {
