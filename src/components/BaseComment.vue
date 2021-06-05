@@ -66,7 +66,7 @@ export default {
       input: "",
       chatHistory: [], // 仅保存历史聊天记录
       socket: "",
-      commentPage: 0,
+      commentCount: 0,
     };
   },
   computed: {
@@ -96,12 +96,11 @@ export default {
   },
   activated() {
     // 获取历史聊天记录
-    const per_page = 100;
+    const per_page = 10;
     this.loadComments(1, per_page);
-    if (this.commentPage > 1) {
-      for (let i = 2; i <= this.commentPage; i++) {
-        this.loadComments(i, per_page);
-      }
+    let currentPage = 2;
+    while (this.chatHistory.length < this.commentCount) {
+      this.loadComments(currentPage, per_page);
     }
   },
   methods: {
@@ -112,7 +111,7 @@ export default {
         per_page,
       }).handle({
         200: (data, headers) => {
-          console.log(headers);
+          this.commentCount = headers["total-count"];
           this.chatHistory = [];
           for (let comment of data) {
             this.chatHistory.push({
