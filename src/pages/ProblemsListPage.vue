@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <el-input placeholder="搜索题目" v-model="word"> </el-input>
+      <el-input placeholder="输入关键字搜索题目" v-model="word"> </el-input>
       <el-button type="primary" class="new-button" @click="newProblems"
         >新建题目</el-button
       >
@@ -50,8 +50,8 @@ export default {
       currentPage: 0,
       pageSize: 30,
       totalCount: 0,
-      page: 0,
-      per_page: 0,
+      page: 1,
+      per_page: 30,
     };
   },
   mounted() {
@@ -59,6 +59,7 @@ export default {
   },
   methods: {
     parseQuery() {
+      this.word = this.$route.query.word || "";
       this.currentPage = parseInt(this.$route.query.page) || 1;
       this.pageSize = parseInt(this.$route.query.per_page) || 30;
     },
@@ -66,6 +67,7 @@ export default {
       getProblems({
         page: this.currentPage,
         per_page: this.pageSize,
+        word: this.word,
       }).handle({
         200: (data, headers) => {
           this.totalCount = parseInt(headers["total-count"]);
@@ -113,6 +115,18 @@ export default {
     this.loadProblems();
   },
   watch: {
+    word() {
+      let query = {
+        page: this.currentPage,
+        per_page: this.per_page,
+      };
+      if (this.word !== "") query.word = this.word;
+      this.$router.push({
+        name: "problems-list",
+        query,
+      });
+      this.loadProblems();
+    },
     $route() {
       this.parseQuery();
     },
