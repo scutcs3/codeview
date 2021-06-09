@@ -1,48 +1,24 @@
 <template>
-  <div id="main">
-    <el-container id="main-content">
-      <el-header id="chat-title">在线聊天 ({{ count }})</el-header>
+  <div class="chat-container">
+    <div id="main-content">
+      <h3 id="chat-title">在线聊天 ({{ count }})</h3>
       <el-divider></el-divider>
-      <el-main id="chat-content">
+      <div id="chat-content">
         <div id="content">
           <div v-for="item in messages" :key="item">
-            <div class="my-msg" v-if="item.uid == uid">
-              <div class="message-box">
-                <div class="my message">
-                  <img class="avatar" alt="" />
-                  <div class="content">
-                    <div class="bubble">
-                      <div class="bubble_cont">{{ item.input }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-else class="other-users-msg">
-              <div class="message-box">
-                <div class="other message">
-                  <img class="avatar" alt="" />
-                  <div class="content">
-                    <div class="nickname">用户 {{ item.uid }}</div>
-                    <div class="bubble">
-                      <div class="bubble_cont">{{ item.input }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <this-bubble v-if="item.uid == uid" :input="item.input" />
+            <that-bubble v-else :uid="item.uid" :input="item.input" />
           </div>
         </div>
-      </el-main>
-      <el-footer height="0%"> </el-footer>
-      <el-footer id="input-field" height="20%">
+      </div>
+      <div id="input-field" height="20%">
         <textarea
           id="input"
           style="width: 95%; height: 100%; color: gray"
           v-model="input"
         ></textarea>
-      </el-footer>
-      <el-footer id="send-msg" height="50px">
+      </div>
+      <div id="send-msg" height="50px">
         <el-button
           id="send-msg-btn"
           type="primary"
@@ -50,13 +26,15 @@
           style="width: 25%"
           >发送</el-button
         >
-      </el-footer>
-    </el-container>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { addComment, getComments } from "../api/comments";
+import ThisBubble from "./ThisBubble.vue";
+import ThatBubble from "./ThatBubble.vue";
 
 export default {
   name: "BaseComment",
@@ -68,6 +46,10 @@ export default {
       socket: "",
       commentCount: 0,
     };
+  },
+  components: {
+    ThisBubble,
+    ThatBubble,
   },
   computed: {
     wsInfoMsg() {
@@ -163,12 +145,13 @@ export default {
 </script>
 
 <style scoped>
-#main {
+.chat-container {
   width: 99%;
   height: 500px;
   background-position: left;
   background-size: cover;
   position: relative;
+  border: 1px solid black;
 }
 #input {
   width: 10px;
@@ -176,6 +159,8 @@ export default {
 #content {
   margin-top: 10px;
   text-align: left;
+  height: 200px;
+  overflow: auto;
 }
 
 #main-content {

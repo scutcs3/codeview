@@ -144,16 +144,7 @@ export default {
 };
 </script>
 <style scoped>
-.monaco-container {
-  position: relative;
-  height: 75%;
-  width: 80%;
-  margin-bottom: 10px;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
 .monaco-editor {
-  height: 100%;
   border: 1px solid rgb(91, 93, 93);
   text-align: left;
 }
