@@ -7,8 +7,11 @@ var connection = require("../config/mysql");
 
 function getUserDetail(field, param, page, per_page, res, req) {
   var sql;
-  sql = `SELECT COUNT(*) FROM user`;
-  var totalRecord = 0;
+  if (param) {
+    sql = `SELECT * FROM user where ${field} = '${param}' `;
+  } else {
+    sql = `SELECT * FROM user `;
+  }
   connection.query(sql, function (err, result) {
     if (err) {
       console.log("[SELECT ERROR]:", err.message);
@@ -16,17 +19,13 @@ function getUserDetail(field, param, page, per_page, res, req) {
         data: "[SELECT ERROR]:" + err.message,
       });
     } else {
-      totalRecord = result[0]["COUNT(*)"];
+      var totalRecord = result.length;
+
       page = page ? parseInt(page) : 1;
       per_page = per_page ? parseInt(per_page) : 30;
-      var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
       var preSize = (page - 1) * per_page;
 
-      if (param) {
-        sql = `SELECT * FROM user where ${field} = '${param}' limit ${preSize},${per_page}`;
-      } else {
-        sql = `SELECT * FROM user limit ${preSize},${per_page}`;
-      }
+      sql += `limit ${preSize},${per_page}`;
       connection.query(sql, function (err, result) {
         if (err) {
           console.log("[SELECT ERROR]:", err.message);

@@ -26,10 +26,8 @@ var connection = require("../config/mysql");
 var hashids = require("hashids");
 var hashes = new hashids("codeview salt", 16);
 
-function getInterviewList(field, page, per_page, res, req) {
-  var sql;
-  sql = `SELECT COUNT(*) FROM interview`;
-  var totalRecord = 0;
+function getInterviewList(field, page, per_page, res) {
+  var sql = `SELECT * FROM interview WHERE ${field} = ${tk.obj.id} `;
   connection.query(sql, function (err, result) {
     if (err) {
       console.log("[SELECT ERROR]:", err.message);
@@ -37,10 +35,10 @@ function getInterviewList(field, page, per_page, res, req) {
         data: "[SELECT ERROR]:" + err.message,
       });
     } else {
-      totalRecord = result[0]["COUNT(*)"];
+      var totalRecord = result.length;
       var preSize = (page - 1) * per_page;
 
-      var sql = `SELECT * FROM interview WHERE ${field} = ${tk.obj.id} limit ${preSize},${per_page}`;
+      sql += `limit ${preSize},${per_page}`;
       connection.query(sql, function (err, result) {
         if (err) {
           console.log("[SELECT ERROR]:", err.message);
@@ -116,9 +114,9 @@ router.get("/", function (req, res, next) {
     var page = req.query.page ? parseInt(req.query.page) : 1;
     var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
     if (req.query.role == "viewee") {
-      getInterviewList("viewee_id", page, per_page, res, req);
+      getInterviewList("viewee_id", page, per_page, res);
     } else {
-      getInterviewList("viewer_id", page, per_page, res, req);
+      getInterviewList("viewer_id", page, per_page, res);
     }
   }
 });

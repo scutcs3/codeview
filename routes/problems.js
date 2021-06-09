@@ -28,8 +28,15 @@ var hashes = new hashids("codeview salt", 16);
 
 function getProblemDetail(field, param, page, per_page, word, res, req) {
   var sql;
-  sql = `SELECT COUNT(*) FROM problem`;
-  var totalRecord = 0;
+  if (!word && field == "iid") {
+    sql = `SELECT * FROM interview_problem where interview_id = ${param} `;
+  } else if (!word && field == "pid") {
+    sql = `SELECT * FROM problem where id = ${param} `;
+  } else if (word) {
+    sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%' `;
+  } else {
+    sql = `SELECT * FROM problem `;
+  }
   connection.query(sql, function (err, result) {
     if (err) {
       console.log("[SELECT ERROR]:", err.message);
@@ -37,20 +44,13 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
         data: "[SELECT ERROR]:" + err.message,
       });
     } else {
-      totalRecord = result[0]["COUNT(*)"];
+      var totalRecord = result.length;
+
       page = page ? parseInt(page) : 1;
       per_page = per_page ? parseInt(per_page) : 30;
       var preSize = (page - 1) * per_page;
 
-      if (!word && field == "iid") {
-        sql = `SELECT * FROM interview_problem where interview_id = ${param} limit ${preSize},${per_page}`;
-      } else if (!word && field == "pid") {
-        sql = `SELECT * FROM problem where id = ${param} limit ${preSize},${per_page}`;
-      } else if (word) {
-        sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%' limit ${preSize},${per_page}`;
-      } else {
-        sql = `SELECT * FROM problem limit ${preSize},${per_page}`;
-      }
+      sql += `limit ${preSize},${per_page}`;
       connection.query(sql, function (err, result) {
         if (err) {
           console.log("[SELECT ERROR]:", err.message);
