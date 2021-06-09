@@ -11,6 +11,6 @@ export default {
     pid: String,
     title: String,
     content: String,
-  }
+  },
 };
 </script>

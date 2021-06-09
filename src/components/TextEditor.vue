@@ -77,6 +77,18 @@ export default {
     };
   },
   methods: {
+    addProblemTo(pid) {
+      addProblem({
+        iid: this.$route.params.id,
+        pid,
+      }).handle({
+        200: () => {
+          this.$message.success("添加题目成功");
+          console.log("内部addProblem");
+        },
+        404: () => this.$message.error("添加题目失败，已添加到题库中。"),
+      });
+    },
     printf() {
       var mynowmsg = {
         type: "add_problem",
@@ -91,15 +103,11 @@ export default {
       }).handle({
         200: (data) => {
           let pid = data.id;
-          addProblem({
-            iid: this.$router.param.id,
-            pid,
-          }).handle({
-            200: () => this.$message.success("添加题目成功"),
-            404: () => this.$message.error("添加题目失败，已添加到题库中。"),
-          });
+          this.addProblemTo(pid);
         },
-        404: () => this.$message.error("添加题目失败"),
+        404: () => {
+          console.log("添加题目失败!");
+        }
       });
     },
   },
