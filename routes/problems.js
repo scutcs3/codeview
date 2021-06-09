@@ -58,7 +58,11 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
             data: "[SELECT ERROR]:" + err.message,
           });
         } else {
+<<<<<<< HEAD
           var results = [];
+=======
+          let results = [];
+>>>>>>> d6da4a40bc8ea802eddaef590379741c95e6d983
           let formatDate = function (dt) {
             if (dt) {
               return moment(dt, moment.ISO_8601).format("YYYY-MM-DD HH:mm:ss");
@@ -70,7 +74,10 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
             results.push(result[i]);
           }
           res.setHeader("Total-Count", totalRecord);
+<<<<<<< HEAD
 
+=======
+>>>>>>> d6da4a40bc8ea802eddaef590379741c95e6d983
           res.json({
             data: results,
           });
