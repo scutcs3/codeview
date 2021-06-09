@@ -146,8 +146,7 @@ export default {
 
 <style scoped>
 .chat-container {
-  width: 99%;
-  height: 500px;
+  height: 400px;
   background-position: left;
   background-size: cover;
   position: relative;
@@ -157,7 +156,6 @@ export default {
   width: 10px;
 }
 #content {
-  margin-top: 10px;
   text-align: left;
   height: 200px;
   overflow: auto;
@@ -166,9 +164,7 @@ export default {
 #main-content {
   background: white;
   width: 100%;
-  height: 100%;
   margin: auto;
-  margin-top: 4%;
 }
 .el-main {
   display: block;
