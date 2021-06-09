@@ -127,8 +127,10 @@ export default {
       });
       this.loadProblems();
     },
-    $route() {
-      this.parseQuery();
+    $route(newRoute) {
+      if (newRoute.name === "problems-list") {
+        this.parseQuery();
+      }
     },
     currentPage() {
       this.loadProblems();
