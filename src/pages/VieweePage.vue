@@ -24,7 +24,7 @@ export default {
   name: "VieweePage",
   data() {
     return {
-      pid: "",
+      pid: 0,
       title: "",
       content: "",
     };
@@ -41,7 +41,6 @@ export default {
         pid,
       }).handle({
         200: (data) => {
-          console.log(data);
           // 暂时只展示第一题
           this.pid = data[0].id;
           this.title = data[0].title;

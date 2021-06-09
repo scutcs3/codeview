@@ -8,7 +8,7 @@
 export default {
   name: "BaseProblem",
   props: {
-    pid: String,
+    pid: Number,
     title: String,
     content: String,
   },

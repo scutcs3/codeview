@@ -14,12 +14,12 @@ export default {
     return {
       title: "",
       content: "",
-      id: "",
+      id: 0,
     };
   },
   activated() {
     const self = this;
-    const pid = self.$route.params.id;
+    const pid = parseInt(self.$route.params.id);
     this.id = pid;
     getProblem({
       pid,
