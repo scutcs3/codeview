@@ -27,9 +27,9 @@
         :pager-count="9"
         background
         :hide-on-single-page="true"
-        :current-page="currentPage"
+        v-model:current-page="currentPage"
         :total="totalCount"
-        :page-size="pageSize"
+        v-model:page-size="pageSize"
         :page-sizes="[30, 50, 100]"
         @current-change="currentPageChange"
         @size-change="pageSizeChange"
@@ -47,7 +47,7 @@ export default {
       select: "1",
       word: "",
       tableData: [],
-      currentPage: 0,
+      currentPage: 1,
       pageSize: 30,
       totalCount: 0,
       page: 1,
