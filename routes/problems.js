@@ -40,7 +40,6 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
       totalRecord = result[0]["COUNT(*)"];
       page = page ? parseInt(page) : 1;
       per_page = per_page ? parseInt(per_page) : 30;
-      var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
       var preSize = (page - 1) * per_page;
 
       if (!word && field == "iid") {
@@ -95,16 +94,9 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
  */
 router.get("/", function (req, res, next) {
   var query = req.query;
+  var iid = hashes.decode(query.iid)[0];
   if (query.iid) {
-    getProblemDetail(
-      "iid",
-      query.iid,
-      query.page,
-      query.per_page,
-      null,
-      res,
-      req
-    );
+    getProblemDetail("iid", iid, query.page, query.per_page, null, res, req);
   } else if (query.pid) {
     getProblemDetail(
       "pid",
@@ -181,7 +173,7 @@ router.post("/", function (req, res, next) {
             });
           }
           if (result.length > 0) {
-            sql = `INSERT INTO interview_problem (interview_id,problem_id) VALUES (${req.body.iid},${req.body.pid})`;
+            sql = `INSERT INTO interview_problem (interview_id,problem_id) VALUES (${iid},${req.body.pid})`;
             connection.query(sql, function (err, result) {
               if (err) {
                 console.log("[INSERT ERROR]:", err.message);

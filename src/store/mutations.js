@@ -33,8 +33,12 @@ const mutations = {
       console.log("WebSocket 连接关闭", e);
     };
     state.ws.onmessage = function (event) {
-      console.log("WebSocket 服务端返回的数据:" + event.data);
-      state.wsMessage.push(JSON.parse(event.data));
+      // 不打印自己发出去的消息
+      let data = JSON.parse(event.data);
+      if (data.uid !== localStorage.getItem("user.id")) {
+        console.log("WebSocket 服务端返回的数据:" + event.data);
+      }
+      state.wsMessage.push(data);
     };
   },
   wsSend(state, payload) {

@@ -52,7 +52,7 @@ export default {
   components: { MonacoEditor },
   data() {
     return {
-      chatnum: 0,
+      uid: localStorage.getItem("user.id"),
       codestr: "", //假设这是代码
       sets: {
         language: {
@@ -83,21 +83,30 @@ export default {
       },
     };
   },
-
+  computed: {
+    wsCodeMsg() {
+      return this.$store.getters.wsCodeMsg;
+    },
+  },
   watch: {
+    "wsCodeMsg.length": function (newVal, oldVal) {
+      if (newVal == oldVal || newVal === 0) return;
+      let len = this.wsCodeMsg.length;
+      let lastMsg = this.wsCodeMsg[len - 1];
+      if (lastMsg.uid !== this.uid) {
+        this.setValue(lastMsg.value);
+      }
+    },
     opts: {
       handler(val, oldval) {
         if (val != oldval) {
-          var mycode = {
-            username: this.currentUser,
+          this.$store.commit("wsSend", {
+            type: "code",
+            uid: this.uid,
             value: this.getValue(),
             language: this.opts.language,
             theme: this.opts.theme,
-            IsCode: 1,
-            chatnum: this.num,
-          };
-          var jsonstr = JSON.stringify(mycode);
-          this.$emit("codeMsg", jsonstr);
+          });
         }
       },
     },
@@ -112,25 +121,21 @@ export default {
     },
     // 手动获取值
     getValue() {
-      // this.$message.info(this.$refs.monaco.getVal());
-      return this.getValue();
+      return this.$refs.monaco.getVal();
+    },
+    setValue(val) {
+      this.$refs.monaco.setVal(val);
     },
     // 内容改变自动获取值
-    changeValue(val) {
-      console.log("哈哈哈哈" + val);
-      if (typeof val != "string") {
-        return;
-      }
-      var mycode = {
-        username: this.currentUser,
-        value: val,
+    changeValue(val, oldVal) {
+      if (val === oldVal) return;
+      this.$store.commit("wsSend", {
+        type: "code",
+        uid: this.uid,
+        value: this.getValue(),
         language: this.opts.language,
         theme: this.opts.theme,
-        IsCode: 1,
-        chatnum: this.num,
-      };
-      var jsonstr = JSON.stringify(mycode);
-      this.$emit("codeMsg", jsonstr);
+      });
     },
     ChangeEditorLanguage(val) {
       this.opts.language = val;

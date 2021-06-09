@@ -66,43 +66,51 @@ export default {
       input: "",
       chatHistory: [], // 仅保存历史聊天记录
       socket: "",
-      commentPage: 0,
+      commentCount: 0,
     };
   },
   computed: {
-    wsChatMsg() {
-      return this.$store.state.wsMessage.filter((msg) => msg.type === "chat");
-    },
-    wsOpenMsg() {
-      return this.$store.state.wsMessage.filter((msg) => {
+    wsInfoMsg() {
+      let infoMsg = this.$store.state.wsMessage.filter((msg) => {
         return msg.type === "open" || msg.type === "close";
       });
+      return infoMsg;
     },
     count() {
-      let len = this.wsOpenMsg.length;
+      let len = this.wsInfoMsg.length;
       //当前在线人数
       if (len === 0) return 0;
       else {
-        return this.wsOpenMsg[len - 1].count;
+        return this.wsInfoMsg[len - 1].count;
       }
     },
     messages() {
       this.$nextTick(() => {
-        document.getElementById("content").scrollIntoView(false);
+        let content = document.getElementById("content");
+        if (content) content.scrollIntoView(false);
       });
       // 返回所有聊天信息
-      return this.chatHistory.concat(this.wsChatMsg);
+      return this.chatHistory.concat(this.$store.getters.wsChatMsg);
+    },
+  },
+  watch: {
+    "wsInfoMsg.length": function (newVal, oldVal) {
+      if (newVal == oldVal || newVal === 0) return;
+      let len = this.wsInfoMsg.length;
+      let lastMsg = this.wsInfoMsg[len - 1];
+      if (lastMsg.uid !== this.uid) {
+        this.$notify({
+          message: `用户${lastMsg.uid} ${
+            lastMsg.type === "open" ? "进入" : "离开"
+          }了面试`,
+        });
+      }
     },
   },
   activated() {
     // 获取历史聊天记录
-    const per_page = 100;
-    this.loadComments(1, per_page);
-    if (this.commentPage > 1) {
-      for (let i = 2; i <= this.commentPage; i++) {
-        this.loadComments(i, per_page);
-      }
-    }
+    this.chatHistory = [];
+    this.loadComments(1, 100);
   },
   methods: {
     loadComments(page, per_page) {
@@ -112,13 +120,15 @@ export default {
         per_page,
       }).handle({
         200: (data, headers) => {
-          console.log(headers);
-          this.chatHistory = [];
+          this.commentCount = parseInt(headers["total-count"]);
           for (let comment of data) {
             this.chatHistory.push({
               uid: comment.owner_id,
               input: comment.content,
             });
+          }
+          if (this.chatHistory.length < this.commentCount) {
+            this.loadComments(page + 1, per_page);
           }
         },
         404: () => console.error("获取留言失败！"),

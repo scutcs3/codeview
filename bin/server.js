@@ -49,7 +49,6 @@ httpServer.on("error", function (error) {
   }
 });
 
-let wsNum = 0;
 // 记录面试连接
 // interviewId => array of {connect, uid}
 let wsConns = {};
