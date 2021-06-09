@@ -58,30 +58,22 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
             data: "[SELECT ERROR]:" + err.message,
           });
         } else {
-          if (result.length > 0) {
-            var results = [];
-            let formatDate = function (dt) {
-              if (dt) {
-                return moment(dt, moment.ISO_8601).format(
-                  "YYYY-MM-DD HH:mm:ss"
-                );
-              } else return dt;
-            };
-            for (var i = 0; i < result.length; i++) {
-              result[i].created_at = formatDate(result[i].created_at);
-              result[i].updated_at = formatDate(result[i].updated_at);
-              results.push(result[i]);
-            }
-            res.setHeader("Total-Count", totalRecord);
-
-            res.json({
-              data: results,
-            });
-          } else {
-            res.status(400).json({
-              data: "参数错误",
-            });
+          var results = [];
+          let formatDate = function (dt) {
+            if (dt) {
+              return moment(dt, moment.ISO_8601).format("YYYY-MM-DD HH:mm:ss");
+            } else return dt;
+          };
+          for (var i = 0; i < result.length; i++) {
+            result[i].created_at = formatDate(result[i].created_at);
+            result[i].updated_at = formatDate(result[i].updated_at);
+            results.push(result[i]);
           }
+          res.setHeader("Total-Count", totalRecord);
+
+          res.json({
+            data: results,
+          });
         }
       });
     }
