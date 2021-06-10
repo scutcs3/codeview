@@ -77,6 +77,6 @@ export default (app) => {
   app.use(ElRadioGroup);
   app.use(ElNotification);
   app.use(ElTabs),
-  app.use(ElTabPane),
-  app.config.globalProperties.$message = ElMessage;
+    app.use(ElTabPane),
+    (app.config.globalProperties.$message = ElMessage);
 };
