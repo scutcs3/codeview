@@ -26,7 +26,7 @@ const ws_maps = {
 
 if (!process.env.VUE_APP_API_MODE) {
   if (process.env.NODE_ENV === "development") {
-    process.env.VUE_APP_API_MODE = "mock";
+    process.env.VUE_APP_API_MODE = "dev";
   } else {
     process.env.VUE_APP_API_MODE = "dev";
   }
