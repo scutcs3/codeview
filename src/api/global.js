@@ -1,5 +1,5 @@
-export const baseUrl = process.env.VUE_APP_API;
-
+import { CV_APP_API } from "../global";
+export const baseUrl = CV_APP_API;
 export class Handler {
   constructor(res) {
     this.res = res;

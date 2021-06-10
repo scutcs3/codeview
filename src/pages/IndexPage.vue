@@ -3,7 +3,7 @@
     <div class="banner">
       <el-image
         class="banner-img"
-        :src="require('../assets/' + mainImg)"
+        :src="'../assets/' + mainImg"
         fit="cover"
       ></el-image>
       <h1 class="banner-title">在线编程笔试平台</h1>

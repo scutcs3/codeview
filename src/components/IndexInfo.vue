@@ -8,7 +8,7 @@
     >
       <div class="intro-item">
         <el-image
-          :src="require('../assets/' + intro.icon)"
+          :src="'../assets/' + intro.icon"
           class="intro-icon"
         ></el-image>
         <div class="intro-body">
