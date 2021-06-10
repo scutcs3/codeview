@@ -23,7 +23,7 @@ app.use(router);
 app.use(store);
 app.mount("#app");
 axios.interceptors.request.use((config) => {
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem("user.token");
   if (token) {
     config.headers["Authorization"] = `Bearer ${token}`;
   }

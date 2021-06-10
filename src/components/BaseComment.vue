@@ -1,49 +1,24 @@
 <template>
-  <div id="main">
-    <el-container id="main-content">
-      <el-header id="chat-title">在线聊天</el-header>
+  <div class="chat-container">
+    <div id="main-content">
+      <h3 id="chat-title">在线聊天 ({{ count }})</h3>
       <el-divider></el-divider>
-      <el-main id="chat-content">
+      <div id="chat-content">
         <div id="content">
-          <div v-for="item in chatHistory" :key="item">
-            <div v-if="typeof item.Ischat === 'undefined'"></div>
-            <div class="my-msg" v-else-if="item.username === currentUser">
-              <div class="message-box">
-                <div class="my message">
-                  <img class="avatar" alt="" />
-                  <div class="content">
-                    <div class="bubble">
-                      <div class="bubble_cont">{{ item.input }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-else class="other-users-msg">
-              <div class="message-box">
-                <div class="other message">
-                  <img class="avatar" alt="" />
-                  <div class="content">
-                    <div class="nickname">{{ item.username }}</div>
-                    <div class="bubble">
-                      <div class="bubble_cont">{{ item.input }}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div v-for="item in messages" :key="item">
+            <this-bubble v-if="item.uid == uid" :input="item.input" />
+            <that-bubble v-else :uid="item.uid" :input="item.input" />
           </div>
         </div>
-      </el-main>
-      <el-footer height="0%"> </el-footer>
-      <el-footer id="input-field" height="20%">
+      </div>
+      <div id="input-field" height="20%">
         <textarea
           id="input"
           style="width: 95%; height: 100%; color: gray"
           v-model="input"
         ></textarea>
-      </el-footer>
-      <el-footer id="send-msg" height="50px">
+      </div>
+      <div id="send-msg" height="50px">
         <el-button
           id="send-msg-btn"
           type="primary"
@@ -51,95 +26,118 @@
           style="width: 25%"
           >发送</el-button
         >
-      </el-footer>
-    </el-container>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { inject } from "vue";
-import { addComment } from "../api/comments";
+import { addComment, getComments } from "../api/comments";
+import ThisBubble from "./ThisBubble.vue";
+import ThatBubble from "./ThatBubble.vue";
 
 export default {
   name: "BaseComment",
   data() {
     return {
+      uid: localStorage.getItem("user.id"),
       input: "",
-      chatHistory: [],
-      currentUser: inject("CurrentID"),
+      chatHistory: [], // 仅保存历史聊天记录
       socket: "",
-      Onechat: inject("Onechat"), //用来接收父组件传来的消息
-      chatnum: 0,
+      commentCount: 0,
     };
   },
-
-  mounted() {
-    if (localStorage.getItem("chatHistory") === null) {
-      localStorage.setItem("chatHistory", "");
-    } else {
-      this.chatHistory = JSON.parse(localStorage.getItem("chatHistory"));
-    }
-    //window.onbeforeunload = function () {
-    //  localStorage.removeItem('chatHistory');
-    //}
+  components: {
+    ThisBubble,
+    ThatBubble,
+  },
+  computed: {
+    wsInfoMsg() {
+      let infoMsg = this.$store.state.wsMessage.filter((msg) => {
+        return msg.type === "open" || msg.type === "close";
+      });
+      return infoMsg;
+    },
+    count() {
+      let len = this.wsInfoMsg.length;
+      //当前在线人数
+      if (len === 0) return 0;
+      else {
+        return this.wsInfoMsg[len - 1].count;
+      }
+    },
+    messages() {
+      this.$nextTick(() => {
+        let content = document.getElementById("content");
+        if (content) content.scrollIntoView(false);
+      });
+      // 返回所有聊天信息
+      return this.chatHistory.concat(this.$store.getters.wsChatMsg);
+    },
   },
   watch: {
-    chatHistory() {
-      this.$nextTick(() => {
-        document.getElementById("content").scrollIntoView(false);
-      });
-    },
-    currentUser: {
-      handler(val, oldval) {
-        console.log(val);
-        console.log(oldval);
-      },
-    },
-    Onechat: {
-      //判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
-      handler(val, oldval) {
-        console.log("BaseComment Onechat handler");
-        console.log(oldval);
-        var jsObj = JSON.parse(val);
-        if (typeof jsObj.Ischat == "undefined") {
-          return;
-        }
-        console.log("服务端返回的数据:" + val);
-        this.chatHistory.push(jsObj);
-        localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
-      },
-      deep: true,
+    "wsInfoMsg.length": function (newVal, oldVal) {
+      if (newVal == oldVal || newVal === 0) return;
+      let len = this.wsInfoMsg.length;
+      let lastMsg = this.wsInfoMsg[len - 1];
+      if (lastMsg.uid !== this.uid) {
+        this.$notify({
+          message: `用户${lastMsg.uid} ${
+            lastMsg.type === "open" ? "进入" : "离开"
+          }了面试`,
+        });
+      }
     },
   },
+  activated() {
+    // 获取历史聊天记录
+    this.chatHistory = [];
+    this.loadComments(1, 100);
+  },
   methods: {
+    loadComments(page, per_page) {
+      getComments({
+        iid: this.$route.params.id,
+        page,
+        per_page,
+      }).handle({
+        200: (data, headers) => {
+          this.commentCount = parseInt(headers["total-count"]);
+          for (let comment of data) {
+            this.chatHistory.push({
+              uid: comment.owner_id,
+              input: comment.content,
+            });
+          }
+          if (this.chatHistory.length < this.commentCount) {
+            this.loadComments(page + 1, per_page);
+          }
+        },
+        404: () => console.error("获取留言失败！"),
+      });
+    },
     sendMsg() {
       if (this.input === "") {
         this.$message.warning("不能发送空白消息");
         return;
       }
       var mynowmsg = {
-        username: this.currentUser,
+        type: "chat",
+        uid: this.uid,
         input: this.input.trim(),
-        Ischat: 1,
-        chatnum: this.chatnum,
       };
-      this.chatnum++;
+      // 利用WebSocket广播消息
+      this.$store.commit("wsSend", mynowmsg);
       // 保存发送的信息到数据库
       addComment({
         content: this.input.trim(),
         iid: this.$route.params.id,
       }).handle({
-        200: (data) => {
-          console.log("发送信息成功", data);
-        },
+        200: () => {},
         404: () => {
           this.$message.error("发送信息失败");
         },
       });
-      localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
-
-      var jsonstr = JSON.stringify(mynowmsg);
-      this.$emit("fct", jsonstr);
       this.input = "";
     },
   },
@@ -147,27 +145,26 @@ export default {
 </script>
 
 <style scoped>
-#main {
-  width: 99%;
-  height: 500px;
+.chat-container {
+  height: 400px;
   background-position: left;
   background-size: cover;
   position: relative;
+  border: 1px solid black;
 }
 #input {
   width: 10px;
 }
 #content {
-  margin-top: 10px;
   text-align: left;
+  height: 200px;
+  overflow: auto;
 }
 
 #main-content {
   background: white;
   width: 100%;
-  height: 100%;
   margin: auto;
-  margin-top: 4%;
 }
 .el-main {
   display: block;

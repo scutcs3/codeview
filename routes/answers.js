@@ -22,34 +22,35 @@ router.use(function (req, res, next) {
 });
 
 var connection = require("../config/mysql");
+var hashids = require("hashids");
+var hashes = new hashids("codeview salt", 16);
 
 /**
  * @api {get} /answers
  * 获取答案列表
  */
 router.get("/", function (req, res, next) {
-  var sql;
-  sql = `SELECT COUNT(*) FROM answer`;
-  var totalRecord = 0;
-  connection.query(sql, function (err, result) {
-    if (err) {
-      console.log("[SELECT ERROR]:", err.message);
-      res.status(500).json({
-        data: "[SELECT ERROR]:" + err.message,
-      });
-    } else {
-      totalRecord = result[0]["COUNT(*)"];
-
-      if (!req.query.iid || !req.query.pid) {
-        res.status(400).json({
-          data: "参数错误",
+  if (!req.query.iid || !req.query.pid) {
+    res.status(400).json({
+      data: "参数错误",
+    });
+  } else {
+    var iid = hashes.decode(req.query.iid)[0];
+    var sql = `SELECT * FROM answer WHERE interview_id = ${iid} AND problem_id = ${req.query.pid} `;
+    connection.query(sql, function (err, result) {
+      if (err) {
+        console.log("[SELECT ERROR]:", err.message);
+        res.status(500).json({
+          data: "[SELECT ERROR]:" + err.message,
         });
       } else {
+        var totalRecord = result.length;
+
         var page = req.query.page ? parseInt(req.query.page) : 1;
         var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
         var preSize = (page - 1) * per_page;
 
-        var sql = `SELECT * FROM answer WHERE interview_id = ${req.query.iid} AND problem_id = ${req.query.pid} limit ${preSize},${per_page}`;
+        sql += `limit ${preSize},${per_page}`;
         connection.query(sql, function (err, result) {
           if (err) {
             console.log("[SELECT ERROR]:", err.message);
@@ -68,8 +69,8 @@ router.get("/", function (req, res, next) {
           }
         });
       }
-    }
-  });
+    });
+  }
 });
 
 /**
@@ -88,7 +89,8 @@ router.post("/", function (req, res, next) {
     });
   } else {
     var dt = require("moment")().format("YYYY-MM-DD HH:mm:ss");
-    var sql = `INSERT INTO answer (language,content,problem_id,interview_id,created_at) VALUES ('${req.body.language}','${req.body.content}',${req.body.problem_id},${req.body.interview_id},'${dt}')`;
+    var iid = hashes.decode(req.body.interview_id)[0];
+    var sql = `INSERT INTO answer (language,content,problem_id,interview_id,created_at) VALUES ('${req.body.language}','${req.body.content}',${req.body.problem_id},${iid},'${dt}')`;
     connection.query(sql, function (err, result) {
       if (err) {
         console.log("[INSERT ERROR]:", err.message);

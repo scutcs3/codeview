@@ -47,16 +47,13 @@
 </template>
 <script>
 import MonacoEditor from "./MonacoEditor.vue";
-import { inject } from "vue";
 export default {
   name: "CodeEditor",
   components: { MonacoEditor },
   data() {
     return {
-      chatnum: 0,
-      Onechat: inject("Onechat"), //用来接收父组件传来的消息
+      uid: localStorage.getItem("user.id"),
       codestr: "", //假设这是代码
-      currentUser: inject("CurrentID"), //当前使用者ID，用于判断是面试官还是面试者
       sets: {
         language: {
           cpp: "cpp",
@@ -86,35 +83,30 @@ export default {
       },
     };
   },
-
+  computed: {
+    wsCodeMsg() {
+      return this.$store.getters.wsCodeMsg;
+    },
+  },
   watch: {
-    Onechat: {
-      //判断，当Onechat发生变化时，说明服务器传来了值，这时候判断是否为聊天数据，若是，则增加
-      handler(val, oldval) {
-        console.log(oldval);
-        var jsObj = JSON.parse(val);
-        if (typeof jsObj.IsCode == "undefined") {
-          return;
-        }
-        //console.log(jsObj.IsCode);
-        console.log("服务端返回的数据啊:" + jsObj.value);
-        this.codestr = jsObj.value;
-      },
-      deep: true,
+    "wsCodeMsg.length": function (newVal, oldVal) {
+      if (newVal == oldVal || newVal === 0) return;
+      let len = this.wsCodeMsg.length;
+      let lastMsg = this.wsCodeMsg[len - 1];
+      if (lastMsg.uid !== this.uid) {
+        this.setValue(lastMsg.value);
+      }
     },
     opts: {
       handler(val, oldval) {
         if (val != oldval) {
-          var mycode = {
-            username: this.currentUser,
+          this.$store.commit("wsSend", {
+            type: "code",
+            uid: this.uid,
             value: this.getValue(),
             language: this.opts.language,
             theme: this.opts.theme,
-            IsCode: 1,
-            chatnum: this.num,
-          };
-          var jsonstr = JSON.stringify(mycode);
-          this.$emit("codeMsg", jsonstr);
+          });
         }
       },
     },
@@ -129,25 +121,21 @@ export default {
     },
     // 手动获取值
     getValue() {
-      // this.$message.info(this.$refs.monaco.getVal());
-      return this.getValue();
+      return this.$refs.monaco.getVal();
+    },
+    setValue(val) {
+      this.$refs.monaco.setVal(val);
     },
     // 内容改变自动获取值
-    changeValue(val) {
-      console.log("哈哈哈哈" + val);
-      if (typeof val != "string") {
-        return;
-      }
-      var mycode = {
-        username: this.currentUser,
-        value: val,
+    changeValue(val, oldVal) {
+      if (val === oldVal) return;
+      this.$store.commit("wsSend", {
+        type: "code",
+        uid: this.uid,
+        value: this.getValue(),
         language: this.opts.language,
         theme: this.opts.theme,
-        IsCode: 1,
-        chatnum: this.num,
-      };
-      var jsonstr = JSON.stringify(mycode);
-      this.$emit("codeMsg", jsonstr);
+      });
     },
     ChangeEditorLanguage(val) {
       this.opts.language = val;
@@ -156,16 +144,7 @@ export default {
 };
 </script>
 <style scoped>
-.monaco-container {
-  position: relative;
-  height: 75%;
-  width: 80%;
-  margin-bottom: 10px;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
 .monaco-editor {
-  height: 100%;
   border: 1px solid rgb(91, 93, 93);
   text-align: left;
 }

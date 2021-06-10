@@ -33,6 +33,7 @@ import {
   ElRadioGroup,
   ElRadio,
   ElMessage,
+  ElNotification,
 } from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
 import lang from "element-plus/lib/locale/lang/zh-cn";
@@ -72,5 +73,6 @@ export default (app) => {
   app.use(ElCollapse);
   app.use(ElRadio);
   app.use(ElRadioGroup);
+  app.use(ElNotification);
   app.config.globalProperties.$message = ElMessage;
 };

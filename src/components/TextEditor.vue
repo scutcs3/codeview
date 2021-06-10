@@ -16,7 +16,7 @@
 
 <script>
 import Editor from "@tinymce/tinymce-vue";
-import { inject } from "vue";
+import { addProblem } from "../api/problem";
 export default {
   components: {
     Editor,
@@ -54,10 +54,9 @@ export default {
   },
   data() {
     return {
+      uid: localStorage.getItem("user.id"),
       str: "", //编辑器里的值
       flag: false,
-      currentUser: inject("CurrentID"),
-
       init: {
         language_url: `${this.baseUrl}/tinymce/langs/zh_CN.js`,
         language: "zh_CN",
@@ -78,23 +77,38 @@ export default {
     };
   },
   methods: {
+    addProblemTo(pid) {
+      addProblem({
+        iid: this.$route.params.id,
+        pid,
+      }).handle({
+        200: () => {
+          this.$message.success("添加题目成功");
+          console.log("内部addProblem");
+        },
+        404: () => this.$message.error("添加题目失败，已添加到题库中。"),
+      });
+    },
     printf() {
-      alert("题目:" + this.str);
       var mynowmsg = {
+        type: "add_problem",
+        uid: this.uid,
         title: this.t,
         content: this.str,
-        IsPorblem: 1,
       };
-      var jsonstr = JSON.stringify(mynowmsg);
-      this.$emit("problemPressed", jsonstr);
-    },
-    add() {
-      (this.flag = true), (this.str = this.c);
-    },
-  },
-  watch: {
-    str: function (newname) {
-      console.log(newname);
+      this.$store.commit("wsSend", mynowmsg);
+      addProblem({
+        title: this.t,
+        content: this.str,
+      }).handle({
+        200: (data) => {
+          let pid = data.id;
+          this.addProblemTo(pid);
+        },
+        404: () => {
+          console.log("添加题目失败!");
+        },
+      });
     },
   },
 };

@@ -26,10 +26,8 @@ var connection = require("../config/mysql");
 var hashids = require("hashids");
 var hashes = new hashids("codeview salt", 16);
 
-function getInterviewList(field, page, per_page, res, req) {
-  var sql;
-  sql = `SELECT COUNT(*) FROM interview`;
-  var totalRecord = 0;
+function getInterviewList(field, page, per_page, res) {
+  var sql = `SELECT * FROM interview WHERE ${field} = ${tk.obj.id} `;
   connection.query(sql, function (err, result) {
     if (err) {
       console.log("[SELECT ERROR]:", err.message);
@@ -37,10 +35,10 @@ function getInterviewList(field, page, per_page, res, req) {
         data: "[SELECT ERROR]:" + err.message,
       });
     } else {
-      totalRecord = result[0]["COUNT(*)"];
+      var totalRecord = result.length;
       var preSize = (page - 1) * per_page;
 
-      var sql = `SELECT * FROM interview WHERE ${field} = ${tk.obj.id} limit ${preSize},${per_page}`;
+      sql += `limit ${preSize},${per_page}`;
       connection.query(sql, function (err, result) {
         if (err) {
           console.log("[SELECT ERROR]:", err.message);
@@ -57,8 +55,8 @@ function getInterviewList(field, page, per_page, res, req) {
           for (var i = 0; i < result.length; i++) {
             result[i].start_time = formatDate(result[i].start_time);
             result[i].finish_time = formatDate(result[i].finish_time);
+            result[i].id = hashes.encode(result[i].id);
             results.push(result[i]);
-            results[i].id = hashes.encode(result[i].id);
           }
           res.setHeader("Total-Count", totalRecord);
 
@@ -78,7 +76,8 @@ function getInterviewList(field, page, per_page, res, req) {
 router.get("/", function (req, res, next) {
   var sql;
   if (req.query.id) {
-    sql = `SELECT * FROM interview WHERE id = ${req.query.id}`;
+    var id = hashes.decode(req.query.id)[0];
+    sql = `SELECT * FROM interview WHERE id = ${id}`;
     connection.query(sql, function (err, result) {
       if (err) {
         console.log("[SELECT ERROR]:", err.message);
@@ -97,7 +96,7 @@ router.get("/", function (req, res, next) {
           } else {
             var results = [];
             for (var i = 0; i < result.length; i++) {
-              results[i].id = hashes.encode(result[i].id);
+              result[i].id = hashes.encode(result[i].id);
               results.push(result[i]);
             }
             res.json({
@@ -115,9 +114,9 @@ router.get("/", function (req, res, next) {
     var page = req.query.page ? parseInt(req.query.page) : 1;
     var per_page = req.query.per_page ? parseInt(req.query.per_page) : 30;
     if (req.query.role == "viewee") {
-      getInterviewList("viewee_id", page, per_page, res, req);
+      getInterviewList("viewee_id", page, per_page, res);
     } else {
-      getInterviewList("viewer_id", page, per_page, res, req);
+      getInterviewList("viewer_id", page, per_page, res);
     }
   }
 });
@@ -140,11 +139,7 @@ router.post("/", function (req, res, next) {
       });
     } else {
       res.json({
-        viewee_id: req.body.viewee_id,
-        viewer_id: tk.obj.id,
-        start_time: req.body.start_time,
-        finish_time: req.body.finish_time,
-        status: "created",
+        data: "创建成功",
       });
     }
   });

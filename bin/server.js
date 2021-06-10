@@ -49,41 +49,64 @@ httpServer.on("error", function (error) {
   }
 });
 
-let wsNum = 0;
-let conns = {};
+// 记录面试连接
+// interviewId => array of {connect, uid}
+let wsConns = {};
 
 function boardcast(obj) {
-  if (obj.interviewID) {
-    console.log("发送数据 ", obj);
-    conns[obj.interviewID].sendText(JSON.stringify(obj));
+  let iid = obj.interviewID;
+  if (iid) {
+    obj.count = wsConns[iid].length;
+    for (let conObj of wsConns[iid]) {
+      console.log("向面试", iid, "中的用户", conObj.uid, "广播数据 ", obj);
+      conObj.con.sendText(JSON.stringify(obj));
+    }
   }
   return;
 }
 // 创建WebSocket服务器
 const wsServer = ws.createServer(function (connect) {
-  let id = wsNum;
-  console.log("用户" + id + "连接上来!");
-  wsNum++;
   //接收到信息函数
   connect.on("text", function (obj) {
-    console.log("接受到: " + obj);
+    // console.log("接受到: " + obj);
     obj = JSON.parse(obj);
-    conns["" + obj.interviewID + ""] = connect;
+    let iid = obj.interviewID;
+    if (obj.type == "open") {
+      let conObj = {
+        uid: obj.uid,
+        con: connect,
+      };
+      if (wsConns[iid]) {
+        let idx = wsConns[iid].findIndex((conObj) => conObj.uid === obj.uid);
+        if (idx !== -1) {
+          console.log("用户", obj.uid, "重复连接!");
+        } else {
+          wsConns[iid].push(conObj);
+          console.log("用户", obj.uid, "连接上来!");
+        }
+      } else {
+        wsConns[iid] = [conObj];
+        console.log("用户", obj.uid, "连接上来!");
+      }
+    } else if (obj.type == "close") {
+      if (wsConns[iid]) {
+        let idx = wsConns[iid].findIndex((conObj) => conObj.uid === obj.uid);
+        if (idx !== -1) {
+          console.log("用户", obj.uid, "断开连接!");
+          wsConns[iid].splice(idx, 1);
+        }
+      }
+    }
     boardcast(obj);
   });
   //有连接断开函数
   connect.on("close", function () {
-    console.log("连接断开了");
+    // console.log("连接断开了");
   });
   //连接出错
   connect.on("error", function () {
-    console.log("用户连接异常");
+    // console.log("用户连接异常");
   });
-  //   function sentall(str) {
-  //     serve.connections.forEach(function (connect) {
-  //       connect.sendText(str);
-  //     });
-  //   }
 });
 
 wsServer.listen(WEBSOCKET_PORT, function () {

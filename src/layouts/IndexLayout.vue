@@ -6,7 +6,7 @@
     <el-main>
       <slot></slot>
     </el-main>
-    <el-footer>
+    <el-footer v-if="$route.name === 'index'">
       <TheFoot></TheFoot>
     </el-footer>
   </el-container>
