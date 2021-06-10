@@ -34,6 +34,8 @@ import {
   ElRadio,
   ElMessage,
   ElNotification,
+  ElTabs,
+  ElTabPane,
 } from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
 import lang from "element-plus/lib/locale/lang/zh-cn";
@@ -74,5 +76,7 @@ export default (app) => {
   app.use(ElRadio);
   app.use(ElRadioGroup);
   app.use(ElNotification);
+  app.use(ElTabs),
+  app.use(ElTabPane),
   app.config.globalProperties.$message = ElMessage;
 };
