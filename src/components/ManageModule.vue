@@ -14,7 +14,7 @@
 </template>
 <script>
 import { getProblems } from "../api/problem";
-import TextEditor from "../components/TextEditor";
+import TextEditor from "../components/TextEditor.vue";
 export default {
   name: "ManageModule",
   data() {
