@@ -1,6 +1,7 @@
+import { RouteRecordRaw } from "vue-router";
 import IndexPage from "../pages/IndexPage.vue";
 
-export default [
+const routes: Array<RouteRecordRaw> = [
   {
     path: "/index",
     name: "index",
@@ -126,3 +127,5 @@ export default [
     ],
   },
 ];
+
+export default routes;

@@ -12,7 +12,7 @@ export let CV_BUILD_TIME = new Date().toISOString();
 // test -- 使用swagger提供的远程mock：https://virtserver.swaggerhub.com/tootal/codeview/1.0.0
 // local -- 本地3000端口
 // dev -- develop分支远程接口：http://cv-api.tootal.xyz
-export let CV_API_MODE = "dev";
+export let CV_API_MODE = "local";
 export let CV_API;
 export let CV_WS_API;
 const api_maps = {
