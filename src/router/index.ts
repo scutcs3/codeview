@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import routes from "./routes.ts";
+import routes from "./routes";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -8,7 +8,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  var isLogin = localStorage.getItem("user.token");
+  const isLogin = localStorage.getItem("user.token");
   if (!isLogin && to.meta.requiresAuth) {
     return {
       name: "login",

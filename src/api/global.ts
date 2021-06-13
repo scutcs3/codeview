@@ -1,6 +1,7 @@
-import { CV_API } from "../global.js";
-export const baseUrl = CV_API;
+import { CV_API } from "../global";
+export const baseUrl: string = CV_API;
 export class Handler {
+  res: any;
   constructor(res) {
     this.res = res;
   }

@@ -14,6 +14,7 @@ const mutations = {
     localStorage.removeItem("user.email");
   },
   wsOpen(state, payload) {
+    if (!CV_WS_API) return;
     if (state.ws) {
       state.ws.close();
       state.ws = null;
@@ -36,7 +37,7 @@ const mutations = {
     };
     state.ws.onmessage = function (event) {
       // 不打印自己发出去的消息
-      let data = JSON.parse(event.data);
+      const data = JSON.parse(event.data);
       if (data.uid !== localStorage.getItem("user.id")) {
         console.log("WebSocket 服务端返回的数据:" + event.data);
       }
@@ -44,12 +45,14 @@ const mutations = {
     };
   },
   wsSend(state, payload) {
+    if (!CV_WS_API) return;
     payload.interviewID = state.wsId; //自动添加面试ID
     payload = JSON.stringify(payload);
     console.log("WebSocket 发送数据: ", payload);
     state.ws.send(payload);
   },
   wsClose(state) {
+    if (!CV_WS_API) return;
     if (state.ws) {
       state.ws.send(
         JSON.stringify({

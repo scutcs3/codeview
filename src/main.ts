@@ -6,15 +6,11 @@ import store from "./store";
 import element from "./plugins/element";
 import moment from "./plugins/moment";
 import axios from "axios";
-import { CV_API_MODE } from "./global.js";
+import { CV_API_MODE } from "./global";
 
-if (typeof process === "undefined") {
-  // 尝试vite配置
-} else {
-  if (CV_API_MODE === "mock") {
-    console.log("Mock enabled!");
-    require("./mock");
-  }
+if (CV_API_MODE === "mock") {
+  console.log("Mock enabled!");
+  import("./mock");
 }
 
 const app = createApp(App);

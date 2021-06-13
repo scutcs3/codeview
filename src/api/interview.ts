@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl, Handler } from "./global.js";
+import { baseUrl, Handler } from "./global";
 
 export function getInterviews() {
   return new Handler(axios.get(baseUrl + "/interviews"));

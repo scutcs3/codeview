@@ -6,7 +6,7 @@
 
 <script>
 import BaseProblem from "../components/BaseProblem.vue";
-import { getProblem } from "../api/problem.js";
+import { getProblem } from "../api/problem";
 
 export default {
   name: "ProblemPage",

@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import { getProblems } from "../api/problem.js";
+import { getProblems } from "../api/problem";
 export default {
   name: "ProblemsList",
   data() {
