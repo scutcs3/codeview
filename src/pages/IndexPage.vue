@@ -3,7 +3,7 @@
     <div class="banner">
       <el-image
         class="banner-img"
-        :src="'../assets/' + mainImg"
+        :src="bannerImg"
         fit="cover"
       ></el-image>
       <h1 class="banner-title">在线编程笔试平台</h1>
@@ -13,13 +13,13 @@
 </template>
 <script>
 import IndexInfo from "../components/IndexInfo.vue";
-
+import bannerImg from "../assets/maranda-vandergriff-7aakZdIl4vg-unsplash.webp";
 export default {
   name: "IndexPage",
   data() {
     return {
-      mainImg: "maranda-vandergriff-7aakZdIl4vg-unsplash.webp",
-    };
+      bannerImg,
+    }
   },
   components: {
     IndexInfo,
