@@ -1,5 +1,5 @@
-import { CV_APP_API } from "../global";
-export const baseUrl = CV_APP_API;
+import { CV_API } from "../global";
+export const baseUrl = CV_API;
 export class Handler {
   constructor(res) {
     this.res = res;

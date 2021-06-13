@@ -21,9 +21,9 @@
 <script>
 import "element-plus/lib/theme-chalk/display.css";
 import {
-  CV_APP_BUILD_NUMBER,
-  CV_APP_BUILD_ID,
-  CV_APP_BUILD_TIME,
+  CV_BUILD_NUMBER,
+  CV_BUILD_ID,
+  CV_BUILD_TIME,
 } from "../global";
 import FootLink from "./FootLink.vue";
 export default {
@@ -33,9 +33,9 @@ export default {
   },
   data() {
     return {
-      build_number: CV_APP_BUILD_NUMBER,
-      build_id: CV_APP_BUILD_ID,
-      build_time: CV_APP_BUILD_TIME,
+      build_number: CV_BUILD_NUMBER,
+      build_id: CV_BUILD_ID,
+      build_time: CV_BUILD_TIME,
       all_links: {
         项目链接: [
           { title: "代码仓库", href: "https://github.com/scutcs3/codeview" },

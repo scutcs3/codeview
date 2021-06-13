@@ -1,4 +1,4 @@
-import { CV_APP_WS_API } from "../global";
+import { CV_WS_API } from "../global";
 
 const mutations = {
   login(state, payload) {
@@ -18,7 +18,7 @@ const mutations = {
       state.ws.close();
       state.ws = null;
     }
-    state.ws = new WebSocket(CV_APP_WS_API);
+    state.ws = new WebSocket(CV_WS_API);
     state.ws.onopen = function () {
       console.log("WebSocket 连接建立");
       state.wsId = payload.id;
