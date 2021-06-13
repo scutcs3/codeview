@@ -1,19 +1,23 @@
 <template>
-  <div>
-    <div>
-      <el-autocomplete
-        v-model="state"
-        :fetch-suggestions="querySearchAsync"
-        placeholder="请输入内容"
-        @select="handleSelect"
-      ></el-autocomplete>
-      <el-button @click="father_add">添加题目</el-button>
-    </div>
+  <base-card title="管理面板">
+    <template #header>
+      <el-button class="button" type="danger" plain @click="leaveView"
+        >结束面试</el-button
+      >
+    </template>
+    <el-autocomplete
+      v-model="state"
+      :fetch-suggestions="querySearchAsync"
+      placeholder="请输入内容"
+      @select="handleSelect"
+    ></el-autocomplete>
+    <el-button @click="father_add">添加题目</el-button>
     <TextEditor ref="editor" :t="state" :c="middle_content"> </TextEditor>
-  </div>
+  </base-card>
 </template>
 <script>
 import { getProblems } from "../api/problem";
+import BaseCard from "../components/BaseCard.vue";
 import TextEditor from "../components/TextEditor.vue";
 export default {
   name: "ManageModule",
@@ -26,8 +30,12 @@ export default {
   },
   components: {
     TextEditor,
+    BaseCard,
   },
   methods: {
+    leaveView() {
+      this.$router.push("/console/interviews");
+    },
     querySearchAsync(queryString, cb) {
       let results = [];
       if (!queryString) {

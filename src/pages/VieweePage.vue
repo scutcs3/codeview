@@ -1,25 +1,22 @@
 <template>
-  <ViewLayout>
-    <BaseProblem :pid="pid" :title="title" :content="content"></BaseProblem>
-  </ViewLayout>
+  <view-layout>
+    <problem-tabs :problems="problems"></problem-tabs>
+  </view-layout>
 </template>
 <script>
-import BaseProblem from "../components/BaseProblem.vue";
 import ViewLayout from "../layouts/ViewLayout.vue";
 import { getProblems } from "../api/problem";
-
+import ProblemTabs from "../components/ProblemTabs.vue";
 export default {
   name: "VieweePage",
   data() {
     return {
-      pid: 0,
-      title: "",
-      content: "",
+      problems: [],
     };
   },
   components: {
     ViewLayout,
-    BaseProblem,
+    ProblemTabs,
   },
   methods: {
     showProblem(pid) {
@@ -27,10 +24,8 @@ export default {
         pid,
       }).handle({
         200: (data) => {
-          // 暂时只展示第一题
-          this.pid = data[0].id;
-          this.title = data[0].title;
-          this.content = data[0].content;
+          console.log(data);
+          this.problems.push(data[0]);
         },
         404: () => console.warn("获取题目失败"),
       });
@@ -38,12 +33,15 @@ export default {
   },
   activated() {
     // 获取面试题目
+    this.problems = [];
     getProblems({
       iid: this.$route.params.id,
     }).handle({
       200: (data) => {
         if (data.length === 0) console.log("还没有出题");
-        this.showProblem(data[0].problem_id);
+        for (let problem of data) {
+          this.showProblem(problem.problem_id);
+        }
       },
       404: () => console.log("请求失败"),
     });

@@ -1,7 +1,7 @@
 <template>
-  <ViewLayout>
-    <ManageModule></ManageModule>
-  </ViewLayout>
+  <view-layout>
+    <manage-module></manage-module>
+  </view-layout>
 </template>
 <script>
 import ManageModule from "../components/ManageModule.vue";

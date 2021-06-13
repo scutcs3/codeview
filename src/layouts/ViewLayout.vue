@@ -1,18 +1,11 @@
 <template>
   <div class="view-layout">
-    <base-card title="管理面板">
-      <template #header>
-        <el-button class="button" type="danger" plain @click="leaveView"
-          >结束面试</el-button
-        >
-      </template>
-      <slot></slot>
-    </base-card>
+    <slot></slot>
     <base-card title="代码面板" class="code-card">
-      <CodeEditor msg="编程部分"></CodeEditor>
+      <code-editor></code-editor>
     </base-card>
     <base-card :title="`在线聊天（${count}）`">
-      <BaseComment></BaseComment>
+      <base-comment></base-comment>
     </base-card>
   </div>
 </template>
@@ -20,9 +13,11 @@
 import CodeEditor from "../components/CodeEditor.vue";
 import BaseComment from "../components/BaseComment.vue";
 import BaseCard from "../components/BaseCard.vue";
-
 export default {
   name: "ViewLayout",
+  props: {
+    type: String,
+  },
   components: {
     CodeEditor,
     BaseComment,
@@ -32,9 +27,6 @@ export default {
     beforeunloadCb() {
       // 页面关闭时，关闭WebSocket连接
       this.$store.commit("wsClose");
-    },
-    leaveView() {
-      this.$router.push("/console/interviews");
     },
   },
   computed: {
