@@ -28,13 +28,14 @@ const ws_maps = {
 };
 
 if (typeof process == "undefined") {
-  console.log("Serve: Vite");
   // vite环境
+  console.log("Serve: Vite");
+  CV_API_MODE = import.meta.env.VITE_API_MODE || "dev";
   CV_API = api_maps[CV_API_MODE];
   CV_WS_API = ws_maps[CV_API_MODE];
 } else {
-  console.log("Serve: Vue CLI (Webpack)");
   // webpack环境
+  console.log("Serve: Vue CLI (Webpack)");
   CV_BUILD_NUMBER = process.env.BUILD_NUMBER || "local_test";
   CV_BUILD_ID = process.env.BUILD_ID || "";
   CV_BUILD_TIME = new Date().toISOString();
