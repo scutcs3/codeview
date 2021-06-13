@@ -2,7 +2,7 @@
   <div
     ref="container"
     class="monaco-editor"
-    :style="`height: ${height}px`"
+    :style="`height: ${height}px; width: ${width}px`"
   ></div>
 </template>
 
@@ -20,8 +20,12 @@ export default {
     },
     height: {
       type: Number,
-      default: 300,
+      default: 200,
     },
+    width: {
+      type: Number,
+      default: 300,
+    }
   },
   data() {
     return {

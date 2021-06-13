@@ -1,23 +1,37 @@
 <template>
   <div class="view-layout">
-    <slot></slot>
-    <CodeEditor msg="编程部分"></CodeEditor>
-    <BaseComment></BaseComment>
+    <base-card title="管理面板">
+      <slot></slot>
+    </base-card>
+    <base-card title="代码面板">
+      <CodeEditor msg="编程部分"></CodeEditor>
+    </base-card>
+    <base-card :title="`在线聊天（${count}）`">
+      <BaseComment></BaseComment>
+    </base-card>
   </div>
 </template>
 <script>
 import CodeEditor from "../components/CodeEditor.vue";
 import BaseComment from "../components/BaseComment.vue";
+import BaseCard from "../components/BaseCard.vue";
+
 export default {
   name: "ViewLayout",
   components: {
     CodeEditor,
     BaseComment,
+    BaseCard,
   },
   methods: {
     beforeunloadCb() {
       // 页面关闭时，关闭WebSocket连接
       this.$store.commit("wsClose");
+    },
+  },
+  computed: {
+    count() {
+      return this.$store.getters.wsCount;
     },
   },
   mounted() {
@@ -43,8 +57,9 @@ export default {
 .view-layout {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
-.view-layout > div {
-  flex-grow: 1;
+.el-card {
+  margin: 1rem;
 }
 </style>

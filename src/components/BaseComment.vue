@@ -1,29 +1,24 @@
 <template>
   <div class="chat-container">
     <div id="main-content">
-      <h3 id="chat-title">在线聊天 ({{ count }})</h3>
-      <el-divider></el-divider>
       <div id="chat-content">
-        <div id="content">
-          <div v-for="item in messages" :key="item">
-            <this-bubble v-if="item.uid == uid" :input="item.input" />
-            <that-bubble v-else :uid="item.uid" :input="item.input" />
-          </div>
+        <div v-for="item in messages" :key="item">
+          <this-bubble v-if="item.uid == uid" :input="item.input" />
+          <that-bubble v-else :uid="item.uid" :input="item.input" />
         </div>
       </div>
-      <div id="input-field" height="20%">
+      <div id="input-field">
         <textarea
           id="input"
-          style="width: 95%; height: 100%; color: gray"
+          style="color: gray"
           v-model="input"
         ></textarea>
       </div>
-      <div id="send-msg" height="50px">
+      <div id="send-msg">
         <el-button
           id="send-msg-btn"
           type="primary"
           @click="sendMsg"
-          style="width: 25%"
           >发送</el-button
         >
       </div>
@@ -57,14 +52,6 @@ export default {
         return msg.type === "open" || msg.type === "close";
       });
       return infoMsg;
-    },
-    count() {
-      let len = this.wsInfoMsg.length;
-      //当前在线人数
-      if (len === 0) return 0;
-      else {
-        return this.wsInfoMsg[len - 1].count;
-      }
     },
     messages() {
       this.$nextTick(() => {
@@ -146,19 +133,16 @@ export default {
 
 <style scoped>
 .chat-container {
-  width: 400px;
-  height: 400px;
   background-position: left;
   background-size: cover;
   position: relative;
-  border: 1px solid black;
 }
 #input {
   width: 10px;
 }
 #content {
   text-align: left;
-  height: 200px;
+  height: 400px;
   overflow: auto;
 }
 

@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header v-if="$route.name === 'index'">
       <TheHead></TheHead>
     </el-header>
     <el-main>

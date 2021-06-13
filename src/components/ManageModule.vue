@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header">
+    <div>
       <el-autocomplete
         v-model="state"
         :fetch-suggestions="querySearchAsync"
@@ -58,10 +58,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.header {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-}
-</style>
