@@ -15,7 +15,7 @@ const getters = {
     else {
       return infoMsg[len - 1].count;
     }
-  }
+  },
 };
 
 export default getters;

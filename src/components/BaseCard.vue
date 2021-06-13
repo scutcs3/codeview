@@ -10,12 +10,12 @@
 </template>
 <script>
 export default {
-    name: "BaseCard",
-    props: {
-        title: {
-            type: String,
-            default: "默认标题",
-        }
-    }
-}
+  name: "BaseCard",
+  props: {
+    title: {
+      type: String,
+      default: "默认标题",
+    },
+  },
+};
 </script>

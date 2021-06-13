@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import 'element-plus/lib/theme-chalk/display.css';
+import "element-plus/lib/theme-chalk/display.css";
 import {
   CV_APP_BUILD_NUMBER,
   CV_APP_BUILD_ID,

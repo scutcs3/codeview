@@ -17,7 +17,7 @@
         >
         </el-option>
       </el-select>
-      <br>
+      <br />
       样式风格：
       <el-select
         v-model="opts.theme"

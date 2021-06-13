@@ -2,9 +2,9 @@
 // 适配vue-cli和vite
 
 // 构建号（从1开始，每次构建自动递增，由Github Action传入）
-export let CV_APP_BUILD_NUMBER = 'local_test';
+export let CV_APP_BUILD_NUMBER = "local_test";
 // 构建ID，（Github Actions）
-export let CV_APP_BUILD_ID = '';
+export let CV_APP_BUILD_ID = "";
 // 构建时间
 export let CV_APP_BUILD_TIME = new Date().toISOString();
 // 后端API接口模式，可在本地.env.local文件中覆盖此处配置
