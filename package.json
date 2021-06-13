@@ -10,7 +10,7 @@
     "start": "node ./bin/server.js",
     "test": "mocha",
     "pm2": "pm2 start ./bin/server.js --name codeview --watch",
-    "vite": "vite",
+    "vite": "script\\vite.cmd",
     "vite:build": "vite build"
   },
   "dependencies": {
