@@ -1,6 +1,6 @@
 <template>
   <div class="foot shadow-top">
-    <div class="links">
+    <div class="links hidden-xs-only">
       <FootLink
         v-for="(cur_links, cur_name) in all_links"
         :key="cur_name"
@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+import 'element-plus/lib/theme-chalk/display.css';
 import {
   CV_APP_BUILD_NUMBER,
   CV_APP_BUILD_ID,

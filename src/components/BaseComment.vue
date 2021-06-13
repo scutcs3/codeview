@@ -146,6 +146,7 @@ export default {
 
 <style scoped>
 .chat-container {
+  width: 400px;
   height: 400px;
   background-position: left;
   background-size: cover;

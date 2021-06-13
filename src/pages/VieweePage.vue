@@ -1,22 +1,10 @@
 <template>
   <ViewLayout>
-    <el-row>
-      <el-col :span="6">
-        <BaseProblem :pid="pid" :title="title" :content="content"></BaseProblem>
-      </el-col>
-      <el-col :span="12">
-        <CodeEditor msg="编程部分"></CodeEditor>
-      </el-col>
-      <el-col :span="6">
-        <BaseComment></BaseComment>
-      </el-col>
-    </el-row>
+    <BaseProblem :pid="pid" :title="title" :content="content"></BaseProblem>
   </ViewLayout>
 </template>
 <script>
-import CodeEditor from "../components/CodeEditor.vue";
 import BaseProblem from "../components/BaseProblem.vue";
-import BaseComment from "../components/BaseComment.vue";
 import ViewLayout from "../layouts/ViewLayout.vue";
 import { getProblems } from "../api/problem";
 
@@ -31,9 +19,7 @@ export default {
   },
   components: {
     ViewLayout,
-    CodeEditor,
     BaseProblem,
-    BaseComment,
   },
   methods: {
     showProblem(pid) {

@@ -1,9 +1,19 @@
 <template>
-  <slot></slot>
+  <div class="view-layout">
+    <slot></slot>
+    <CodeEditor msg="编程部分"></CodeEditor>
+    <BaseComment></BaseComment>
+  </div>
 </template>
 <script>
+import CodeEditor from "../components/CodeEditor.vue";
+import BaseComment from "../components/BaseComment.vue";
 export default {
   name: "ViewLayout",
+  components: {
+    CodeEditor,
+    BaseComment,
+  },
   methods: {
     beforeunloadCb() {
       // 页面关闭时，关闭WebSocket连接
@@ -29,3 +39,12 @@ export default {
   },
 };
 </script>
+<style scoped>
+.view-layout {
+  display: flex;
+  flex-wrap: wrap;
+}
+.view-layout > div {
+  flex-grow: 1;
+}
+</style>

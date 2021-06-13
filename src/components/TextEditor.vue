@@ -49,7 +49,7 @@ export default {
     toolbar: {
       type: [String, Array],
       default:
-        "bold italic underline strikethrough | fontsizeselect | formatselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent blockquote | undo redo | removeformat | fullscreen preview",
+        "bold italic underline strikethrough | formatselect | forecolor backcolor",
     },
   },
   data() {

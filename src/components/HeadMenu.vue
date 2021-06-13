@@ -1,13 +1,14 @@
 <template>
   <div class="menu">
     <el-menu mode="horizontal" @select="handleSelect">
-      <el-menu-item v-for="menu in menus" :key="menu.index" :index="menu.index">
+      <el-menu-item v-for="menu in menus" :key="menu.index" :index="menu.index" :class="{'hidden-xs-only' : menu.hide}">
         {{ menu.title }}
       </el-menu-item>
     </el-menu>
   </div>
 </template>
 <script>
+import 'element-plus/lib/theme-chalk/display.css';
 export default {
   name: "HeadMenu",
   data() {
@@ -25,14 +26,17 @@ export default {
           {
             index: "console/profile",
             title: localStorage.getItem("user.email"),
+            hide: true,
           },
           {
             index: "console",
             title: "控制台",
+            hide: false,
           },
           {
             index: "logout",
             title: "退出登录",
+            hide: true,
           },
         ];
       } else {
