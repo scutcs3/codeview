@@ -1,6 +1,11 @@
 <template>
   <div class="view-layout">
     <base-card title="管理面板">
+      <template #header>
+        <el-button class="button" type="danger" plain @click="leaveView"
+          >结束面试</el-button
+        >
+      </template>
       <slot></slot>
     </base-card>
     <base-card title="代码面板" class="code-card">
@@ -27,6 +32,9 @@ export default {
     beforeunloadCb() {
       // 页面关闭时，关闭WebSocket连接
       this.$store.commit("wsClose");
+    },
+    leaveView() {
+      this.$router.push("/console/interviews");
     },
   },
   computed: {

@@ -6,11 +6,12 @@ import store from "./store";
 import element from "./plugins/element";
 import moment from "./plugins/moment";
 import axios from "axios";
+import { CV_API_MODE } from "./global.js";
 
 if (typeof process === "undefined") {
   // 尝试vite配置
 } else {
-  if (process.env.VUE_APP_API_MODE === "mock") {
+  if (CV_API_MODE === "mock") {
     console.log("Mock enabled!");
     require("./mock");
   }
@@ -23,7 +24,7 @@ app.use(router);
 app.use(store);
 app.mount("#app");
 axios.interceptors.request.use((config) => {
-  let token = localStorage.getItem("user.token");
+  const token = localStorage.getItem("user.token");
   if (token) {
     config.headers["Authorization"] = `Bearer ${token}`;
   }

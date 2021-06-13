@@ -2,14 +2,15 @@
   "name": "codeview",
   "version": "0.2.0",
   "private": true,
+  "description": "在线编程笔试平台",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
+    "pm2": "pm2 start ./bin/server.js --name codeview --watch",
     "start": "node ./bin/server.js",
     "test": "mocha",
-    "pm2": "pm2 start ./bin/server.js --name codeview --watch",
     "vite": "script\\vite.cmd",
     "vite:build": "vite build"
   },
@@ -40,16 +41,22 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^5.2.4",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-unit-mocha": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "babel-eslint": "^10.1.0",
     "babel-plugin-component": "^1.1.1",
@@ -62,11 +69,11 @@
     "prettier": "^2.2.1",
     "sass": "^1.34.1",
     "sass-loader": "^8.0.2",
+    "typescript": "~4.1.5",
     "vite": "^2.3.6",
     "vue-cli-plugin-element-plus": "0.0.13"
   },
   "gitHooks": {
     "pre-commit": "vue-cli-service lint"
-  },
-  "description": "在线编程笔试平台"
+  }
 }

@@ -12,7 +12,7 @@ export let CV_BUILD_TIME = new Date().toISOString();
 // test -- 使用swagger提供的远程mock：https://virtserver.swaggerhub.com/tootal/codeview/1.0.0
 // local -- 本地3000端口
 // dev -- develop分支远程接口：http://cv-api.tootal.xyz
-export let CV_API_MODE = "local";
+export let CV_API_MODE;
 export let CV_API;
 export let CV_WS_API;
 const api_maps = {
@@ -28,16 +28,20 @@ const ws_maps = {
 };
 
 if (typeof process == "undefined") {
+  console.log("Serve: Vite");
   // vite环境
   CV_API = api_maps[CV_API_MODE];
   CV_WS_API = ws_maps[CV_API_MODE];
 } else {
+  console.log("Serve: Vue CLI (Webpack)");
   // webpack环境
   CV_BUILD_NUMBER = process.env.BUILD_NUMBER || "local_test";
   CV_BUILD_ID = process.env.BUILD_ID || "";
   CV_BUILD_TIME = new Date().toISOString();
 
-  CV_API_MODE = process.env.CV_API_MODE || "dev";
+  CV_API_MODE = process.env.VUE_APP_API_MODE || "dev";
   CV_API = api_maps[CV_API_MODE];
   CV_WS_API = ws_maps[CV_API_MODE];
 }
+
+console.log("Remote API: ", CV_API, "WS: ", CV_WS_API);

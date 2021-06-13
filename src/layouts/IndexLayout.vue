@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header v-if="$route.name === 'index'">
+    <el-header v-if="$route.name !== 'viewer' && $route.name !== 'viewee'">
       <TheHead></TheHead>
     </el-header>
     <el-main>
