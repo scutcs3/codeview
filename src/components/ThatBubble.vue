@@ -61,7 +61,7 @@ export default {
 }
 
 .message .bubble {
-  max-width: 500px;
+  max-width: 400px;
   min-height: 1em;
   display: inline-block;
   vertical-align: top;

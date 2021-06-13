@@ -3,7 +3,7 @@
     <base-card title="管理面板">
       <slot></slot>
     </base-card>
-    <base-card title="代码面板">
+    <base-card title="代码面板" class="code-card">
       <CodeEditor msg="编程部分"></CodeEditor>
     </base-card>
     <base-card :title="`在线聊天（${count}）`">
@@ -56,10 +56,14 @@ export default {
 <style scoped>
 .view-layout {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
 }
+@media only screen and (max-width: 769px) {
+  .view-layout {
+    flex-wrap: wrap;
+  }
+}
 .el-card {
-  margin: 1rem;
+  margin: 0.5rem;
 }
 </style>

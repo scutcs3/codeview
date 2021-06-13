@@ -1,27 +1,18 @@
 <template>
   <div class="chat-container">
-    <div id="main-content">
-      <div id="chat-content">
-        <div v-for="item in messages" :key="item">
-          <this-bubble v-if="item.uid == uid" :input="item.input" />
-          <that-bubble v-else :uid="item.uid" :input="item.input" />
-        </div>
+    <div class="chat-content">
+      <div v-for="item in messages" :key="item">
+        <this-bubble v-if="item.uid == uid" :input="item.input" />
+        <that-bubble v-else :uid="item.uid" :input="item.input" />
       </div>
-      <div id="input-field">
-        <textarea
-          id="input"
-          style="color: gray"
-          v-model="input"
-        ></textarea>
-      </div>
-      <div id="send-msg">
-        <el-button
-          id="send-msg-btn"
-          type="primary"
-          @click="sendMsg"
-          >发送</el-button
-        >
-      </div>
+    </div>
+    <div class="input-field">
+      <el-input type="textarea" :rows="4" v-model="input"> </el-input>
+    </div>
+    <div class="send-msg">
+      <el-button id="send-msg-btn" type="primary" @click="sendMsg"
+        >发送</el-button
+      >
     </div>
   </div>
 </template>
@@ -133,45 +124,31 @@ export default {
 
 <style scoped>
 .chat-container {
+  display: flex;
+  flex-direction: column;
   background-position: left;
   background-size: cover;
   position: relative;
 }
-#input {
-  width: 10px;
-}
-#content {
-  text-align: left;
-  height: 400px;
+
+.chat-content {
+  flex-grow: 1;
+  width: 100%;
+  height: 30rem;
+  background: #f6f6f6;
+  padding-top: 1rem;
   overflow: auto;
 }
-
-#main-content {
-  background: white;
-  width: 100%;
-  margin: auto;
+.input-field {
+  min-height: 6rem;
 }
-.el-main {
-  display: block;
-  flex: 1;
-  flex-basis: auto;
-  overflow: auto;
-  box-sizing: border-box;
-  padding: 5px 20px 0;
+.input-field > textarea {
+  height: inherit;
+  width: inherit;
+  margin: 0;
+  padding: 0;
 }
-
-#chat-title {
-  height: 50px !important;
-  background: #f6f6f6;
-  text-align: center;
-  line-height: 50px;
-  font-size: 20px;
-}
-#chat-content {
-  width: 100%;
-  background: #f6f6f6;
-}
-#send-msg {
+.send-msg {
   text-align: right;
 }
 
@@ -190,119 +167,5 @@ textarea {
   cursor: text;
   outline: none;
   font-size: 20px;
-}
-.my-msg::before {
-  content: "";
-  width: 20px;
-  height: 20px;
-  background-color: inherit;
-  left: -10px;
-  position: absolute;
-  transform: rotate(45deg);
-  top: 50%;
-  margin-top: -5px;
-}
-
-.message-box {
-  overflow: hidden;
-}
-.my.message .avatar {
-  float: right;
-}
-.other {
-  margin-bottom: 16px;
-  float: left;
-  width: 100%;
-  padding-left: 20px;
-  box-sizing: border-box;
-}
-
-.my {
-  margin-bottom: 16px;
-  float: right;
-  width: 100%;
-  text-align: right;
-  padding-right: 20px;
-  box-sizing: border-box;
-}
-
-.my.message .avatar {
-  float: right;
-}
-
-.message .content {
-  overflow: hidden;
-}
-
-.message .content .nickname {
-  font-weight: 400;
-  padding-left: 10px;
-  font-size: 12px;
-  height: 22px;
-  line-height: 24px;
-  color: #4f4f4f;
-  width: 350px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-wrap: normal;
-}
-
-.message .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 2px;
-  float: left;
-  cursor: pointer;
-}
-
-.my.message .bubble {
-  background-color: #b2e281;
-}
-.message .bubble {
-  max-width: 500px;
-  min-height: 1em;
-  display: inline-block;
-  vertical-align: top;
-  position: relative;
-  text-align: left;
-  font-size: 14px;
-  border-radius: 3px;
-  margin: 0 10px;
-  background-color: #fff;
-}
-
-.message .bubble img {
-  display: inline-block;
-  cursor: pointer;
-  max-width: 350px;
-  max-height: 240px;
-}
-
-.other .bubble:before {
-  position: absolute;
-  top: 14px;
-  left: -10px;
-  border: 6px solid transparent;
-  content: " ";
-  border-right-color: #fff;
-  border-right-width: 4px;
-}
-
-.my .bubble:before {
-  position: absolute;
-  top: 14px;
-  right: -10px;
-  border: 6px solid transparent;
-  content: " ";
-  border-left-color: #b2e281;
-  border-left-width: 4px;
-}
-
-.bubble_cont {
-  word-wrap: break-word;
-  word-break: break-all;
-  min-height: 25px;
-  padding: 9px 13px;
 }
 </style>

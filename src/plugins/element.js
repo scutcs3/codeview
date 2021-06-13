@@ -25,6 +25,7 @@ import {
   ElPagination,
   ElImage,
   ElCard,
+  ElSwitch,
   ElTimeline,
   ElTimelineItem,
   ElDivider,
@@ -66,6 +67,7 @@ export default (app) => {
   app.use(ElPagination);
   app.use(ElImage);
   app.use(ElCard);
+  app.use(ElSwitch);
   app.use(ElTimeline);
   app.use(ElTimelineItem);
   app.use(ElDivider);

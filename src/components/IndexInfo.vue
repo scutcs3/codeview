@@ -7,10 +7,7 @@
       :class="{ reverse: index % 2 === 1 }"
     >
       <div class="intro-item">
-        <el-image
-          :src="intro.icon"
-          class="intro-icon"
-        ></el-image>
+        <el-image :src="intro.icon" class="intro-icon"></el-image>
         <div class="intro-body">
           <h3 class="intro-title">{{ intro.title }}</h3>
           <div class="intro-content">{{ intro.content }}</div>

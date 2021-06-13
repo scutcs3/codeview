@@ -1,14 +1,19 @@
 <template>
   <div class="menu">
     <el-menu mode="horizontal" @select="handleSelect">
-      <el-menu-item v-for="menu in menus" :key="menu.index" :index="menu.index" :class="{'hidden-xs-only' : menu.hide}">
+      <el-menu-item
+        v-for="menu in menus"
+        :key="menu.index"
+        :index="menu.index"
+        :class="{ 'hidden-xs-only': menu.hide }"
+      >
         {{ menu.title }}
       </el-menu-item>
     </el-menu>
   </div>
 </template>
 <script>
-import 'element-plus/lib/theme-chalk/display.css';
+import "element-plus/lib/theme-chalk/display.css";
 export default {
   name: "HeadMenu",
   data() {
@@ -44,10 +49,12 @@ export default {
           {
             index: "login",
             title: "登录",
+            hide: false,
           },
           {
             index: "register",
             title: "注册",
+            hide: true,
           },
         ];
       }

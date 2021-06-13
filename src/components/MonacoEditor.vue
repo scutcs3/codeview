@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="container"
-    class="monaco-editor"
-    :style="`height: ${height}px; width: ${width}px`"
-  ></div>
+  <div ref="container" class="monaco-editor"></div>
 </template>
 
 <script>
@@ -18,14 +14,6 @@ export default {
         return {};
       },
     },
-    height: {
-      type: Number,
-      default: 200,
-    },
-    width: {
-      type: Number,
-      default: 300,
-    }
   },
   data() {
     return {
@@ -59,6 +47,7 @@ export default {
   },
   mounted() {
     this.init();
+    this.monacoEditor.layout();
     this.timer = window.setInterval(() => {
       setTimeout(this.detectContent(), 0);
     }, 500);
@@ -98,3 +87,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.monaco-editor {
+  min-width: 30rem;
+  min-height: 30rem;
+}
+</style>
