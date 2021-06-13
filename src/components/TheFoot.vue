@@ -20,11 +20,7 @@
 </template>
 <script>
 import "element-plus/lib/theme-chalk/display.css";
-import {
-  CV_BUILD_NUMBER,
-  CV_BUILD_ID,
-  CV_BUILD_TIME,
-} from "../global";
+import { CV_BUILD_NUMBER, CV_BUILD_ID, CV_BUILD_TIME } from "../global";
 import FootLink from "./FootLink.vue";
 export default {
   name: "TheFoot",
