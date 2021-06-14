@@ -1,30 +1,30 @@
 import axios from "axios";
-import { baseUrl, Handler } from "./global";
+import { Handler } from "./global";
 
-export function getProblems(data) {
+export function getProblems(data: any) {
   return new Handler(
-    axios.get(baseUrl + "/problems", {
+    axios.get("/problems", {
       params: data,
     })
   );
 }
 
-export function getProblem(data) {
+export function getProblem(data: any) {
   return new Handler(
-    axios.get(baseUrl + "/problems", {
+    axios.get("/problems", {
       params: data,
     })
   );
 }
 
-export function addProblem(data) {
-  return new Handler(axios.post(baseUrl + "/problems", data));
+export function addProblem(data: any) {
+  return new Handler(axios.post("/problems", data));
 }
 
-export function removeProblem(data) {
-  return new Handler(axios.delete(baseUrl + "/problems", data));
+export function removeProblem(data: any) {
+  return new Handler(axios.delete("/problems", data));
 }
 
-export function modifyProblem(data) {
-  return new Handler(axios.patch(baseUrl + "/problems", data));
+export function modifyProblem(data: any) {
+  return new Handler(axios.patch("/problems", data));
 }
