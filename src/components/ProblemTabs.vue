@@ -5,7 +5,7 @@
       :label="problem.title"
       :key="problem.id"
     >
-    <div v-html="problem.content"></div>
+      <div v-html="problem.content"></div>
     </el-tab-pane>
   </el-tabs>
 </template>
