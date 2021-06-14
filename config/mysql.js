@@ -27,11 +27,11 @@ try {
   console.log("未检测到本地配置，使用默认数据库配置！");
 }
 
-var connection;
+var conn;
 var isConnect = false;
 
 if (!isConnect) {
-  connection = mysql.createConnection({
+  let connection = mysql.createConnection({
     //创建mysql实例
     host: "127.0.0.1",
     port: "3306",
@@ -42,12 +42,14 @@ if (!isConnect) {
   // connect test
   connection.connect(function (err) {
     if (err) {
-      console.error("数据库连接失败: " + err.stack);
-      return;
+      console.error("MySQL连接失败，改用SQLite");
+      conn = require("./sqlite");
+    } else {
+      console.log("MySQL连接成功，id = " + connection.threadId);
+      conn = connection;
     }
-    console.log("数据库连接成功，id = " + connection.threadId);
   });
 }
 isConnect = true;
 
-module.exports = connection;
+module.exports = conn;
