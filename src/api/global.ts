@@ -5,7 +5,7 @@ export class Handler {
   }
   handle = (callback: any) => {
     try {
-      type ParamsType = { status: any, headers: any, data: any };
+      type ParamsType = { status: any; headers: any; data: any };
       this.res
         .then(function ({ status, headers, data }: ParamsType) {
           if (data.data) callback[status](data.data, headers);

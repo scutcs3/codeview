@@ -30,7 +30,9 @@ const ws_maps: any = {
 if (typeof process == "undefined") {
   // vite环境
   console.log("Serve: Vite");
-  CV_API_MODE = import.meta.env.VITE_API_MODE as string ?? "dev";
+  // 暂时去除避免webpack警告
+  // CV_API_MODE = (import.meta.env.VITE_API_MODE as string) ?? "dev";
+  CV_API_MODE = "dev";
   CV_API = api_maps[CV_API_MODE];
   CV_WS_API = ws_maps[CV_API_MODE];
 } else {

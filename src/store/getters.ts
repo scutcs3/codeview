@@ -1,13 +1,13 @@
 const getters = {
-  wsChatMsg(state) {
-    return state.wsMessage.filter((msg) => msg.type === "chat");
+  wsChatMsg(state: any) {
+    return state.wsMessage.filter((msg: any) => msg.type === "chat");
   },
-  wsCodeMsg(state) {
-    return state.wsMessage.filter((msg) => msg.type === "code");
+  wsCodeMsg(state: any) {
+    return state.wsMessage.filter((msg: any) => msg.type === "code");
   },
   //当前在线人数
-  wsCount(state) {
-    const infoMsg = state.wsMessage.filter((msg) => {
+  wsCount(state: any) {
+    const infoMsg = state.wsMessage.filter((msg: any) => {
       return msg.type === "open" || msg.type === "close";
     });
     const len = infoMsg.length;

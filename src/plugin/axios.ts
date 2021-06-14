@@ -2,11 +2,7 @@ import { CV_API } from "@/global";
 import { App } from "@vue/runtime-core";
 import axios from "axios";
 
-
-
 axios.defaults.baseURL = CV_API;
-
-console.log(CV_API);
 
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("user.token");
