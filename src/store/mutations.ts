@@ -1,19 +1,19 @@
 import { CV_WS_API } from "../global";
 
 const mutations = {
-  login(state, payload) {
+  login(state: any, payload: any) {
     state.isLogin = true;
     localStorage.setItem("user.token", payload.token);
     localStorage.setItem("user.id", payload.id);
     localStorage.setItem("user.email", payload.email);
   },
-  logout(state) {
+  logout(state: any) {
     state.isLogin = false;
     localStorage.removeItem("user.token");
     localStorage.removeItem("user.id");
     localStorage.removeItem("user.email");
   },
-  wsOpen(state, payload) {
+  wsOpen(state: any, payload: any) {
     if (!CV_WS_API) return;
     if (state.ws) {
       state.ws.close();
@@ -31,11 +31,11 @@ const mutations = {
         })
       );
     };
-    state.ws.onclose = function (e) {
+    state.ws.onclose = function (e: any) {
       state.wsMessage = [];
       console.log("WebSocket 连接关闭", e);
     };
-    state.ws.onmessage = function (event) {
+    state.ws.onmessage = function (event: any) {
       // 不打印自己发出去的消息
       const data = JSON.parse(event.data);
       if (data.uid !== localStorage.getItem("user.id")) {
@@ -44,14 +44,14 @@ const mutations = {
       state.wsMessage.push(data);
     };
   },
-  wsSend(state, payload) {
+  wsSend(state: any, payload: any) {
     if (!CV_WS_API) return;
     payload.interviewID = state.wsId; //自动添加面试ID
     payload = JSON.stringify(payload);
     console.log("WebSocket 发送数据: ", payload);
     state.ws.send(payload);
   },
-  wsClose(state) {
+  wsClose(state: any) {
     if (!CV_WS_API) return;
     if (state.ws) {
       state.ws.send(

@@ -1,17 +1,16 @@
 <template>
   <view-layout>
-    <manage-module></manage-module>
+    <manage-panel></manage-panel>
   </view-layout>
 </template>
 <script>
-import ManageModule from "../components/ManageModule.vue";
+import ManagePanel from "../components/ManagePanel.vue";
 import ViewLayout from "../layouts/ViewLayout.vue";
 export default {
   name: "ViewrPage",
   components: {
     ViewLayout,
-    ManageModule,
+    ManagePanel,
   },
 };
 </script>
-<style scoped></style>
