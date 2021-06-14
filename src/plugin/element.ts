@@ -25,6 +25,9 @@ import {
   ElPagination,
   ElImage,
   ElCard,
+  ElSwitch,
+  ElTabs,
+  ElTabPane,
   ElTimeline,
   ElTimelineItem,
   ElDivider,
@@ -38,8 +41,9 @@ import {
 import "element-plus/lib/theme-chalk/index.css";
 import lang from "element-plus/lib/locale/lang/zh-cn";
 import locale from "element-plus/lib/locale";
+import { App } from "@vue/runtime-dom";
 
-export default (app) => {
+export default (app: App) => {
   locale.use(lang);
   app.use(ElContainer);
   app.use(ElHeader);
@@ -47,10 +51,12 @@ export default (app) => {
   app.use(ElAside);
   app.use(ElMain);
   app.use(ElSelect);
+  app.use(ElTabs);
   app.use(ElOption);
   app.use(ElButton);
   app.use(ElForm);
   app.use(ElInput);
+  app.use(ElTabPane);
   app.use(ElLink);
   app.use(ElFormItem);
   app.use(ElRow);
@@ -66,6 +72,7 @@ export default (app) => {
   app.use(ElPagination);
   app.use(ElImage);
   app.use(ElCard);
+  app.use(ElSwitch);
   app.use(ElTimeline);
   app.use(ElTimelineItem);
   app.use(ElDivider);

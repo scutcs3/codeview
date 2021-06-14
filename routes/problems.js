@@ -28,8 +28,15 @@ var hashes = new hashids("codeview salt", 16);
 
 function getProblemDetail(field, param, page, per_page, word, res, req) {
   var sql;
-  sql = `SELECT COUNT(*) FROM problem`;
-  var totalRecord = 0;
+  if (!word && field == "iid") {
+    sql = `SELECT * FROM interview_problem where interview_id = ${param} `;
+  } else if (!word && field == "pid") {
+    sql = `SELECT * FROM problem where id = ${param} `;
+  } else if (word) {
+    sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%' `;
+  } else {
+    sql = `SELECT * FROM problem `;
+  }
   connection.query(sql, function (err, result) {
     if (err) {
       console.log("[SELECT ERROR]:", err.message);
@@ -37,21 +44,13 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
         data: "[SELECT ERROR]:" + err.message,
       });
     } else {
-      totalRecord = result[0]["COUNT(*)"];
+      var totalRecord = result.length;
+
       page = page ? parseInt(page) : 1;
       per_page = per_page ? parseInt(per_page) : 30;
-      var totalPageNum = Math.ceil((totalRecord + per_page - 1) / per_page);
       var preSize = (page - 1) * per_page;
 
-      if (!word && field == "iid") {
-        sql = `SELECT * FROM interview_problem where interview_id = ${param} limit ${preSize},${per_page}`;
-      } else if (!word && field == "pid") {
-        sql = `SELECT * FROM problem where id = ${param} limit ${preSize},${per_page}`;
-      } else if (word) {
-        sql = `SELECT * FROM problem WHERE content LIKE '%${word}%' OR title LIKE '%${word}%' limit ${preSize},${per_page}`;
-      } else {
-        sql = `SELECT * FROM problem limit ${preSize},${per_page}`;
-      }
+      sql += `limit ${preSize},${per_page}`;
       connection.query(sql, function (err, result) {
         if (err) {
           console.log("[SELECT ERROR]:", err.message);
@@ -59,30 +58,21 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
             data: "[SELECT ERROR]:" + err.message,
           });
         } else {
-          if (result.length > 0) {
-            var results = [];
-            let formatDate = function (dt) {
-              if (dt) {
-                return moment(dt, moment.ISO_8601).format(
-                  "YYYY-MM-DD HH:mm:ss"
-                );
-              } else return dt;
-            };
-            for (var i = 0; i < result.length; i++) {
-              result[i].created_at = formatDate(result[i].created_at);
-              result[i].updated_at = formatDate(result[i].updated_at);
-              results.push(result[i]);
-            }
-            res.setHeader("Total-Count", totalRecord);
-
-            res.json({
-              data: results,
-            });
-          } else {
-            res.status(400).json({
-              data: "参数错误",
-            });
+          let results = [];
+          let formatDate = function (dt) {
+            if (dt) {
+              return moment(dt, moment.ISO_8601).format("YYYY-MM-DD HH:mm:ss");
+            } else return dt;
+          };
+          for (var i = 0; i < result.length; i++) {
+            result[i].created_at = formatDate(result[i].created_at);
+            result[i].updated_at = formatDate(result[i].updated_at);
+            results.push(result[i]);
           }
+          res.setHeader("Total-Count", totalRecord);
+          res.json({
+            data: results,
+          });
         }
       });
     }
@@ -95,16 +85,9 @@ function getProblemDetail(field, param, page, per_page, word, res, req) {
  */
 router.get("/", function (req, res, next) {
   var query = req.query;
+  var iid = hashes.decode(query.iid)[0];
   if (query.iid) {
-    getProblemDetail(
-      "iid",
-      query.iid,
-      query.page,
-      query.per_page,
-      null,
-      res,
-      req
-    );
+    getProblemDetail("iid", iid, query.page, query.per_page, null, res, req);
   } else if (query.pid) {
     getProblemDetail(
       "pid",
@@ -181,7 +164,7 @@ router.post("/", function (req, res, next) {
             });
           }
           if (result.length > 0) {
-            sql = `INSERT INTO interview_problem (interview_id,problem_id) VALUES (${req.body.iid},${req.body.pid})`;
+            sql = `INSERT INTO interview_problem (interview_id,problem_id) VALUES (${iid},${req.body.pid})`;
             connection.query(sql, function (err, result) {
               if (err) {
                 console.log("[INSERT ERROR]:", err.message);

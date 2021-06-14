@@ -1,17 +1,17 @@
-export const baseUrl = process.env.VUE_APP_API;
-
 export class Handler {
-  constructor(res) {
+  res: any;
+  constructor(res: any) {
     this.res = res;
   }
-  handle = (callback) => {
+  handle = (callback: any) => {
     try {
+      type ParamsType = { status: any; headers: any; data: any };
       this.res
-        .then(function ({ status, headers, data }) {
+        .then(function ({ status, headers, data }: ParamsType) {
           if (data.data) callback[status](data.data, headers);
           else callback[status](data, headers);
         })
-        .catch(function (error) {
+        .catch(function (error: any) {
           if (error.response) {
             try {
               callback[error.response.status]();

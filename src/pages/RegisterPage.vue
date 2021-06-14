@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import { register } from "../api/user.js";
+import { register } from "../api/user";
 export default {
   name: "Register",
   data() {

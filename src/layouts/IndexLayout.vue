@@ -1,12 +1,12 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header v-if="$route.name !== 'viewer' && $route.name !== 'viewee'">
       <TheHead></TheHead>
     </el-header>
     <el-main>
       <slot></slot>
     </el-main>
-    <el-footer>
+    <el-footer v-if="$route.name === 'index'">
       <TheFoot></TheFoot>
     </el-footer>
   </el-container>

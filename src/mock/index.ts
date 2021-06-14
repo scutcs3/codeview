@@ -1,15 +1,9 @@
-const Mock = require("mockjs");
-const Random = Mock.Random;
-const { baseUrl } = require("../api/global.js");
+import { CV_API } from "@/global";
+import mockjs from "mockjs";
+const Random = mockjs.Random;
 
-var originMock = Mock.mock;
-
-Mock.mock = function (url, callback) {
-  return originMock(baseUrl + url, callback);
-};
-
-Mock.mock("/problems", () => {
-  let list = [];
+mockjs.mock(CV_API + "/problems", () => {
+  const list = [];
   for (let i = 0; i < 30; i++) {
     list.push({
       title: Random.ctitle(),

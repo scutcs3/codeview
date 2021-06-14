@@ -1,31 +1,50 @@
 <template>
-  <ViewLayout>
-    <el-row>
-      <el-col :span="6">
-        <BaseProblem></BaseProblem>
-      </el-col>
-      <el-col :span="12">
-        <CodeEditor msg="编程部分"></CodeEditor>
-      </el-col>
-      <el-col :span="6">
-        <BaseComment></BaseComment>
-      </el-col>
-    </el-row>
-  </ViewLayout>
+  <view-layout>
+    <problem-tabs :problems="problems"></problem-tabs>
+  </view-layout>
 </template>
 <script>
-import CodeEditor from "../components/CodeEditor.vue";
-import BaseProblem from "../components/BaseProblem.vue";
-import BaseComment from "../components/BaseComment.vue";
 import ViewLayout from "../layouts/ViewLayout.vue";
-
+import { getProblems } from "../api/problem";
+import ProblemTabs from "../components/ProblemTabs.vue";
 export default {
   name: "VieweePage",
+  data() {
+    return {
+      problems: [],
+    };
+  },
   components: {
     ViewLayout,
-    CodeEditor,
-    BaseProblem,
-    BaseComment,
+    ProblemTabs,
+  },
+  methods: {
+    showProblem(pid) {
+      getProblems({
+        pid,
+      }).handle({
+        200: (data) => {
+          console.log(data);
+          this.problems.push(data[0]);
+        },
+        404: () => console.warn("获取题目失败"),
+      });
+    },
+  },
+  activated() {
+    // 获取面试题目
+    this.problems = [];
+    getProblems({
+      iid: this.$route.params.id,
+    }).handle({
+      200: (data) => {
+        if (data.length === 0) console.log("还没有出题");
+        for (let problem of data) {
+          this.showProblem(problem.problem_id);
+        }
+      },
+      404: () => console.log("请求失败"),
+    });
   },
 };
 </script>

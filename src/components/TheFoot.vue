@@ -1,6 +1,6 @@
 <template>
   <div class="foot shadow-top">
-    <div class="links">
+    <div class="links hidden-xs-only">
       <FootLink
         v-for="(cur_links, cur_name) in all_links"
         :key="cur_name"
@@ -19,6 +19,8 @@
   </div>
 </template>
 <script>
+import "element-plus/lib/theme-chalk/display.css";
+import { CV_BUILD_NUMBER, CV_BUILD_ID, CV_BUILD_TIME } from "../global";
 import FootLink from "./FootLink.vue";
 export default {
   name: "TheFoot",
@@ -27,9 +29,9 @@ export default {
   },
   data() {
     return {
-      build_number: process.env.VUE_APP_BUILD_NUMBER,
-      build_id: process.env.VUE_APP_BUILD_ID,
-      build_time: process.env.VUE_APP_BUILD_TIME,
+      build_number: CV_BUILD_NUMBER,
+      build_id: CV_BUILD_ID,
+      build_time: CV_BUILD_TIME,
       all_links: {
         项目链接: [
           { title: "代码仓库", href: "https://github.com/scutcs3/codeview" },

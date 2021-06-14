@@ -1,38 +1,25 @@
 <template>
   <div class="problem">
-    <!--class="problem"-->
-    <h3 class="problem-title">{{ id }} {{ title }}</h3>
-    <div class="problem-content" v-html="content"></div>
-
-    <!-- <el-collapse>
-      <p>示例</p>
-      <p>???</p>
-    </el-collapse>
-
-    <div><button @click="show = !show">提示</button></div>
-    <el-collapse>
-      <div v-if="show" class="testshow">?????????</div>
-    </el-collapse> -->
+    <base-problem :pid="id" :title="title" :content="content"></base-problem>
   </div>
 </template>
 
 <script>
-import { getProblem } from "../api/problem.js";
+import BaseProblem from "../components/BaseProblem.vue";
+import { getProblem } from "../api/problem";
 
 export default {
   name: "ProblemPage",
   data() {
     return {
-      show: false,
-
       title: "",
       content: "",
-      id: "",
+      id: 0,
     };
   },
   activated() {
     const self = this;
-    const pid = self.$route.params.id;
+    const pid = parseInt(self.$route.params.id);
     this.id = pid;
     getProblem({
       pid,
@@ -44,11 +31,13 @@ export default {
       404: () => self.$message.error("获取题目数据失败！"),
     });
   },
-
   methods: {
     handleChange(val) {
       console.log(val);
     },
+  },
+  components: {
+    BaseProblem,
   },
 };
 </script>

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { login } from "../api/user.js";
+import { login } from "../api/user";
 
 export default {
   name: "Login",
