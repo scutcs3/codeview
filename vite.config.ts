@@ -5,7 +5,7 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   plugins: [vue()],
   server: {
+    host: "0.0.0.0",
     port: 8080,
-    strictPort: true, // 当端口被占用时退出，而不是持续重连
   },
 });
