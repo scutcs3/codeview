@@ -1,8 +1,8 @@
+import { CV_API } from "@/global";
 import mockjs from "mockjs";
 const Random = mockjs.Random;
-import { baseUrl } from "../api/global";
 
-mockjs.mock(baseUrl + "/problems", () => {
+mockjs.mock(CV_API + "/problems", () => {
   const list = [];
   for (let i = 0; i < 30; i++) {
     list.push({

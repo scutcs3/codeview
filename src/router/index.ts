@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import routes from "./routes";
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(),
   routes,
 });
@@ -19,4 +19,3 @@ router.beforeEach((to) => {
   }
   return true;
 });
-export default router;

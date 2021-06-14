@@ -12,17 +12,17 @@ export let CV_BUILD_TIME = new Date().toISOString();
 // test -- 使用swagger提供的远程mock：https://virtserver.swaggerhub.com/tootal/codeview/1.0.0
 // local -- 本地3000端口
 // dev -- develop分支远程接口：http://cv-api.tootal.xyz
-export let CV_API_MODE;
-export let CV_API;
-export let CV_WS_API;
-const api_maps = {
+export let CV_API_MODE: string;
+export let CV_API: string;
+export let CV_WS_API: string;
+const api_maps: any = {
   mock: "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0",
   test: "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0",
   local: "http://localhost:3000",
   dev: "http://cv-api.tootal.xyz",
 };
 
-const ws_maps = {
+const ws_maps: any = {
   local: "ws://localhost:3002",
   dev: "ws://cv-api.tootal.xyz:3002",
 };
@@ -30,13 +30,13 @@ const ws_maps = {
 if (typeof process == "undefined") {
   // vite环境
   console.log("Serve: Vite");
-  CV_API_MODE = import.meta.env.VITE_API_MODE || "dev";
+  CV_API_MODE = import.meta.env.VITE_API_MODE as string ?? "dev";
   CV_API = api_maps[CV_API_MODE];
   CV_WS_API = ws_maps[CV_API_MODE];
 } else {
   // webpack环境
   console.log("Serve: Vue CLI (Webpack)");
-  CV_BUILD_NUMBER = process.env.BUILD_NUMBER || "local_test";
+  CV_BUILD_NUMBER = process.env.BUILD_NUMBER ?? "local_test";
   CV_BUILD_ID = process.env.BUILD_ID || "";
   CV_BUILD_TIME = new Date().toISOString();
 

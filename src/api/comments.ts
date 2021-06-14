@@ -1,14 +1,14 @@
 import axios from "axios";
-import { baseUrl, Handler } from "./global";
+import { Handler } from "./global";
 
-export function getComments(data) {
+export function getComments(data: any) {
   return new Handler(
-    axios.get(baseUrl + "/comments", {
+    axios.get("/comments", {
       params: data,
     })
   );
 }
 
-export function addComment(data) {
-  return new Handler(axios.post(baseUrl + "/comments", data));
+export function addComment(data: any) {
+  return new Handler(axios.post("/comments", data));
 }
