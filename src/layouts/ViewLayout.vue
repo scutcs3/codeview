@@ -1,37 +1,33 @@
 <template>
   <div class="view-layout">
-    <slot></slot>
-    <base-card title="代码面板" class="code-card">
-      <code-editor></code-editor>
-    </base-card>
-    <base-card :title="`在线聊天（${count}）`">
-      <base-comment></base-comment>
-    </base-card>
+    <div class="view-item">
+      <slot></slot>
+    </div>
+    <div class="view-item">
+      <code-panel></code-panel>
+    </div>
+    <div class="view-item">
+      <comment-panel></comment-panel>
+    </div>
   </div>
 </template>
 <script>
-import CodeEditor from "../components/CodeEditor.vue";
-import BaseComment from "../components/BaseComment.vue";
-import BaseCard from "../components/BaseCard.vue";
+import CodePanel from "../components/CodePanel.vue";
+import CommentPanel from "../components/CommentPanel.vue";
+
 export default {
   name: "ViewLayout",
   props: {
     type: String,
   },
   components: {
-    CodeEditor,
-    BaseComment,
-    BaseCard,
+    CodePanel,
+    CommentPanel,
   },
   methods: {
     beforeunloadCb() {
       // 页面关闭时，关闭WebSocket连接
       this.$store.commit("wsClose");
-    },
-  },
-  computed: {
-    count() {
-      return this.$store.getters.wsCount;
     },
   },
   mounted() {
@@ -58,12 +54,17 @@ export default {
   display: flex;
   justify-content: center;
 }
+.view-item {
+  flex-basis: 0;
+  flex-grow: 1;
+}
 @media only screen and (max-width: 769px) {
   .view-layout {
     flex-wrap: wrap;
   }
-}
-.el-card {
-  margin: 0.5rem;
+  .view-item {
+    flex-basis: auto;
+    flex-grow: 0;
+  }
 }
 </style>
