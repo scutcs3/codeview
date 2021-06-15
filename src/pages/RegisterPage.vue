@@ -57,18 +57,13 @@ import { register } from "../api/user";
 export default {
   name: "Register",
   data() {
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.registerParam.password) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
       loading: false,
-      registerParam: {},
+      registerParam: {
+        email: "",
+        password: "",
+        r_password: "",
+      },
       rules: {
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
@@ -76,7 +71,7 @@ export default {
         ],
         r_password: [
           { required: true, message: "请输入确认密码", trigger: "blur" },
-          { validator: validatePass, trigger: "blur" },
+          { validator: this.validatePass, trigger: "blur" },
         ],
         email: [
           { required: true, message: "请输入邮箱", trigger: "blur" },
@@ -86,10 +81,24 @@ export default {
     };
   },
   methods: {
+    validatePass(rule, value, callback) {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.registerParam.password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    },
     toLogin() {
       this.$router.push("/login");
     },
     submitRegisterForm() {
+      let bOk = true;
+      this.validatePass(null, this.registerParam.r_password, (err) => {
+        if (err) bOk = false;
+      });
+      if (!bOk) return;
       var errorHandle = (msg) => {
         this.$message.error(msg);
         this.loading = false;
