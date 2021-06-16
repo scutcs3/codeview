@@ -26,7 +26,8 @@ export default {
   flex-direction: column;
 }
 ::v-deep(.el-card__header) {
-  flex: 0 0 60px;
+  height: 65px !important;
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -37,7 +37,10 @@
         </div> -->
       </div>
     </template>
-    <code-editor :opts="opts"></code-editor>
+    <div class="panel-body">
+      <code-editor :opts="opts" class="panel-editor"></code-editor>
+      <code-worker></code-worker>
+    </div>
   </base-card>
 </template>
 
@@ -45,6 +48,8 @@
 import { defineComponent } from "@vue/runtime-core";
 import BaseCard from "./BaseCard.vue";
 import CodeEditor from "./CodeEditor.vue";
+import CodeWorker from "./CodeWorker.vue";
+
 export default defineComponent({
   name: "CodePanel",
   data() {
@@ -80,6 +85,7 @@ export default defineComponent({
   components: {
     BaseCard,
     CodeEditor,
+    CodeWorker,
   },
   methods: {
     changeLanguage(val: string) {
@@ -91,3 +97,14 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.panel-body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.panel-editor {
+  flex: 1 1 auto;
+}
+</style>
