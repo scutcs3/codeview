@@ -51,7 +51,7 @@ export default {
         language: "zh_CN",
         skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide`,
         convert_urls: false,
-        height: 500,
+        height: "100%",
         plugins: this.plugins,
         toolbar: this.toolbar,
         statusbar: true,

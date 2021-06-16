@@ -124,6 +124,7 @@ export default {
 
 <style scoped>
 .chat-container {
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-position: left;
@@ -134,7 +135,6 @@ export default {
 .chat-content {
   flex-grow: 1;
   width: 100%;
-  height: 30rem;
   background: #f6f6f6;
   padding-top: 1rem;
   overflow: auto;

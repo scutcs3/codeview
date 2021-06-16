@@ -57,6 +57,8 @@ export default {
 .view-item {
   flex-basis: 0;
   flex-grow: 1;
+  height: 100vh;
+  margin: 2rem;
 }
 @media only screen and (max-width: 769px) {
   .view-layout {

@@ -1,19 +1,28 @@
 <template>
-  <base-card title="管理面板">
+  <base-card title="管理面板" class="basecard">
     <template #header>
       <el-button class="button" type="danger" plain @click="leaveView"
         >结束面试</el-button
       >
     </template>
-    <el-autocomplete
-      v-model="state"
-      :fetch-suggestions="querySearchAsync"
-      placeholder="请输入内容"
-      @select="handleSelect"
-    ></el-autocomplete>
-    <el-button @click="father_add">添加题目</el-button>
-    <TextEditor ref="editor" v-model:content="middle_content"> </TextEditor>
-    <el-button @click="printf">发送</el-button>
+    <div class="container">
+      <div class="search-area">
+        <el-autocomplete
+          v-model="state"
+          :fetch-suggestions="querySearchAsync"
+          placeholder="请输入内容"
+          @select="handleSelect"
+        ></el-autocomplete>
+        <el-button @click="father_add">添加题目</el-button>
+      </div>
+      <TextEditor
+        ref="editor"
+        v-model:content="middle_content"
+        class="texteditor"
+      >
+      </TextEditor>
+      <el-button @click="printf">发送</el-button>
+    </div>
   </base-card>
 </template>
 <script>
@@ -100,3 +109,21 @@ export default {
   },
 };
 </script>
+<style scoped>
+.basecard {
+  height: 100%;
+}
+
+/* 深度作用选择器 */
+.basecard >>> .el-card__body {
+  height: 100%;
+}
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.texteditor {
+  flex-grow: 1;
+}
+</style>
