@@ -23,6 +23,9 @@ const mutations = {
     state.ws.onopen = function () {
       console.log("WebSocket 连接建立");
       state.wsId = payload.id;
+      if (state.ws.readyState != WebSocket.OPEN) {
+        return;
+      }
       state.ws.send(
         JSON.stringify({
           type: "open",
@@ -48,6 +51,9 @@ const mutations = {
     if (!CV_WS_API) return;
     payload.interviewID = state.wsId; //自动添加面试ID
     payload = JSON.stringify(payload);
+    if (state.ws.readyState != WebSocket.OPEN) {
+      return;
+    }
     console.log("WebSocket 发送数据: ", payload);
     state.ws.send(payload);
   },

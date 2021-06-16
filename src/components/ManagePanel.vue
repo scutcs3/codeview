@@ -110,16 +110,7 @@ export default {
 };
 </script>
 <style scoped>
-.basecard {
-  height: 100%;
-}
-
-/* 深度作用选择器 */
-.basecard >>> .el-card__body {
-  height: 100%;
-}
 .container {
-  height: 100%;
   display: flex;
   flex-direction: column;
 }

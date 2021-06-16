@@ -1,5 +1,5 @@
 <template>
-  <base-card :title="`在线聊天（${count}）`" class="basecard">
+  <base-card :title="`在线聊天（${count}）`">
     <base-comment></base-comment>
   </base-card>
 </template>
@@ -21,14 +21,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-.basecard {
-  height: 100%;
-}
-
-/* 深度作用选择器 */
-/* ::v-deep(.el-card__body) { */
-.basecard >>> .el-card__body {
-  height: 100%;
-}
-</style>

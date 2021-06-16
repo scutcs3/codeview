@@ -124,6 +124,7 @@ export default {
 
 <style scoped>
 .chat-container {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;

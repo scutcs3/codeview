@@ -1,18 +1,24 @@
 <template>
   <div class="view-layout">
-    <div class="view-item">
-      <slot></slot>
+    <div class="view-item-wrapper">
+      <div class="view-item">
+        <!-- <slot></slot> -->
+      </div>
     </div>
-    <div class="view-item">
-      <code-panel></code-panel>
+    <div class="view-item-wrapper">
+      <div class="view-item">
+        <!-- <code-panel></code-panel> -->
+      </div>
     </div>
-    <div class="view-item">
-      <comment-panel></comment-panel>
+    <div class="view-item-wrapper">
+      <div class="view-item">
+        <comment-panel></comment-panel>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import CodePanel from "../components/CodePanel.vue";
+// import CodePanel from "../components/CodePanel.vue";
 import CommentPanel from "../components/CommentPanel.vue";
 
 export default {
@@ -21,7 +27,7 @@ export default {
     type: String,
   },
   components: {
-    CodePanel,
+    // CodePanel,
     CommentPanel,
   },
   methods: {
@@ -54,17 +60,24 @@ export default {
   display: flex;
   justify-content: center;
 }
-.view-item {
+.view-item-wrapper {
   flex-basis: 0;
   flex-grow: 1;
   height: 100vh;
-  margin: 2rem;
+  min-height: 640px;
+  min-width: 256px;
+  padding: 0.5rem;
+}
+.view-item {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
 }
 @media only screen and (max-width: 769px) {
   .view-layout {
     flex-wrap: wrap;
   }
-  .view-item {
+  .view-item-wrapper {
     flex-basis: auto;
     flex-grow: 0;
   }
