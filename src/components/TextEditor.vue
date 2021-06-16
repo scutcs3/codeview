@@ -72,3 +72,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.tinymce-box textarea {
+  width: 100%;
+  height: 100%;
+}
+</style>

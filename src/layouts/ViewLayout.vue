@@ -2,12 +2,12 @@
   <div class="view-layout">
     <div class="view-item-wrapper">
       <div class="view-item">
-        <!-- <slot></slot> -->
+        <slot></slot>
       </div>
     </div>
-    <div class="view-item-wrapper">
+    <div class="view-item-wrapper code-panel">
       <div class="view-item">
-        <!-- <code-panel></code-panel> -->
+        <code-panel></code-panel>
       </div>
     </div>
     <div class="view-item-wrapper">
@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-// import CodePanel from "../components/CodePanel.vue";
+import CodePanel from "../components/CodePanel.vue";
 import CommentPanel from "../components/CommentPanel.vue";
 
 export default {
@@ -27,7 +27,7 @@ export default {
     type: String,
   },
   components: {
-    // CodePanel,
+    CodePanel,
     CommentPanel,
   },
   methods: {
@@ -61,6 +61,7 @@ export default {
   justify-content: center;
 }
 .view-item-wrapper {
+  order: 10;
   flex-basis: 0;
   flex-grow: 1;
   height: 100vh;
@@ -71,13 +72,16 @@ export default {
 .view-item {
   width: 100%;
   height: 100%;
-  border: 1px solid black;
 }
 @media only screen and (max-width: 769px) {
   .view-layout {
     flex-wrap: wrap;
   }
+  .code-panel {
+    order: 9;
+  }
   .view-item-wrapper {
+    width: 100vw;
     flex-basis: auto;
     flex-grow: 0;
   }

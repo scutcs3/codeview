@@ -1,5 +1,4 @@
 <template>
-  <!-- 在el-card的基础上确保填满父元素 -->
   <el-card :body-style="{ padding: '0' }">
     <template #header>
       <h3 style="display: inline">{{ title }}</h3>

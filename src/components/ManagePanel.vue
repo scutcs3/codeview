@@ -111,8 +111,17 @@ export default {
 </script>
 <style scoped>
 .container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+}
+.search-area {
+  display: flex;
+}
+
+::v-deep(.el-autocomplete) {
+  flex-grow: 1;
 }
 .texteditor {
   flex-grow: 1;

@@ -89,7 +89,7 @@ export default {
 </script>
 <style scoped>
 .monaco-editor {
-  min-width: 30rem;
-  min-height: 30rem;
+  width: 100%;
+  height: 100%;
 }
 </style>
