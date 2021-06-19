@@ -19,7 +19,7 @@ export default {
     },
     submitCode() {
       console.log("提交代码");
-    }
+    },
   },
   computed: {
     codeEditorVal() {
