@@ -10,10 +10,10 @@
         <el-autocomplete
           v-model="state"
           :fetch-suggestions="querySearchAsync"
-          placeholder="请输入内容"
+          placeholder="输入关键词搜索题目"
           @select="handleSelect"
         ></el-autocomplete>
-        <el-button @click="father_add">添加题目</el-button>
+        <el-button @click="addExistProblem(select_pid)">添加题目</el-button>
       </div>
       <TextEditor
         ref="editor"
@@ -21,7 +21,7 @@
         class="texteditor"
       >
       </TextEditor>
-      <el-button @click="printf">发送</el-button>
+      <el-button @click="addNewProblem">发送</el-button>
     </div>
   </base-card>
 </template>
@@ -33,6 +33,7 @@ export default {
   name: "ManagePanel",
   data() {
     return {
+      select_pid: "",
       middle_content: "",
       state: "",
       timeout: null,
@@ -58,6 +59,8 @@ export default {
         200: (data) => {
           for (let problem of data) {
             results.push({
+              title: problem.title,
+              pid: problem.id,
               value: `P${problem.id} ${problem.title}`,
             });
           }
@@ -67,25 +70,21 @@ export default {
       });
     },
     handleSelect(item) {
-      console.log(item.address);
-      // this.middle_content = item.address;
+      this.select_pid = item.pid;
     },
-    father_add() {
-      this.$refs.editor.add();
-    },
-    addProblemTo(pid) {
+    addExistProblem(pid) {
       addProblem({
         iid: this.$route.params.id,
         pid,
       }).handle({
         200: () => {
           this.$message.success("添加题目成功");
-          console.log("内部addProblem");
+          this.state = "";
         },
         404: () => this.$message.error("添加题目失败，已添加到题库中。"),
       });
     },
-    printf() {
+    addNewProblem() {
       var mynowmsg = {
         type: "add_problem",
         uid: this.uid,
@@ -99,7 +98,7 @@ export default {
       }).handle({
         200: (data) => {
           let pid = data.id;
-          this.addProblemTo(pid);
+          this.addExistProblem(pid);
         },
         404: () => {
           console.log("添加题目失败!");

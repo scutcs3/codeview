@@ -3,8 +3,8 @@
     <div class="controls">
       <div>运行结果</div>
       <div>
-        <el-button>运行代码</el-button>
-        <el-button type="primary">提交代码</el-button>
+        <el-button @click="runCode">运行代码</el-button>
+        <el-button type="primary" @click="submitCode">提交代码</el-button>
       </div>
     </div>
     <div class="terminal"></div>
@@ -13,6 +13,19 @@
 <script>
 export default {
   name: "CodeWorker",
+  methods: {
+    runCode() {
+      console.log(this.codeEditorVal);
+    },
+    submitCode() {
+      console.log("提交代码");
+    }
+  },
+  computed: {
+    codeEditorVal() {
+      return this.$store.state.codeEditor.value;
+    },
+  },
 };
 </script>
 <style scoped>

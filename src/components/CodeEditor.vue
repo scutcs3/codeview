@@ -13,26 +13,10 @@ import MonacoEditor from "./MonacoEditor.vue";
 export default {
   name: "CodeEditor",
   components: { MonacoEditor },
-  props: {
-    opts: {
-      type: Object,
-      default() {
-        return {
-          value: "",
-          readOnly: false, // 是否可编辑
-          language: "cpp", // 语言类型
-          theme: "vs", // 编辑器主题
-        };
-      },
-    },
-  },
-  data() {
-    return {
-      uid: localStorage.getItem("user.id"),
-      codestr: "", //假设这是代码
-    };
-  },
   computed: {
+    opts() {
+      return this.$store.state.codeEditor;
+    },
     wsCodeMsg() {
       return this.$store.getters.wsCodeMsg;
     },
@@ -72,13 +56,7 @@ export default {
     // 内容改变自动获取值
     changeValue(val, oldVal) {
       if (val === oldVal) return;
-      this.$store.commit("wsSend", {
-        type: "code",
-        uid: this.uid,
-        value: this.getValue(),
-        language: this.opts.language,
-        theme: this.opts.theme,
-      });
+      //dispatch updateCodeEditor
     },
   },
 };

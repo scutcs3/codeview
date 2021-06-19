@@ -11,6 +11,7 @@ import {
   ElForm,
   ElInput,
   ElLink,
+  ElPopover,
   ElFormItem,
   ElRow,
   ElCol,
@@ -59,6 +60,7 @@ export default (app: App) => {
   app.use(ElTabPane);
   app.use(ElLink);
   app.use(ElFormItem);
+  app.use(ElPopover);
   app.use(ElRow);
   app.use(ElCol);
   app.use(ElMenu);

@@ -1,16 +1,16 @@
 <template>
   <div class="view-layout">
-    <div class="view-item-wrapper">
+    <div class="view-item-wrapper panel1">
       <div class="view-item">
         <slot></slot>
       </div>
     </div>
-    <div class="view-item-wrapper code-panel">
+    <div class="view-item-wrapper panel2">
       <div class="view-item">
         <code-panel></code-panel>
       </div>
     </div>
-    <div class="view-item-wrapper">
+    <div class="view-item-wrapper panel3">
       <div class="view-item">
         <comment-panel></comment-panel>
       </div>
@@ -72,6 +72,15 @@ export default {
 .view-item {
   width: 100%;
   height: 100%;
+}
+.panel1 {
+  flex-grow: 2;
+}
+.panel2 {
+  flex-grow: 3;
+}
+.panel3 {
+  flex-grow: 2;
 }
 @media only screen and (max-width: 769px) {
   .view-layout {

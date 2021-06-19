@@ -71,6 +71,9 @@ const mutations = {
       state.ws = null;
     }
   },
+  updateCodeEditor(state: any, payload: any) {
+    Object.assign(state.codeEditor, payload);
+  },
 };
 
 export default mutations;
