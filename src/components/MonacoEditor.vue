@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
     this.init();
-    this.monacoEditor.layout();
+    // this.monacoEditor.layout();
     this.monacoEditor.onDidChangeModelContent(() => {
       let value = this.monacoEditor.getValue();
       this.$store.dispatch({
@@ -50,7 +50,7 @@ export default {
         value,
       });
     });
-    this.monacoEditor.focus();
+    // this.monacoEditor.focus();
   },
   methods: {
     init() {
