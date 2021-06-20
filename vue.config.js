@@ -7,6 +7,10 @@ module.exports = {
   },
   configureWebpack: {
     devtool: "inline-source-map",
-    plugins: [new MonacoWebpackPlugin()],
+    plugins: [
+      new MonacoWebpackPlugin({
+        languages: ["javascript", "typescript"],
+      }),
+    ],
   },
 };

@@ -9,7 +9,7 @@ export default {
   name: "MonacoEditor",
   data() {
     return {
-      timer: null,
+      monacoEditor: null,
       // 主要配置
       defaultOpts: {
         value: "", // 编辑器的值
@@ -24,30 +24,33 @@ export default {
       },
     };
   },
+  watch: {
+    "opts.language": function (newVal, oldVal) {
+      if (newVal === oldVal) return;
+      monaco.editor.setModelLanguage(this.monacoEditor.getModel(), newVal);
+    },
+    "opts.theme": function (newVal, oldVal) {
+      console.log("opts.theme changed", newVal, oldVal);
+      if (newVal === oldVal) return;
+      monaco.editor.setTheme(newVal);
+    },
+  },
   computed: {
     opts() {
       return this.$store.state.codeEditor;
-    },
-  },
-  watch: {
-    opts: {
-      handler() {
-        (this.codestr = this.getVal()),
-          this.monacoEditor.dispose(),
-          (this.monacoEditor = null);
-        this.init();
-        this.monacoEditor.setValue(this.codestr);
-      },
-      deep: true,
     },
   },
   mounted() {
     this.init();
     this.monacoEditor.layout();
     this.monacoEditor.onDidChangeModelContent(() => {
-      let newContent = this.monacoEditor.getValue();
-      console.log(newContent);
+      let value = this.monacoEditor.getValue();
+      this.$store.dispatch({
+        type: "updateCodeEditor",
+        value,
+      });
     });
+    this.monacoEditor.focus();
   },
   methods: {
     init() {

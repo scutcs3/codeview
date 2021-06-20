@@ -3,7 +3,7 @@
     <div class="choose-item">
       代码语言：
       <el-select
-        v-model="opts.language"
+        v-model="language"
         clearable
         placeholder="请选择代码语言"
         size="mini"
@@ -20,7 +20,7 @@
     <div class="choose-item">
       样式风格：
       <el-select
-        v-model="opts.theme"
+        v-model="theme"
         clearable
         placeholder="请选择样式风格"
         size="mini"
@@ -41,6 +41,8 @@ export default {
   name: "CodeSettings",
   data() {
     return {
+      language: this.$store.state.codeEditor.language,
+      theme: this.$store.state.codeEditor.theme,
       sets: {
         language: {
           cpp: "cpp",
@@ -63,9 +65,18 @@ export default {
       },
     };
   },
-  computed: {
-    opts() {
-      return this.$store.state.codeEditor;
+  watch: {
+    language(newVal, oldVal) {
+      if (newVal === oldVal) return;
+      this.$store.dispatch("updateCodeEditor", {
+        language: newVal,
+      });
+    },
+    theme(newVal, oldVal) {
+      if (newVal === oldVal) return;
+      this.$store.dispatch("updateCodeEditor", {
+        theme: newVal,
+      });
     },
   },
 };

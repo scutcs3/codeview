@@ -24,7 +24,6 @@ export default {
         pid,
       }).handle({
         200: (data) => {
-          console.log(data);
           this.problems.push(data[0]);
         },
         404: () => console.warn("获取题目失败"),
