@@ -1,11 +1,7 @@
 <template>
   <div class="monaco-container">
     <!--调用子组件-->
-    <MonacoEditor
-      ref="monaco"
-      :opts="opts"
-      @change="changeValue"
-    ></MonacoEditor>
+    <MonacoEditor ref="monaco"></MonacoEditor>
   </div>
 </template>
 <script>

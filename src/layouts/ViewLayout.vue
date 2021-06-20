@@ -33,7 +33,7 @@ export default {
   methods: {
     beforeunloadCb() {
       // 页面关闭时，关闭WebSocket连接
-      this.$store.commit("wsClose");
+      this.$store.dispatch("wsClose");
     },
   },
   mounted() {
@@ -41,14 +41,14 @@ export default {
   },
   activated() {
     // 激活路由组件时，连接WebSocket
-    this.$store.commit({
+    this.$store.dispatch({
       type: "wsOpen",
       id: this.$route.params.id,
     });
   },
   // 切换到其它路由组件时，关闭WebSocket连接
   deactivated() {
-    this.$store.commit("wsClose");
+    this.$store.dispatch("wsClose");
   },
   unmounted() {
     window.removeEventListener("beforeunload", this.beforeunloadCb);
