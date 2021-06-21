@@ -55,7 +55,6 @@ const actions = {
     }
   },
   updateCodeEditor({ commit, state }: ContextType, payload: any) {
-    console.log("updateCodeEditor", payload);
     Object.assign(state.codeEditor, payload);
     commit("wsSend", {
       type: "code",

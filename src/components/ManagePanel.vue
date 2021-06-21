@@ -27,10 +27,10 @@
           <el-menu-item index="3-1">添加新题目</el-menu-item>
           <el-menu-item index="3-2">添加已有题目</el-menu-item>
         </el-submenu>
-        <el-menu-item index="4">
+        <!-- <el-menu-item index="4">
           <i class="el-icon-setting"></i>
           <template #title>面试设置</template>
-        </el-menu-item>
+        </el-menu-item> -->
       </el-menu>
       <div class="content">
         <div class="item" v-show="panelindex == '1'">
@@ -45,16 +45,12 @@
           >
             <el-table-column label="序号" type="index" width="50">
             </el-table-column>
-            <el-table-column prop="submit_time" label="提交时间" width="200">
-            </el-table-column>
-            <el-table-column prop="finish_time" label="用户邮箱" width="200">
-            </el-table-column>
-            <el-table-column label="操作">
-              <el-button>查看代码</el-button>
+            <el-table-column label="操作" v-slot="{ row }">
+              <el-button @click="showCode(row)">查看代码</el-button>
             </el-table-column>
           </el-table>
         </div>
-        <div class="item" v-show="panelindex == '3-1'">
+        <div class="item problems-new" v-show="panelindex == '3-1'">
           <el-input
             v-model="middle_title"
             placeholder="输入题目标题"
@@ -76,7 +72,7 @@
           ></el-autocomplete>
           <el-button @click="addExistProblem(select_pid)">添加题目</el-button>
         </div>
-        <div class="item" v-show="panelindex == '4'">面试的一些设置选项.</div>
+        <!-- <div class="item" v-show="panelindex == '4'">面试的一些设置选项.</div> -->
       </div>
     </div>
   </base-card>
@@ -86,6 +82,7 @@ import { getProblems, addProblem } from "../api/problem";
 import BaseCard from "./BaseCard.vue";
 import ViewProblems from "../components/ViewProblems.vue";
 import TextEditor from "./TextEditor.vue";
+import { getAnswers } from "@/api/answers";
 export default {
   name: "ManagePanel",
   data() {
@@ -106,9 +103,35 @@ export default {
     ViewProblems,
   },
   methods: {
+    showCode(code) {
+      console.log(code);
+      this.$store.dispatch("updateCodeEditor", {
+        language: code.language,
+        value: code.content,
+      });
+    },
+    loadAnswers() {
+      getAnswers({
+        iid: this.$route.params.id,
+        pid: this.$store.state.pid,
+      }).handle({
+        200: (data) => {
+          this.tableData = [];
+          for (let answer of data) {
+            this.tableData.push({
+              language: answer.language,
+              content: answer.content,
+              created_at: answer.created_at,
+            });
+          }
+        },
+      });
+    },
     handleMenuSelect(index) {
       this.panelindex = index;
-      console.log(this.panelindex);
+      if (index === "2") {
+        this.loadAnswers();
+      }
     },
     leaveView() {
       this.$router.push("/console/interviews");
@@ -154,13 +177,13 @@ export default {
       var mynowmsg = {
         type: "add_problem",
         uid: this.uid,
-        title: this.t,
-        content: this.str,
+        title: this.middle_title,
+        content: this.middle_content,
       };
       this.$store.commit("wsSend", mynowmsg);
       addProblem({
-        title: this.t,
-        content: this.str,
+        title: this.middle_title,
+        content: this.middle_content,
       }).handle({
         200: (data) => {
           let pid = data.id;
@@ -199,6 +222,11 @@ export default {
 
 ::v-deep(.el-autocomplete) {
   flex-grow: 1;
+}
+
+.problems-new {
+  display: flex;
+  flex-direction: column;
 }
 .texteditor {
   flex-grow: 1;

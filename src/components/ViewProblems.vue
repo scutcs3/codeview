@@ -34,6 +34,7 @@ export default {
     }).handle({
       200: (data) => {
         if (data.length === 0) console.log("还没有出题");
+        this.$store.commit("updatePID", String(data[0].problem_id));
         for (let problem of data) {
           this.showProblem(problem.problem_id);
         }

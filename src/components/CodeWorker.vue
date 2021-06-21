@@ -21,7 +21,7 @@ export default {
       var oldLog = console.log;
       console.log = function(str) {
         oldLog(str);
-        logOutput += str;
+        logOutput += str + "\n";
       }
       ${this.codeEditorVal}
       document.getElementById("terminal-output").innerText = "";
@@ -29,6 +29,7 @@ export default {
       `);
     },
     submitCode() {
+      console.log("submitCode");
       addAnswer({
         interview_id: this.$route.params.id,
         problem_id: this.$store.state.pid,
