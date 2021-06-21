@@ -9,14 +9,6 @@ import MonacoEditor from "./MonacoEditor.vue";
 export default {
   name: "CodeEditor",
   components: { MonacoEditor },
-  computed: {
-    opts() {
-      return this.$store.state.codeEditor;
-    },
-    wsCodeMsg() {
-      return this.$store.getters.wsCodeMsg;
-    },
-  },
 };
 </script>
 <style scoped>
