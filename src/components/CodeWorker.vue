@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import { addAnswer } from "@/api/answers";
 export default {
   name: "CodeWorker",
   methods: {
@@ -28,12 +29,22 @@ export default {
       `);
     },
     submitCode() {
-      console.log("提交代码");
+      addAnswer({
+        interview_id: this.$route.params.id,
+        problem_id: this.$store.state.pid,
+        language: this.codeEditorLanguage,
+        content: this.codeEditorVal,
+      }).handle({
+        200: this.$message.success("提交代码成功"),
+      });
     },
   },
   computed: {
     codeEditorVal() {
       return this.$store.state.codeEditor.value;
+    },
+    codeEditorLanguage() {
+      return this.$store.state.codeEditor.language;
     },
     codeIsJs() {
       return this.$store.state.codeEditor.language === "javascript";

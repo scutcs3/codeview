@@ -24,6 +24,9 @@ const mutations = {
     console.log("WebSocket 发送数据: ", payload);
     state.ws.send(payload);
   },
+  updatePID(state: any, pid: String) {
+    state.pid = pid;
+  },
 };
 
 export default mutations;

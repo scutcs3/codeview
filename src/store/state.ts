@@ -15,6 +15,7 @@ const state = {
   wsId: 0,
   wsMessage: [],
   codeEditor: getCodeEditorConfig(),
+  pid: 0, // 当前题目ID
 };
 
 export default state;
