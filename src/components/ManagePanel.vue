@@ -37,7 +37,11 @@
           <template #title>面试设置</template>
         </el-menu-item>
       </el-menu>
-      <p>这是管理面板的内容</p>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
       <!-- <div class="search-area">
         <el-autocomplete
           v-model="state"
@@ -152,7 +156,10 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+}
+.el-menu {
+  height: 100%;
 }
 .search-area {
   display: flex;
