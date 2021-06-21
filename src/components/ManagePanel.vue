@@ -6,7 +6,39 @@
       >
     </template>
     <div class="container">
-      <div class="search-area">
+      <el-menu
+        default-active="1-4-1"
+        class="el-menu-vertical-demo"
+        @open="handleOpen"
+        @close="handleClose"
+        :collapse="isCollapse"
+      >
+        <el-menu-item index="1">
+          <i class="el-icon-document"></i>
+          <template #title>题目列表</template>
+        </el-menu-item>
+        <el-menu-item index="2">
+          <i class="el-icon-files"></i>
+          <template #title>答案列表</template>
+        </el-menu-item>
+        <el-submenu index="3">
+          <template #title>
+            <i class="el-icon-document-add"></i>
+            <span>添加题目</span>
+          </template>
+          <el-menu-item-group>
+            <template #title>添加题目菜单分组</template>
+            <el-menu-item index="3-1">添加新题目</el-menu-item>
+            <el-menu-item index="3-2">添加已有题目</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-menu-item index="4">
+          <i class="el-icon-setting"></i>
+          <template #title>面试设置</template>
+        </el-menu-item>
+      </el-menu>
+      <p>这是管理面板的内容</p>
+      <!-- <div class="search-area">
         <el-autocomplete
           v-model="state"
           :fetch-suggestions="querySearchAsync"
@@ -21,18 +53,19 @@
         class="texteditor"
       >
       </TextEditor>
-      <el-button @click="addNewProblem">发送</el-button>
+      <el-button @click="addNewProblem">发送</el-button> -->
     </div>
   </base-card>
 </template>
 <script>
 import { getProblems, addProblem } from "../api/problem";
 import BaseCard from "./BaseCard.vue";
-import TextEditor from "./TextEditor.vue";
+// import TextEditor from "./TextEditor.vue";
 export default {
   name: "ManagePanel",
   data() {
     return {
+      isCollapse: true,
       select_pid: "",
       middle_content: "",
       state: "",
@@ -40,10 +73,16 @@ export default {
     };
   },
   components: {
-    TextEditor,
+    // TextEditor,
     BaseCard,
   },
   methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
     leaveView() {
       this.$router.push("/console/interviews");
     },
