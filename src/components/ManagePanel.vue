@@ -8,10 +8,8 @@
     <div class="container">
       <el-menu
         default-active="1-4-1"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
         :collapse="isCollapse"
+        @select="handleMenuSelect"
       >
         <el-menu-item index="1">
           <i class="el-icon-document"></i>
@@ -26,66 +24,91 @@
             <i class="el-icon-document-add"></i>
             <span>添加题目</span>
           </template>
-          <el-menu-item-group>
-            <template #title>添加题目菜单分组</template>
-            <el-menu-item index="3-1">添加新题目</el-menu-item>
-            <el-menu-item index="3-2">添加已有题目</el-menu-item>
-          </el-menu-item-group>
+          <el-menu-item index="3-1">添加新题目</el-menu-item>
+          <el-menu-item index="3-2">添加已有题目</el-menu-item>
         </el-submenu>
         <el-menu-item index="4">
           <i class="el-icon-setting"></i>
           <template #title>面试设置</template>
         </el-menu-item>
       </el-menu>
-      <router-view v-slot="{ Component }">
-        <keep-alive>
-          <component :is="Component" />
-        </keep-alive>
-      </router-view>
-      <!-- <div class="search-area">
-        <el-autocomplete
-          v-model="state"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="输入关键词搜索题目"
-          @select="handleSelect"
-        ></el-autocomplete>
-        <el-button @click="addExistProblem(select_pid)">添加题目</el-button>
+      <div class="content">
+        <div class="item" v-show="panelindex == '1'">
+          <view-problems></view-problems>
+        </div>
+        <div class="item" v-show="panelindex == '2'">
+          <el-table
+            :data="tableData"
+            highlight-current-row
+            border
+            style="width: 100%"
+          >
+            <el-table-column label="序号" type="index" width="50">
+            </el-table-column>
+            <el-table-column prop="submit_time" label="提交时间" width="200">
+            </el-table-column>
+            <el-table-column prop="finish_time" label="用户邮箱" width="200">
+            </el-table-column>
+            <el-table-column label="操作">
+              <el-button>查看代码</el-button>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="item" v-show="panelindex == '3-1'">
+          <el-input
+            v-model="middle_title"
+            placeholder="输入题目标题"
+          ></el-input>
+          <TextEditor
+            ref="editor"
+            v-model:content="middle_content"
+            class="texteditor"
+          >
+          </TextEditor>
+          <el-button @click="addNewProblem">发送</el-button>
+        </div>
+        <div class="item" v-show="panelindex == '3-2'">
+          <el-autocomplete
+            v-model="state"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="输入关键词搜索题目"
+            @select="handleSelect"
+          ></el-autocomplete>
+          <el-button @click="addExistProblem(select_pid)">添加题目</el-button>
+        </div>
+        <div class="item" v-show="panelindex == '4'">面试的一些设置选项.</div>
       </div>
-      <TextEditor
-        ref="editor"
-        v-model:content="middle_content"
-        class="texteditor"
-      >
-      </TextEditor>
-      <el-button @click="addNewProblem">发送</el-button> -->
     </div>
   </base-card>
 </template>
 <script>
 import { getProblems, addProblem } from "../api/problem";
 import BaseCard from "./BaseCard.vue";
-// import TextEditor from "./TextEditor.vue";
+import ViewProblems from "../components/ViewProblems.vue";
+import TextEditor from "./TextEditor.vue";
 export default {
   name: "ManagePanel",
   data() {
     return {
+      tableData: [],
+      panelindex: "1",
       isCollapse: true,
       select_pid: "",
+      middle_title: "",
       middle_content: "",
       state: "",
       timeout: null,
     };
   },
   components: {
-    // TextEditor,
+    TextEditor,
     BaseCard,
+    ViewProblems,
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    handleMenuSelect(index) {
+      this.panelindex = index;
+      console.log(this.panelindex);
     },
     leaveView() {
       this.$router.push("/console/interviews");
@@ -161,6 +184,15 @@ export default {
 .el-menu {
   height: 100%;
 }
+.content {
+  width: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+.item {
+  height: 100%;
+}
+
 .search-area {
   display: flex;
 }
