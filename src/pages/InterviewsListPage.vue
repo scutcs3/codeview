@@ -62,6 +62,15 @@ export default {
         name: "interviews-new",
       });
     },
+    trStatus(status) {
+      let trs = {
+        created: "面试已创建",
+        ready: "候选人已同意邀约",
+        rejected: "候选人已拒绝邀约",
+        cancelled: "面试已取消",
+      };
+      return trs[status];
+    },
   },
   activated() {
     getInterviews().handle({
@@ -73,7 +82,7 @@ export default {
             id: interview.id,
             start_time: formatDate(interview.start_time),
             finish_time: formatDate(interview.finish_time),
-            status: interview.status,
+            status: this.trStatus(interview.status),
           });
         }
       },

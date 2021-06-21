@@ -1,6 +1,6 @@
 <template>
   <div class="chat-container">
-    <div class="chat-content">
+    <div class="chat-content" id="chat-content">
       <div v-for="item in messages" :key="item">
         <this-bubble v-if="item.uid == uid" :input="item.input" />
         <that-bubble v-else :uid="item.uid" :input="item.input" />
@@ -46,8 +46,10 @@ export default {
     },
     messages() {
       this.$nextTick(() => {
-        let content = document.getElementById("content");
-        if (content) content.scrollIntoView(false);
+        let content = document.getElementById("chat-content");
+        if (content) {
+          content.scrollTop = content.scrollHeight;
+        }
       });
       // 返回所有聊天信息
       return this.chatHistory.concat(this.$store.getters.wsChatMsg);
@@ -83,7 +85,7 @@ export default {
           this.commentCount = parseInt(headers["total-count"]);
           for (let comment of data) {
             this.chatHistory.push({
-              uid: comment.owner_id,
+              uid: String(comment.owner_id),
               input: comment.content,
             });
           }
@@ -124,6 +126,8 @@ export default {
 
 <style scoped>
 .chat-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-position: left;
@@ -134,7 +138,6 @@ export default {
 .chat-content {
   flex-grow: 1;
   width: 100%;
-  height: 30rem;
   background: #f6f6f6;
   padding-top: 1rem;
   overflow: auto;

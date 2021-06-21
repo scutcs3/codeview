@@ -17,7 +17,7 @@
 export default {
   name: "ThatBubble",
   props: {
-    uid: Number,
+    uid: String,
     input: String,
   },
 };

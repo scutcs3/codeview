@@ -8,7 +8,7 @@ var connection = require("../config/mysql");
 function getUserDetail(field, param, page, per_page, res, req) {
   var sql;
   if (param) {
-    sql = `SELECT * FROM user where ${field} = '${param}' `;
+    sql = `SELECT * FROM user where ${field} LIKE '%${param}%' `;
   } else {
     sql = `SELECT * FROM user `;
   }

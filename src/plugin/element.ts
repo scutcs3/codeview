@@ -11,6 +11,7 @@ import {
   ElForm,
   ElInput,
   ElLink,
+  ElPopover,
   ElFormItem,
   ElRow,
   ElCol,
@@ -35,6 +36,7 @@ import {
   ElCollapse,
   ElRadioGroup,
   ElRadio,
+  ElSubmenu,
   ElMessage,
   ElNotification,
 } from "element-plus";
@@ -59,7 +61,9 @@ export default (app: App) => {
   app.use(ElTabPane);
   app.use(ElLink);
   app.use(ElFormItem);
+  app.use(ElPopover);
   app.use(ElRow);
+  app.use(ElSubmenu);
   app.use(ElCol);
   app.use(ElMenu);
   app.use(ElMenuItem);

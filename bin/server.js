@@ -55,7 +55,7 @@ let wsConns = {};
 
 function boardcast(obj) {
   let iid = obj.interviewID;
-  if (iid) {
+  if (iid && wsConns[iid]) {
     obj.count = wsConns[iid].length;
     for (let conObj of wsConns[iid]) {
       console.log("向面试", iid, "中的用户", conObj.uid, "广播数据 ", obj);

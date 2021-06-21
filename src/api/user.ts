@@ -12,3 +12,11 @@ export function register(data: any) {
 export function changePassword(data: any) {
   return new Handler(axios.patch("/users", data));
 }
+
+export function getUsers(data: any) {
+  return new Handler(
+    axios.get("/users", {
+      params: data,
+    })
+  );
+}

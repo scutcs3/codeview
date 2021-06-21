@@ -9,7 +9,11 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="面试者" v-show="form.viewee_type === '站内用户'">
-        <el-input v-model="form.name"></el-input>
+        <el-autocomplete
+          v-model="form.name"
+          :fetch-suggestions="queryUser"
+          placeholder="输入邮箱搜索用户"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item label="面试日期">
         <el-date-picker
@@ -38,6 +42,7 @@
 <script>
 import { createInterview } from "../api/interview";
 import moment from "moment";
+import { getUsers } from "@/api/user";
 
 export default {
   name: "ProblemsNewPage",
@@ -45,6 +50,7 @@ export default {
     return {
       textarea: "",
       form: {
+        name: "",
         viewee_type: "外部用户",
         viewee_id: "",
         date: new Date(),
@@ -65,6 +71,26 @@ export default {
     },
   },
   methods: {
+    queryUser(userEmail, cb) {
+      let results = [];
+      if (!userEmail) {
+        cb(results);
+        return;
+      }
+      getUsers({
+        email: userEmail,
+      }).handle({
+        200: (data) => {
+          for (let user of data) {
+            results.push({
+              value: user.email,
+            });
+          }
+          cb(results);
+        },
+        404: () => console.error("搜索用户失败"),
+      });
+    },
     onSubmit() {
       console.log(this.start_time, this.finish_time);
       createInterview({

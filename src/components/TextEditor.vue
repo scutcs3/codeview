@@ -51,11 +51,12 @@ export default {
         language: "zh_CN",
         skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide`,
         convert_urls: false,
-        height: 500,
+        height: "100%",
         plugins: this.plugins,
         toolbar: this.toolbar,
-        statusbar: true,
-        menubar: "file edit insert view format table tools help", // （1级菜单）最上方的菜单
+        statusbar: false,
+        menubar: false,
+        // menubar: "file edit insert view format table tools help", // （1级菜单）最上方的菜单
         branding: false,
         images_upload_handler: (blobInfo, success, failure) => {
           const img = "data:image/jpeg;base64," + blobInfo.base64();
@@ -72,3 +73,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.tinymce-box textarea {
+  width: 100%;
+  height: 100%;
+}
+</style>
