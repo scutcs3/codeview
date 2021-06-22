@@ -16,17 +16,19 @@ export default {
   name: "CodeWorker",
   methods: {
     runCode() {
-      eval(`
+      let evalStr = `
       var logOutput = "";
       var oldLog = console.log;
       console.log = function(str) {
         oldLog(str);
-        logOutput += str + "\n";
+        logOutput += str + "\\n";
       }
       ${this.codeEditorVal}
       document.getElementById("terminal-output").innerText = "";
       document.getElementById("terminal-output").innerText = logOutput;
-      `);
+      `;
+      console.log(evalStr);
+      eval(evalStr);
     },
     submitCode() {
       console.log("submitCode");
