@@ -78,6 +78,7 @@ router.get("/", function (req, res, next) {
  * 提交答案
  */
 router.post("/", function (req, res, next) {
+  console.log(req.body);
   if (
     !req.body.language ||
     !req.body.content ||
@@ -91,6 +92,7 @@ router.post("/", function (req, res, next) {
     var dt = require("moment")().format("YYYY-MM-DD HH:mm:ss");
     var iid = hashes.decode(req.body.interview_id)[0];
     var sql = `INSERT INTO answer (language,content,problem_id,interview_id,created_at) VALUES ('${req.body.language}','${req.body.content}',${req.body.problem_id},${iid},'${dt}')`;
+    console.log("post answers", sql);
     connection.query(sql, function (err, result) {
       if (err) {
         console.log("[INSERT ERROR]:", err.message);

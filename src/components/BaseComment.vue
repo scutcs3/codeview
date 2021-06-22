@@ -85,7 +85,7 @@ export default {
           this.commentCount = parseInt(headers["total-count"]);
           for (let comment of data) {
             this.chatHistory.push({
-              uid: comment.owner_id,
+              uid: String(comment.owner_id),
               input: comment.content,
             });
           }

@@ -17,14 +17,11 @@ const actions = {
       if (state.ws.readyState != WebSocket.OPEN) {
         return;
       }
-      commit(
-        "wsSend",
-        JSON.stringify({
-          type: "open",
-          interviewID: payload.id,
-          uid: localStorage.getItem("user.id"),
-        })
-      );
+      commit("wsSend", {
+        type: "open",
+        interviewID: payload.id,
+        uid: localStorage.getItem("user.id"),
+      });
     };
     state.ws.onclose = function (e: any) {
       state.wsMessage = [];
@@ -58,16 +55,15 @@ const actions = {
     }
   },
   updateCodeEditor({ commit, state }: ContextType, payload: any) {
-    if (payload.value != state.codeEditor.value) {
-      commit("wsSend", {
-        type: "code",
-        uid: localStorage.getItem("user.id"),
-        value: payload.value,
-        language: payload.language,
-        theme: payload.theme,
-      });
-    }
     Object.assign(state.codeEditor, payload);
+    commit("wsSend", {
+      type: "code",
+      uid: localStorage.getItem("user.id"),
+      value: state.codeEditor.value,
+      language: state.codeEditor.language,
+      theme: state.codeEditor.theme,
+    });
+    localStorage.setItem("codeEditor", JSON.stringify(state.codeEditor));
   },
 };
 

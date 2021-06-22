@@ -4,7 +4,6 @@
 
 <script>
 import * as monaco from "monaco-editor";
-
 export default {
   name: "MonacoEditor",
   data() {
@@ -28,26 +27,52 @@ export default {
     opts() {
       return this.$store.state.codeEditor;
     },
-  },
-  watch: {
-    opts: {
-      handler() {
-        (this.codestr = this.getVal()),
-          this.monacoEditor.dispose(),
-          (this.monacoEditor = null);
-        this.init();
-        this.monacoEditor.setValue(this.codestr);
-      },
-      deep: true,
+    wsCodeMsg() {
+      return this.$store.getters.wsCodeMsg;
     },
   },
+  watch: {
+    "opts.language": function (newVal, oldVal) {
+      if (newVal === oldVal) return;
+      monaco.editor.setModelLanguage(this.monacoEditor.getModel(), newVal);
+    },
+    "opts.theme": function (newVal, oldVal) {
+      console.log("opts.theme changed", newVal, oldVal);
+      if (newVal === oldVal) return;
+      monaco.editor.setTheme(newVal);
+    },
+    "opts.value": function (newVal, oldVal) {
+      if (newVal === oldVal || newVal === this.codestr) return;
+      this.setVal(newVal);
+    },
+    "wsCodeMsg.length": function (newVal, oldVal) {
+      if (newVal == oldVal || newVal === 0) return;
+      let len = this.wsCodeMsg.length;
+      let lastMsg = this.wsCodeMsg[len - 1];
+      this.setVal(lastMsg.value);
+    },
+  },
+  // watch: {
+  //   opts: {
+  //     handler() {
+  //       (this.codestr = this.getVal()),
+  //         this.monacoEditor.dispose(),
+  //         (this.monacoEditor = null);
+  //       this.init();
+  //       this.monacoEditor.setValue(this.codestr);
+  //     },
+  //     deep: true,
+  //   },
+  // },
   mounted() {
     this.init();
     this.monacoEditor.layout();
-    this.monacoEditor.onDidChangeModelContent(() => {
-      let newContent = this.monacoEditor.getValue();
-      console.log(newContent);
-    });
+    this.timer = window.setInterval(() => {
+      setTimeout(this.detectContent(), 0);
+    }, 500);
+  },
+  beforeUnmount() {
+    clearInterval(this.timer);
   },
   methods: {
     init() {
@@ -59,6 +84,26 @@ export default {
         this.$refs.container,
         editorOptions
       );
+    },
+    // 定时检测内容变化
+    detectContent() {
+      let val = this.getVal();
+      if (this.codestr !== val || val !== this.opts.value) {
+        this.$store.dispatch("updateCodeEditor", {
+          value: val,
+        });
+        this.codestr = val;
+      }
+    },
+    // 供父组件调用手动获取值
+    getVal() {
+      return this.monacoEditor.getValue();
+    },
+    setVal(val) {
+      if (val !== this.codestr) {
+        this.codestr = val;
+        this.monacoEditor.setValue(val);
+      }
     },
   },
 };
