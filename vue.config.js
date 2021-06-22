@@ -2,8 +2,8 @@ const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 module.exports = {
   pages: {
-    index: "src/main.js",
-    404: "src/main.js",
+    index: "src/main.ts",
+    404: "src/main.ts",
   },
   devServer: {
     host: "0.0.0.0",
