@@ -23,7 +23,7 @@ describe("GET token", function () {
 describe("GET /answers", function () {
   it("测试 不带token", function (done) {
     request
-      .get("/answers?iid=1&pid=1")
+      .get("/answers?iid=EM3Q8Aey2KbONlw2&pid=1")
       .set("Accept", "application/json")
       .expect(401)
       .end(function (err, res) {
@@ -33,7 +33,7 @@ describe("GET /answers", function () {
   });
   it("测试 获取成功", function (done) {
     request
-      .get("/answers?iid=1&pid=1")
+      .get("/answers?iid=EM3Q8Aey2KbONlw2&pid=1")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(200)
@@ -45,7 +45,7 @@ describe("GET /answers", function () {
   });
   it("测试 参数错误", function (done) {
     request
-      .get("/answers?iid=1")
+      .get("/answers?iid=EM3Q8Aey2KbONlw2")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(400)
@@ -65,7 +65,7 @@ describe("POST /answers", function () {
         language: "c",
         content: "test",
         problem_id: 2,
-        interview_id: 1,
+        interview_id: 'EM3Q8Aey2KbONlw2',
       })
       .expect(200)
       .end(function (err, res) {
@@ -80,7 +80,7 @@ describe("POST /answers", function () {
       .send({
         content: "test",
         problem_id: 2,
-        interview_id: 1,
+        interview_id: 'EM3Q8Aey2KbONlw2',
       })
       .expect(400)
       .end(function (err, res) {
@@ -95,7 +95,7 @@ describe("POST /answers", function () {
         language: "c",
         content: "test",
         problem_id: 2,
-        interview_id: 1,
+        interview_id: 'EM3Q8Aey2KbONlw2',
       })
       .expect(401)
       .end(function (err, res) {

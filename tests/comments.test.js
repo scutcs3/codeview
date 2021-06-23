@@ -23,7 +23,7 @@ describe("GET token", function () {
 describe("GET /comments", function () {
   it("测试 不带token", function (done) {
     request
-      .get("/comments?iid=1")
+      .get("/comments?iid=EM3Q8Aey2KbONlw2")
       .set("Accept", "application/json")
       .expect(401)
       .end(function (err, res) {
@@ -33,7 +33,7 @@ describe("GET /comments", function () {
   });
   it("测试 iid", function (done) {
     request
-      .get("/comments?iid=1")
+      .get("/comments?iid=EM3Q8Aey2KbONlw2")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(200)
@@ -45,7 +45,7 @@ describe("GET /comments", function () {
   });
   it("测试 cid", function (done) {
     request
-      .get("/comments?iid=1&cid=1")
+      .get("/comments?iid=EM3Q8Aey2KbONlw2&cid=1")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(200)
@@ -57,7 +57,7 @@ describe("GET /comments", function () {
   });
   it("测试 since", function (done) {
     request
-      .get("/comments?iid=1&since=2021-05-05 00:00:00")
+      .get("/comments?iid=EM3Q8Aey2KbONlw2&since=2021-05-05 00:00:00")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(200)
@@ -75,7 +75,7 @@ describe("POST /comments", function () {
       .post("/comments")
       .set("Authorization", "Bearer " + token)
       .send({
-        iid: 1,
+        iid: 'EM3Q8Aey2KbONlw2',
         content: "test",
       })
       .expect(200)
@@ -89,7 +89,7 @@ describe("POST /comments", function () {
       .post("/comments")
       .set("Authorization", "Bearer " + token)
       .send({
-        iid: 1,
+        iid: 'EM3Q8Aey2KbONlw2',
       })
       .expect(400)
       .end(function (err, res) {
@@ -101,7 +101,7 @@ describe("POST /comments", function () {
     request
       .post("/comments")
       .send({
-        iid: 1,
+        iid: 'EM3Q8Aey2KbONlw2',
         content: "test",
       })
       .expect(401)

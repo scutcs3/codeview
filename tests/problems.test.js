@@ -21,17 +21,6 @@ describe("GET token", function () {
 });
 
 describe("GET /problems", function () {
-  it("测试 参数错误", function (done) {
-    request
-      .get("/problems")
-      .set("Accept", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .expect(400)
-      .end(function (err, res) {
-        should.not.exist(err);
-        done();
-      });
-  });
   it("测试 不带token", function (done) {
     request
       .get("/problems?pid=1")
@@ -56,7 +45,7 @@ describe("GET /problems", function () {
   });
   it("测试 iid", function (done) {
     request
-      .get("/problems?iid=1")
+      .get("/problems?iid=EM3Q8Aey2KbONlw2")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(200)
@@ -112,7 +101,7 @@ describe("POST /problems", function () {
       .post("/problems")
       .set("Authorization", "Bearer " + token)
       .send({
-        iid: 1,
+        iid: 'EM3Q8Aey2KbONlw2',
         pid: 3,
       })
       .expect(200)
@@ -127,7 +116,7 @@ describe("POST /problems", function () {
       .send({
         title: "test",
         content: "test",
-        iid: 1,
+        iid: 'EM3Q8Aey2KbONlw2',
       })
       .expect(401)
       .end(function (err, res) {
@@ -140,7 +129,7 @@ describe("POST /problems", function () {
       .post("/problems")
       .set("Authorization", "Bearer " + token)
       .send({
-        iid: 1,
+        iid: 'EM3Q8Aey2KbONlw2',
         pid: 100,
       })
       .expect(404)
@@ -154,7 +143,7 @@ describe("POST /problems", function () {
       .post("/problems")
       .set("Authorization", "Bearer " + token)
       .send({
-        iid: 100,
+        iid: 'rGgWO1KpPKvmPD9V',
         pid: 1,
       })
       .expect(405)
@@ -171,7 +160,7 @@ describe("DELETE /problems", function () {
       .delete("/problems")
       .set("Authorization", "Bearer " + token)
       .send({
-        iid: 1,
+        iid: 'EM3Q8Aey2KbONlw2',
         pid: 3,
       })
       .expect(200)

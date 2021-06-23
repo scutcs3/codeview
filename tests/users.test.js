@@ -29,8 +29,7 @@ describe("GET /users", function () {
       .expect(200)
       .end(function (err, res) {
         should.not.exist(err);
-        res.headers.should.have.property("firstlink");
-        res.headers.should.have.property("lastlink");
+        res.headers.should.have.property("total-count");
         res.body.data.length.should.be.exactly(5);
         done();
       });
@@ -65,19 +64,7 @@ describe("GET /users", function () {
       .expect(200)
       .end(function (err, res) {
         should.not.exist(err);
-        res.body.data.length.should.be.exactly(1);
-        done();
-      });
-  });
-  it("测试 name", function (done) {
-    request
-      .get("/users?name=a")
-      .set("Accept", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .expect(200)
-      .end(function (err, res) {
-        should.not.exist(err);
-        res.body.data.length.should.be.exactly(1);
+        res.body.data.length.should.be.exactly(2);
         done();
       });
   });
@@ -172,29 +159,13 @@ describe("POST /tokens", function () {
 });
 
 describe("PATCH /users", function () {
-  it("测试 修改成功", function (done) {
+    it("测试 旧密码错误", function (done) {
     request
       .patch("/users")
       .set("Authorization", "Bearer " + token)
       .send({
-        id: 1,
-        name: "a",
-        password: "ac",
-      })
-      .expect(200)
-      .end(function (err, res) {
-        should.not.exist(err);
-        done();
-      });
-  });
-  it("测试 没有权限", function (done) {
-    request
-      .patch("/users")
-      .set("Authorization", "Bearer " + token)
-      .send({
-        id: 2,
-        name: "a",
-        password: "ac",
+        old_password: "ac",
+        new_password: "ab",
       })
       .expect(403)
       .end(function (err, res) {
@@ -206,9 +177,8 @@ describe("PATCH /users", function () {
     request
       .patch("/users")
       .send({
-        id: 1,
-        name: "a",
-        password: "ac",
+        old_password: "a",
+        new_password: "ab",
       })
       .expect(401)
       .end(function (err, res) {
@@ -216,16 +186,28 @@ describe("PATCH /users", function () {
         done();
       });
   });
-  it("测试 找不到", function (done) {
+  it("测试 参数错误", function (done) {
     request
       .patch("/users")
       .set("Authorization", "Bearer " + token)
       .send({
-        id: 100,
-        name: "a",
-        password: "ac",
+        new_password: "ac",
       })
-      .expect(404)
+      .expect(400)
+      .end(function (err, res) {
+        should.not.exist(err);
+        done();
+      });
+  });
+  it("测试 修改成功", function (done) {
+    request
+      .patch("/users")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        old_password: "a",
+        new_password: "ac",
+      })
+      .expect(200)
       .end(function (err, res) {
         should.not.exist(err);
         done();

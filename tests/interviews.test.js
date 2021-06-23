@@ -37,7 +37,7 @@ describe("GET token", function () {
 describe("GET /interviews", function () {
   it("测试 不带token", function (done) {
     request
-      .get("/interviews?id=1")
+      .get("/interviews?id=EM3Q8Aey2KbONlw2")
       .set("Accept", "application/json")
       .expect(401)
       .end(function (err, res) {
@@ -47,7 +47,7 @@ describe("GET /interviews", function () {
   });
   it("测试 id", function (done) {
     request
-      .get("/interviews?id=1")
+      .get("/interviews?id=EM3Q8Aey2KbONlw2")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(200)
@@ -71,7 +71,7 @@ describe("GET /interviews", function () {
   });
   it("测试 面试ID不存在", function (done) {
     request
-      .get("/interviews?id=2")
+      .get("/interviews?id=rGgWO1KpPKvmPD9V")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token)
       .expect(404)
@@ -82,7 +82,7 @@ describe("GET /interviews", function () {
   });
   it("测试 没有权限", function (done) {
     request
-      .get("/interviews?id=1")
+      .get("/interviews?id=EM3Q8Aey2KbONlw2")
       .set("Accept", "application/json")
       .set("Authorization", "Bearer " + token1)
       .expect(403)
@@ -104,19 +104,6 @@ describe("POST /interviews", function () {
         finish_time: "2021-05-19 00:10:00",
       })
       .expect(200)
-      .end(function (err, res) {
-        should.not.exist(err);
-        done();
-      });
-  });
-  it("测试 创建失败", function (done) {
-    request
-      .post("/interviews")
-      .set("Authorization", "Bearer " + token)
-      .send({
-        viewee_id: 1,
-      })
-      .expect(400)
       .end(function (err, res) {
         should.not.exist(err);
         done();
