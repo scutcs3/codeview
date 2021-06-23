@@ -1,7 +1,6 @@
 {
-  "name": "codeview",
-  "version": "0.2.0",
-  "private": true,
+  "name": "@scutcs3/codeview",
+  "version": "1.0.0",
   "description": "在线编程笔试平台",
   "scripts": {
     "serve": "vue-cli-service serve",
