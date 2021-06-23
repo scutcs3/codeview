@@ -51,7 +51,7 @@ app.use(
 );
 
 app.get("/", function (req, res) {
-  var port = app.get("port") === 80 ? "" : app.get("port");
+  var port = app.get("http_port") === 80 ? "" : app.get("http_port");
   var url = `${req.protocol}://${req.hostname}:${port}`;
   var ans = {
     login_url: "/tokens",

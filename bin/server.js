@@ -7,8 +7,9 @@
 // 引入模块
 var app = require("../app");
 var http = require("http");
+const https = require("https");
 const ws = require("nodejs-websocket");
-
+const fs = require("fs");
 const crypto = require("crypto");
 const exec = require("child_process").exec;
 const path = require("path");
@@ -17,14 +18,16 @@ const path = require("path");
 const HTTP_PORT = process.env.HTTP_PORT || 3000;
 const WEBHOOK_PORT = process.env.WEBHOOK_PORT || 3001;
 const WEBSOCKET_PORT = process.env.WEBSOCKET_PORT || 3002;
+const HTTPS_PORT = process.env.HTTPS_PORT || 3004;
 
 // 保存端口号到express
-app.set("port", HTTP_PORT);
+app.set("http_port", HTTP_PORT);
+app.set("https_port", HTTPS_PORT);
 
 // 创建HTTP服务器
-var httpServer = http.createServer(app);
+const httpServer = http.createServer(app);
 httpServer.listen(HTTP_PORT, function () {
-  console.log("HTTP服务器启动成功，监听" + HTTP_PORT + "端口");
+  console.log("HTTP服务器启动成功: " + "http://localhost:" + HTTP_PORT);
 });
 httpServer.on("error", function (error) {
   if (error.syscall !== "listen") {
@@ -33,6 +36,41 @@ httpServer.on("error", function (error) {
 
   var bind =
     typeof HTTP_PORT === "string" ? "Pipe " + HTTP_PORT : "Port " + HTTP_PORT;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+});
+// 创建HTTPS服务器
+const cred = {
+  key: fs.readFileSync(
+    path.resolve(__dirname, "../config/localhost+2-key.pem")
+  ),
+  cert: fs.readFileSync(path.resolve(__dirname, "../config/localhost+2.pem")),
+};
+const httpsServer = https.createServer(cred, app);
+httpsServer.listen(HTTPS_PORT, function () {
+  console.log("HTTPS服务器启动成功: " + "https://localhost:" + HTTPS_PORT);
+});
+httpsServer.on("error", function (error) {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  var bind =
+    typeof HTTPS_PORT === "string"
+      ? "Pipe " + HTTPS_PORT
+      : "Port " + HTTPS_PORT;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
