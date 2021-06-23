@@ -18,8 +18,8 @@ export let CV_WS_API: string;
 const api_maps: any = {
   mock: "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0",
   test: "https://virtserver.swaggerhub.com/tootal/codeview/1.0.0",
-  local: "http://localhost:3000",
-  dev: "http://cv-api.tootal.xyz",
+  local: "https://localhost:3004",
+  dev: "https://cv-api.tootal.xyz",
 };
 
 const ws_maps: any = {

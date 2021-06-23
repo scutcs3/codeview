@@ -24,33 +24,6 @@ const HTTPS_PORT = process.env.HTTPS_PORT || 3004;
 app.set("http_port", HTTP_PORT);
 app.set("https_port", HTTPS_PORT);
 
-// 创建HTTP服务器
-const httpServer = http.createServer(app);
-httpServer.listen(HTTP_PORT, function () {
-  console.log("HTTP服务器启动成功: " + "http://localhost:" + HTTP_PORT);
-});
-httpServer.on("error", function (error) {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
-
-  var bind =
-    typeof HTTP_PORT === "string" ? "Pipe " + HTTP_PORT : "Port " + HTTP_PORT;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges");
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use");
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-});
 // 创建HTTPS服务器
 const cred = {
   key: fs.readFileSync(
