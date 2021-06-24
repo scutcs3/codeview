@@ -23,8 +23,8 @@ const api_maps: any = {
 };
 
 const ws_maps: any = {
-  local: "ws://localhost:3002",
-  dev: "ws://cv-api.tootal.xyz:3002",
+  local: "wss://localhost:3002",
+  dev: "wss://cv-api.tootal.xyz:3002",
 };
 
 if (typeof process == "undefined") {
