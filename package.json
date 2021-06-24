@@ -77,6 +77,5 @@
     "vue-cli-plugin-element-plus": "0.0.13"
   },
   "gitHooks": {
-    "pre-commit": "vue-cli-service lint"
   }
 }
