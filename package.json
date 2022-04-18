@@ -27,7 +27,7 @@
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^8.4.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.3",
     "monaco-editor": "^0.24.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
